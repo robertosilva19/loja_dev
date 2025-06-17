@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrinho de Compras - UseDev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/cabecalho.css">
+    <link rel="stylesheet" href="../css/pages/carrinho.css">
+    <link rel="stylesheet" href="../css/components/modal.css">
+    <link rel="stylesheet" href="../css/rodape.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="cabecalho">
+        <nav class="cabecalho__nav">
+            <ul class="cabecalho__nav_list">
+                <li>
+                    <h1 class="cabecalho__logo">
+                        <a href="../index.html">
+                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
+                        </a>
+                    </h1>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
+                </li>
+                <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
+                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
+                    <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
+                        <img src="../assets/icons/perfil.svg" alt="perfil">
+                    </a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
+                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <span>Carrinho de Compras</span>
+    </nav>
+
+    <!-- Carrinho -->
+    <main class="carrinho">
+        <div class="carrinho__container">
+            <h1 class="carrinho__titulo">Meu Carrinho</h1>
+            
+            <!-- Carrinho vazio -->
+            <div id="carrinho-vazio" class="carrinho-vazio" style="display: none;">
+                <div class="carrinho-vazio__icon">
+                    <img src="../assets/icons/carrinho.svg" alt="Carrinho vazio">
+                </div>
+                <h2>Seu carrinho está vazio</h2>
+                <p>Que tal dar uma olhada em nossos produtos?</p>
+                <a href="../index.html" class="btn-continuar-comprando">
+                    Continuar Comprando
+                </a>
+            </div>
+
+            <!-- Carrinho com produtos -->
+            <div id="carrinho-produtos" class="carrinho-produtos">
+                
+                <!-- Lista de produtos -->
+                <div class="carrinho__items">
+                    <div class="carrinho__header">
+                        <span>Produto</span>
+                        <span>Preço</span>
+                        <span>Quantidade</span>
+                        <span>Total</span>
+                        <span></span>
+                    </div>
+                    
+                    <div id="lista-produtos" class="lista-produtos">
+                        <!-- Produtos serão inseridos aqui via JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Resumo do pedido -->
+                <div class="carrinho__resumo">
+                    <div class="resumo-card">
+                        <h3>Resumo do Pedido</h3>
+                        
+                        <div class="resumo-linha">
+                            <span>Subtotal (<span id="total-items">0</span> itens):</span>
+                            <span id="subtotal">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="resumo-linha">
+                            <span>Frete:</span>
+                            <span id="frete" class="frete-gratis">Grátis</span>
+                        </div>
+                        
+                        <div class="resumo-linha desconto" id="linha-desconto" style="display: none;">
+                            <span>Desconto:</span>
+                            <span id="desconto">- R$ 0,00</span>
+                        </div>
+                        
+                        <div class="resumo-divider"></div>
+                        
+                        <div class="resumo-linha total">
+                            <span>Total:</span>
+                            <span id="total-geral">R$ 0,00</span>
+                        </div>
+
+                        <!-- Cupom de desconto -->
+                        <div class="cupom-container">
+                            <input type="text" id="cupom-input" placeholder="Cupom de desconto" class="cupom-input">
+                            <button id="aplicar-cupom" class="btn-cupom">Aplicar</button>
+                        </div>
+
+                        <!-- Botões de ação -->
+                        <div class="resumo-actions">
+                            <button id="limpar-carrinho" class="btn-limpar">
+                                Limpar Carrinho
+                            </button>
+                            
+                            <button id="finalizar-compra" class="btn-finalizar">
+                                Finalizar Compra
+                            </button>
+                        </div>
+
+                        <!-- Link para continuar comprando -->
+                        <a href="../index.html" class="continuar-comprando">
+                            ← Continuar Comprando
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Produtos recomendados -->
+        <section class="recomendados">
+            <h3>Você também pode gostar</h3>
+            <div class="recomendados__grid" id="produtos-recomendados">
+                <!-- Produtos recomendados serão inseridos via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Finalização -->
+    <div id="modal-checkout" class="modal">
+        <div class="modal__overlay"></div>
+        <div class="modal__content modal__content--large">
+            <button class="modal__close" id="modal-close">&times;</button>
+            
+            <h2 class="modal__title">Finalizar Compra</h2>
+            
+            <!-- Resumo dos produtos -->
+            <div class="checkout__produtos">
+                <h3>Seus Produtos</h3>
+                <div id="checkout-lista" class="checkout-lista">
+                    <!-- Lista será preenchida via JS -->
+                </div>
+            </div>
+            
+            <!-- Formulário de checkout -->
+            <form id="form-checkout" class="checkout__form">
+                <!-- Dados pessoais -->
+                <div class="form-section">
+                    <h3>Dados Pessoais</h3>
+                    <div class="form-grid">
+                        <input type="text" name="nome" placeholder="Nome completo" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                        <input type="tel" name="telefone" placeholder="Telefone" required>
+                        <input type="text" name="cpf" placeholder="CPF" required>
+                    </div>
+                </div>
+
+                <!-- Endereço -->
+                <div class="form-section">
+                    <h3>Endereço de Entrega</h3>
+                    <div class="form-grid">
+                        <div class="cep-container">
+                            <input type="text" name="cep" placeholder="CEP" required>
+                            <button type="button" id="buscar-cep-checkout" class="btn-buscar-cep">
+                                Buscar CEP
+                            </button>
+                        </div>
+                        <input type="text" name="endereco" placeholder="Endereço" required>
+                        <input type="text" name="numero" placeholder="Número" required>
+                        <input type="text" name="complemento" placeholder="Complemento">
+                        <input type="text" name="bairro" placeholder="Bairro" required>
+                        <input type="text" name="cidade" placeholder="Cidade" required>
+                    </div>
+                </div>
+
+                <!-- Pagamento -->
+                <div class="form-section">
+                    <h3>Forma de Pagamento</h3>
+                    <div class="payment-methods">
+                        <label class="payment-method">
+                            <input type="radio" name="pagamento" value="pix" required>
+                            <div class="payment-info">
+                                <span class="payment-name">PIX</span>
+                                <span class="payment-discount">5% de desconto</span>
+                            </div>
+                        </label>
+                        
+                        <label class="payment-method">
+                            <input type="radio" name="pagamento" value="cartao" required>
+                            <div class="payment-info">
+                                <span class="payment-name">Cartão de Crédito</span>
+                                <span class="payment-installments">Até 12x sem juros</span>
+                            </div>
+                        </label>
+                        
+                        <label class="payment-method">
+                            <input type="radio" name="pagamento" value="boleto" required>
+                            <div class="payment-info">
+                                <span class="payment-name">Boleto Bancário</span>
+                                <span class="payment-installments">Vencimento em 3 dias</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Resumo final -->
+                <div class="checkout__resumo-final">
+                    <h3>Resumo Final</h3>
+                    <div class="resumo-final-grid">
+                        <div class="resumo-final-linha">
+                            <span>Subtotal:</span>
+                            <span id="checkout-subtotal">R$ 0,00</span>
+                        </div>
+                        <div class="resumo-final-linha">
+                            <span>Frete:</span>
+                            <span id="checkout-frete">Grátis</span>
+                        </div>
+                        <div class="resumo-final-linha" id="checkout-desconto-linha" style="display: none;">
+                            <span>Desconto:</span>
+                            <span id="checkout-desconto">- R$ 0,00</span>
+                        </div>
+                        <div class="resumo-final-divider"></div>
+                        <div class="resumo-final-linha total">
+                            <span>Total a Pagar:</span>
+                            <span id="checkout-total">R$ 0,00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-confirmar-pedido">
+                    Confirmar Pedido
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="rodape">
+        <div class="rodape__linha">
+            <div class="rodape__coluna rodape__coluna_logo">
+                <img src="../assets/icons/logo-verde.svg" alt="useDev logo">
+                <p class="rodape__coluna_logo_texto">Hora de abraçar o seu lado geek</p>
+            </div>
+            <div class="rodape__coluna">
+                <h5 class="rodape__coluna_titulo">Funcionamento</h5>
+                <ul class="rodape__coluna_list">
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8 as 18h</li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
+                    </li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="tel:+550800541320">0800 541 320</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/carrinho.js"></script>
+</body>
+</html>

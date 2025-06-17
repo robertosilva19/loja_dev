@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto - UseDev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/cabecalho.css">
+    <link rel="stylesheet" href="../css/pages/product.css">
+    <link rel="stylesheet" href="../css/components/modal.css">
+    <link rel="stylesheet" href="../css/rodape.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="cabecalho">
+        <nav class="cabecalho__nav">
+            <ul class="cabecalho__nav_list">
+                <li>
+                    <h1 class="cabecalho__logo">
+                        <a href="../index.html">
+                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
+                        </a>
+                    </h1>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
+                </li>
+                <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
+                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
+                    <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
+                        <img src="../assets/icons/perfil.svg" alt="perfil">
+                    </a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
+                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <span id="breadcrumb-category">Produtos</span>
+        <span>/</span>
+        <span id="breadcrumb-product">Produto</span>
+    </nav>
+
+    <!-- Produto -->
+    <main class="produto">
+        <div class="produto__container">
+            <!-- Imagem do produto -->
+            <div class="produto__imagem">
+                <img id="produto-imagem" src="" alt="" class="produto__imagem-principal">
+                <div class="produto__thumbnails" id="produto-thumbnails">
+                    <!-- Thumbnails serão inseridas via JS -->
+                </div>
+            </div>
+            
+            <!-- Informações do produto -->
+            <div class="produto__info">
+                <h1 id="produto-nome" class="produto__nome"></h1>
+                <div class="produto__rating">
+                    <div class="stars">
+                        <span>★★★★★</span>
+                    </div>
+                    <span class="rating-text">(4.8) 127 avaliações</span>
+                </div>
+                
+                <div class="produto__preco-container">
+                    <span id="produto-preco" class="produto__preco"></span>
+                    <span class="produto__preco-parcelado">ou 3x de <span id="produto-parcela"></span> sem juros</span>
+                </div>
+                
+                <p id="produto-descricao" class="produto__descricao"></p>
+                
+                <!-- Variantes do produto -->
+                <div id="produto-variantes" class="produto__variantes"></div>
+                
+                <!-- Quantidade -->
+                <div class="produto__quantidade">
+                    <label for="quantidade">Quantidade:</label>
+                    <div class="quantidade-controls">
+                        <button id="decrease-qty" class="qty-btn">-</button>
+                        <input type="number" id="quantidade" min="1" value="1" class="produto__quantidade-input">
+                        <button id="increase-qty" class="qty-btn">+</button>
+                    </div>
+                    <span id="stock-info" class="stock-info"></span>
+                </div>
+                
+                <!-- Botões de ação -->
+                <div class="produto__actions">
+                    <button id="adicionar-carrinho" class="produto__botao produto__botao--carrinho">
+                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
+                        Adicionar ao Carrinho
+                    </button>
+                    
+                    <button id="comprar-agora" class="produto__botao produto__botao--comprar">
+                        Comprar Agora
+                    </button>
+                </div>
+
+                <!-- Informações adicionais -->
+                <div class="produto__details" id="produto-details">
+                    <h3>Detalhes do Produto</h3>
+                    <div class="details-grid" id="details-content">
+                        <!-- Detalhes serão inseridos via JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Produtos relacionados -->
+        <section class="produtos-relacionados">
+            <h3>Produtos Relacionados</h3>
+            <div class="produtos-relacionados__grid" id="produtos-relacionados">
+                <!-- Produtos relacionados serão inseridos via JS -->
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal de Compra -->
+    <div id="modal-compra" class="modal">
+        <div class="modal__overlay"></div>
+        <div class="modal__content">
+            <button class="modal__close" id="modal-close">&times;</button>
+            
+            <h2 class="modal__title">Finalizar Compra</h2>
+            
+            <!-- Resumo do produto -->
+            <div class="modal__produto" id="modal-produto-info">
+                <!-- Informações do produto serão inseridas via JS -->
+            </div>
+            
+            <!-- Formulário de compra -->
+            <form id="form-compra" class="modal__form">
+                <div class="form-section">
+                    <h3>Dados Pessoais</h3>
+                    <div class="form-row">
+                        <input type="text" name="nome" placeholder="Nome completo" required>
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-row">
+                        <input type="tel" name="telefone" placeholder="Telefone" required>
+                        <input type="text" name="cpf" placeholder="CPF" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Endereço de Entrega</h3>
+                    <div class="form-row">
+                        <input type="text" name="cep" placeholder="CEP" required>
+                        <button type="button" id="buscar-cep" class="btn-buscar-cep">Buscar</button>
+                    </div>
+                    <input type="text" name="endereco" placeholder="Endereço" required>
+                    <div class="form-row">
+                        <input type="text" name="numero" placeholder="Número" required>
+                        <input type="text" name="complemento" placeholder="Complemento">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" name="bairro" placeholder="Bairro" required>
+                        <input type="text" name="cidade" placeholder="Cidade" required>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>Forma de Pagamento</h3>
+                    <div class="payment-options">
+                        <label class="payment-option">
+                            <input type="radio" name="pagamento" value="cartao" required>
+                            <span>Cartão de Crédito</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="pagamento" value="pix" required>
+                            <span>PIX (5% desconto)</span>
+                        </label>
+                        <label class="payment-option">
+                            <input type="radio" name="pagamento" value="boleto" required>
+                            <span>Boleto Bancário</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Resumo do pedido -->
+                <div class="order-summary">
+                    <h3>Resumo do Pedido</h3>
+                    <div class="summary-line">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">R$ 0,00</span>
+                    </div>
+                    <div class="summary-line">
+                        <span>Frete:</span>
+                        <span id="frete">Grátis</span>
+                    </div>
+                    <div class="summary-line total">
+                        <span>Total:</span>
+                        <span id="total">R$ 0,00</span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="modal__botao-finalizar">
+                    Finalizar Pedido
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="rodape">
+        <div class="rodape__linha">
+            <div class="rodape__coluna rodape__coluna_logo">
+                <img src="../assets/icons/logo-verde.svg" alt="useDev logo">
+                <p class="rodape__coluna_logo_texto">Hora de abraçar o seu lado geek</p>
+            </div>
+            <div class="rodape__coluna">
+                <h5 class="rodape__coluna_titulo">Funcionamento</h5>
+                <ul class="rodape__coluna_list">
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8 as 18h</li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
+                    </li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="tel:+550800541320">0800 541 320</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/product.js"></script>
+</body>
+</html>

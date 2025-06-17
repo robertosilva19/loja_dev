@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Favoritos - UseDev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/cabecalho.css">
+    <link rel="stylesheet" href="../css/pages/favoritos-page.css">
+    <link rel="stylesheet" href="../css/rodape.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="cabecalho">
+        <nav class="cabecalho__nav">
+            <ul class="cabecalho__nav_list">
+                <li>
+                    <h1 class="cabecalho__logo">
+                        <a href="../index.html">
+                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
+                        </a>
+                    </h1>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
+                </li>
+                <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
+                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
+                    <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
+                        <img src="../assets/icons/perfil.svg" alt="perfil">
+                    </a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
+                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <span>Meus Favoritos</span>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="favoritos-page">
+        <div class="favoritos-container">
+            <div class="favoritos-header">
+                <div class="header-content">
+                    <h1>
+                        <img src="../assets/icons/heart-filled.svg" alt="Favoritos">
+                        Meus Favoritos
+                    </h1>
+                    <p id="favoritos-description">Seus produtos favoritos em um só lugar</p>
+                </div>
+                <div class="header-actions">
+                    <div class="favoritos-stats">
+                        <span class="stats-count" id="stats-count">0 itens</span>
+                        <span class="stats-value" id="stats-value">R$ 0,00</span>
+                    </div>
+                    <button class="btn-secondary" id="clear-all-favorites">
+                        <img src="../assets/icons/trash.svg" alt="Limpar">
+                        Limpar Lista
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros e Ordenação -->
+            <div class="favoritos-controls">
+                <div class="controls-left">
+                    <div class="filter-group">
+                        <label for="price-filter">Filtrar por preço:</label>
+                        <select id="price-filter">
+                            <option value="">Todos os preços</option>
+                            <option value="0-50">Até R$ 50</option>
+                            <option value="50-100">R$ 50 - R$ 100</option>
+                            <option value="100-200">R$ 100 - R$ 200</option>
+                            <option value="200+">Acima de R$ 200</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="controls-right">
+                    <div class="sort-group">
+                        <label for="sort-favorites">Ordenar por:</label>
+                        <select id="sort-favorites">
+                            <option value="newest">Mais recentes</option>
+                            <option value="oldest">Mais antigos</option>
+                            <option value="name-asc">Nome (A-Z)</option>
+                            <option value="name-desc">Nome (Z-A)</option>
+                            <option value="price-asc">Menor preço</option>
+                            <option value="price-desc">Maior preço</option>
+                        </select>
+                    </div>
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="grid" title="Visualização em grade">
+                            <img src="../assets/icons/grid.svg" alt="Grade">
+                        </button>
+                        <button class="view-btn" data-view="list" title="Visualização em lista">
+                            <img src="../assets/icons/list.svg" alt="Lista">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lista de Favoritos -->
+            <div class="favoritos-content">
+                <div class="favoritos-grid" id="favoritos-grid">
+                    <!-- Produtos favoritos serão inseridos aqui -->
+                </div>
+
+                <!-- Estado Vazio -->
+                <div class="empty-state" id="empty-state" style="display: none;">
+                    <div class="empty-icon">
+                        <img src="../assets/icons/heart.svg" alt="Nenhum favorito">
+                    </div>
+                    <h2>Sua lista de favoritos está vazia</h2>
+                    <p>Explore nossos produtos e adicione seus favoritos para encontrá-los facilmente depois.</p>
+                    <div class="empty-actions">
+                        <a href="../index.html" class="btn-primary">
+                            <img src="../assets/icons/shopping-bag.svg" alt="Comprar">
+                            Explorar Produtos
+                        </a>
+                        <a href="../pages/categorias.html" class="btn-secondary">
+                            Ver Categorias
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Estado Não Logado -->
+                <div class="login-required" id="login-required" style="display: none;">
+                    <div class="login-icon">
+                        <img src="../assets/icons/user.svg" alt="Login necessário">
+                    </div>
+                    <h2>Faça login para ver seus favoritos</h2>
+                    <p>Entre na sua conta para salvar e gerenciar seus produtos favoritos.</p>
+                    <div class="login-actions">
+                        <a href="../pages/login.html" class="btn-primary">
+                            <img src="../assets/icons/login.svg" alt="Login">
+                            Fazer Login
+                        </a>
+                        <a href="../pages/login.html#register" class="btn-secondary">
+                            Criar Conta
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Carregando favoritos...</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="rodape">
+        <div class="rodape__linha">
+            <div class="rodape__coluna rodape__coluna_logo">
+                <img src="../assets/icons/logo-verde.svg" alt="useDev logo">
+                <p class="rodape__coluna_logo_texto">Hora de abraçar o seu lado geek</p>
+            </div>
+            <div class="rodape__coluna">
+                <h5 class="rodape__coluna_titulo">Funcionamento</h5>
+                <ul class="rodape__coluna_list">
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8 as 18h</li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
+                    </li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="tel:+550800541320">0800 541 320</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/favorites.js"></script>
+    <script src="../js/favoritos-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - UseDev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/cabecalho.css">
+    <link rel="stylesheet" href="../css/pages/perfil.css">
+    <link rel="stylesheet" href="../css/rodape.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="cabecalho">
+        <nav class="cabecalho__nav">
+            <ul class="cabecalho__nav_list">
+                <li>
+                    <h1 class="cabecalho__logo">
+                        <a href="../index.html">
+                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
+                        </a>
+                    </h1>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
+                </li>
+                <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
+                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
+                    <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
+                        <img src="../assets/icons/perfil.svg" alt="perfil">
+                    </a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
+                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <span>Meu Perfil</span>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="perfil-container">
+        <div class="perfil-wrapper">
+            <!-- Sidebar -->
+            <aside class="perfil-sidebar">
+                <div class="sidebar-header">
+                    <div class="user-avatar">
+                        <img src="../assets/icons/user-avatar.svg" alt="Avatar" id="user-avatar">
+                        <button class="avatar-upload" id="upload-avatar">
+                            <img src="../assets/icons/camera.svg" alt="Alterar foto">
+                        </button>
+                        <input type="file" id="avatar-input" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="user-info">
+                        <h2 id="user-name">Carregando...</h2>
+                        <p id="user-email">carregando@email.com</p>
+                        <span class="user-badge">Membro desde <span id="member-since">2024</span></span>
+                    </div>
+                </div>
+
+                <nav class="sidebar-menu">
+                    <button class="menu-item active" data-tab="dados-pessoais">
+                        <img src="../assets/icons/user.svg" alt="Dados Pessoais">
+                        <span>Dados Pessoais</span>
+                    </button>
+                    <button class="menu-item" data-tab="enderecos">
+                        <img src="../assets/icons/map.svg" alt="Endereços">
+                        <span>Endereços</span>
+                        <span class="item-count" id="enderecos-count">0</span>
+                    </button>
+                    <button class="menu-item" data-tab="pedidos">
+                        <img src="../assets/icons/shopping-bag.svg" alt="Pedidos">
+                        <span>Meus Pedidos</span>
+                        <span class="item-count" id="pedidos-count">0</span>
+                    </button>
+                    <button class="menu-item" data-tab="favoritos">
+                        <img src="../assets/icons/heart.svg" alt="Favoritos">
+                        <span>Favoritos</span>
+                        <span class="item-count" id="favoritos-count">0</span>
+                    </button>
+                    <button class="menu-item" data-tab="cupons">
+                        <img src="../assets/icons/tag.svg" alt="Cupons">
+                        <span>Meus Cupons</span>
+                        <span class="item-count" id="cupons-count">0</span>
+                    </button>
+                    <button class="menu-item" data-tab="configuracoes">
+                        <img src="../assets/icons/settings.svg" alt="Configurações">
+                        <span>Configurações</span>
+                    </button>
+                    <button class="menu-item logout-btn" id="logout-btn">
+                        <img src="../assets/icons/logout.svg" alt="Sair">
+                        <span>Sair</span>
+                    </button>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <section class="perfil-content">
+
+                <!-- Dados Pessoais Tab -->
+                <div class="tab-content active" id="dados-pessoais-tab">
+                    <div class="content-header">
+                        <h2>Dados Pessoais</h2>
+                        <p>Gerencie suas informações pessoais</p>
+                    </div>
+
+                    <form id="dados-pessoais-form" class="profile-form">
+                        <div class="form-section">
+                            <h3>Informações Básicas</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="nome">Nome</label>
+                                    <input type="text" id="nome" name="nome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="sobrenome">Sobrenome</label>
+                                    <input type="text" id="sobrenome" name="sobrenome" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="email" id="email" name="email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="telefone">Telefone</label>
+                                    <input type="tel" id="telefone" name="telefone" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="cpf">CPF</label>
+                                    <input type="text" id="cpf" name="cpf" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label for="data-nascimento">Data de Nascimento</label>
+                                    <input type="date" id="data-nascimento" name="dataNascimento">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-section">
+                            <h3>Segurança</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="senha-atual">Senha Atual</label>
+                                    <div class="password-field">
+                                        <input type="password" id="senha-atual" name="senhaAtual">
+                                        <button type="button" class="toggle-password" data-target="senha-atual">
+                                            <img src="../assets/icons/eye.svg" alt="Mostrar senha">
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nova-senha">Nova Senha</label>
+                                    <div class="password-field">
+                                        <input type="password" id="nova-senha" name="novaSenha">
+                                        <button type="button" class="toggle-password" data-target="nova-senha">
+                                            <img src="../assets/icons/eye.svg" alt="Mostrar senha">
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="cancel-edit">Cancelar</button>
+                            <button type="submit" class="btn-primary">Salvar Alterações</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Endereços Tab -->
+                <div class="tab-content" id="enderecos-tab">
+                    <div class="content-header">
+                        <h2>Meus Endereços</h2>
+                        <button class="btn-primary" id="add-endereco">
+                            <img src="../assets/icons/plus.svg" alt="Adicionar">
+                            Novo Endereço
+                        </button>
+                    </div>
+
+                    <div class="enderecos-grid" id="enderecos-list">
+                        <!-- Endereços serão inseridos aqui via JS -->
+                    </div>
+
+                    <div class="empty-state" id="enderecos-empty" style="display: none;">
+                        <img src="../assets/icons/map.svg" alt="Nenhum endereço">
+                        <h3>Nenhum endereço cadastrado</h3>
+                        <p>Adicione um endereço para facilitar suas compras</p>
+                        <button class="btn-primary" onclick="document.getElementById('add-endereco').click()">
+                            Adicionar Endereço
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pedidos Tab -->
+                <div class="tab-content" id="pedidos-tab">
+                    <div class="content-header">
+                        <h2>Meus Pedidos</h2>
+                        <div class="pedidos-filters">
+                            <select id="status-filter">
+                                <option value="">Todos os status</option>
+                                <option value="pendente">Pendente</option>
+                                <option value="confirmado">Confirmado</option>
+                                <option value="enviado">Enviado</option>
+                                <option value="entregue">Entregue</option>
+                                <option value="cancelado">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pedidos-list" id="pedidos-list">
+                        <!-- Pedidos serão inseridos aqui via JS -->
+                    </div>
+
+                    <div class="empty-state" id="pedidos-empty" style="display: none;">
+                        <img src="../assets/icons/shopping-bag.svg" alt="Nenhum pedido">
+                        <h3>Nenhum pedido encontrado</h3>
+                        <p>Quando você fizer um pedido, ele aparecerá aqui</p>
+                        <a href="../index.html" class="btn-primary">Começar a Comprar</a>
+                    </div>
+                </div>
+
+                <!-- Favoritos Tab -->
+                <div class="tab-content" id="favoritos-tab">
+                    <div class="content-header">
+                        <h2>Meus Favoritos</h2>
+                        <div class="favoritos-actions">
+                            <button class="btn-secondary" id="clear-favoritos">Limpar Lista</button>
+                        </div>
+                    </div>
+
+                    <div class="favoritos-grid" id="favoritos-list">
+                        <!-- Favoritos serão inseridos aqui via JS -->
+                    </div>
+
+                    <div class="empty-state" id="favoritos-empty" style="display: none;">
+                        <img src="../assets/icons/heart.svg" alt="Nenhum favorito">
+                        <h3>Sua lista de favoritos está vazia</h3>
+                        <p>Salve produtos que você gosta para encontrá-los facilmente depois</p>
+                        <a href="../index.html" class="btn-primary">Explorar Produtos</a>
+                    </div>
+                </div>
+
+                <!-- Cupons Tab -->
+                <div class="tab-content" id="cupons-tab">
+                    <div class="content-header">
+                        <h2>Meus Cupons</h2>
+                        <p>Aproveite seus descontos disponíveis</p>
+                    </div>
+
+                    <div class="cupons-grid" id="cupons-list">
+                        <!-- Cupons serão inseridos aqui via JS -->
+                    </div>
+
+                    <div class="empty-state" id="cupons-empty" style="display: none;">
+                        <img src="../assets/icons/tag.svg" alt="Nenhum cupom">
+                        <h3>Nenhum cupom disponível</h3>
+                        <p>Cadastre-se na nossa newsletter para receber cupons exclusivos</p>
+                        <a href="../index.html#newsletter" class="btn-primary">Ver Newsletter</a>
+                    </div>
+                </div>
+
+                <!-- Configurações Tab -->
+                <div class="tab-content" id="configuracoes-tab">
+                    <div class="content-header">
+                        <h2>Configurações</h2>
+                        <p>Personalize sua experiência</p>
+                    </div>
+
+                    <div class="configuracoes-sections">
+                        <div class="config-section">
+                            <h3>Notificações</h3>
+                            <div class="config-options">
+                                <label class="config-toggle">
+                                    <input type="checkbox" id="email-promocoes" checked>
+                                    <span class="toggle-slider"></span>
+                                    <div class="toggle-info">
+                                        <strong>Promoções por email</strong>
+                                        <small>Receba ofertas exclusivas em seu email</small>
+                                    </div>
+                                </label>
+                                <label class="config-toggle">
+                                    <input type="checkbox" id="email-pedidos" checked>
+                                    <span class="toggle-slider"></span>
+                                    <div class="toggle-info">
+                                        <strong>Atualizações de pedidos</strong>
+                                        <small>Notificações sobre status dos seus pedidos</small>
+                                    </div>
+                                </label>
+                                <label class="config-toggle">
+                                    <input type="checkbox" id="push-notifications">
+                                    <span class="toggle-slider"></span>
+                                    <div class="toggle-info">
+                                        <strong>Notificações push</strong>
+                                        <small>Receba notificações no navegador</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="config-section">
+                            <h3>Privacidade</h3>
+                            <div class="config-options">
+                                <label class="config-toggle">
+                                    <input type="checkbox" id="perfil-publico">
+                                    <span class="toggle-slider"></span>
+                                    <div class="toggle-info">
+                                        <strong>Perfil público</strong>
+                                        <small>Permitir que outros usuários vejam seu perfil</small>
+                                    </div>
+                                </label>
+                                <label class="config-toggle">
+                                    <input type="checkbox" id="historico-compras">
+                                    <span class="toggle-slider"></span>
+                                    <div class="toggle-info">
+                                        <strong>Histórico de compras</strong>
+                                        <small>Usar histórico para recomendações personalizadas</small>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="config-section danger-zone">
+                            <h3>Zona de Perigo</h3>
+                            <div class="config-options">
+                                <button class="btn-danger" id="delete-account">
+                                    Excluir Conta
+                                </button>
+                                <small>Esta ação não pode ser desfeita</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </div>
+    </main>
+
+    <!-- Modal para Endereço -->
+    <div id="endereco-modal" class="modal">
+        <div class="modal__overlay"></div>
+        <div class="modal__content">
+            <button class="modal__close" id="endereco-modal-close">&times;</button>
+            <h2 class="modal__title" id="endereco-modal-title">Novo Endereço</h2>
+            
+            <form id="endereco-form" class="endereco-form">
+                <input type="hidden" id="endereco-id" name="id">
+                
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label for="endereco-nome">Nome do Endereço</label>
+                        <input type="text" id="endereco-nome" name="nome" placeholder="Ex: Casa, Trabalho" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco-cep">CEP</label>
+                        <div class="cep-container">
+                            <input type="text" id="endereco-cep" name="cep" placeholder="00000-000" required>
+                            <button type="button" id="buscar-endereco-cep" class="btn-buscar-cep">Buscar</button>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco-endereco">Endereço</label>
+                        <input type="text" id="endereco-endereco" name="endereco" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco-numero">Número</label>
+                        <input type="text" id="endereco-numero" name="numero" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco-complemento">Complemento</label>
+                        <input type="text" id="endereco-complemento" name="complemento">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco-bairro">Bairro</label>
+                        <input type="text" id="endereco-bairro" name="bairro" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="endereco-cidade">Cidade</label>
+                        <input type="text" id="endereco-cidade" name="cidade" required>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label class="checkbox-wrapper">
+                            <input type="checkbox" id="endereco-principal" name="principal">
+                            <span class="checkmark"></span>
+                            Definir como endereço principal
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="document.getElementById('endereco-modal-close').click()">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-primary">
+                        Salvar Endereço
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="rodape">
+        <div class="rodape__linha">
+            <div class="rodape__coluna rodape__coluna_logo">
+                <img src="../assets/icons/logo-verde.svg" alt="useDev logo">
+                <p class="rodape__coluna_logo_texto">Hora de abraçar o seu lado geek</p>
+            </div>
+            <div class="rodape__coluna">
+                <h5 class="rodape__coluna_titulo">Funcionamento</h5>
+                <ul class="rodape__coluna_list">
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8 as 18h</li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
+                    </li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="tel:+550800541320">0800 541 320</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/perfil.js"></script>
+</body>
+</html>

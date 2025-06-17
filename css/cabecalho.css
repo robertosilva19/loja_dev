@@ -53,6 +53,44 @@
     pointer-events: none;
 }
 
+/* Badge do carrinho */
+.cabecalho__nav_list_link-carrinho {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--cor-verde-neon);
+    color: var(--cor-preta);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 600;
+    font-family: var(--fonte-titulo);
+}
+
+.cart-badge:empty {
+    display: none;
+}
+
+/* Produtos clicáveis */
+.promocoes__list_item {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.promocoes__list_item:hover {
+    transform: translateY(-5px);
+}
+
 @media screen and (max-width: 768px) {
     .cabecalho__nav_list {
         grid-template-areas: 
