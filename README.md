@@ -4,16 +4,31 @@
   <strong>Status do Projeto:</strong> Front-end Concluído, em preparação para desenvolvimento do Back-end.
 </p>
 
-<!-- SEUS SCREENSHOTS AQUI -->
-<!-- Dica: Use uma tabela para organizar as imagens em uma grade 2x2. -->
+<!-- Tabela de Screenshots Corrigida -->
 <table>
   <tr>
-    <td align="center"><img src="[https://github.com/robertosilva19/loja_dev/blob/de679a192371913b7d257513c36f81a0dc7a4b80/assets/light_mode.jpeg]" alt="Screenshot da Homepage" width="400"/></td>
-    <td align="center"><img src="(https://github.com/robertosilva19/loja_dev/blob/de679a192371913b7d257513c36f81a0dc7a4b80/assets/dark-mode.jpeg)" alt="Screenshot do Dark Mode" width="400"/></td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/de679a192371913b7d257513c36f81a0dc7a4b80/assets/light_mode.jpeg" alt="Screenshot da Homepage" width="400"/>
+      <br />
+      <sub><b>Interface em Modo Claro</b></sub>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/de679a192371913b7d257513c36f81a0dc7a4b80/assets/dark-mode.jpeg" alt="Screenshot do Dark Mode" width="400"/>
+      <br />
+      <sub><b>Interface em Modo Escuro</b></sub>
+    </td>
   </tr>
   <tr>
-    <td align="center"><img src="(https://github.com/robertosilva19/loja_dev/blob/de679a192371913b7d257513c36f81a0dc7a4b80/assets/perfil_cliente.jpeg)" alt="Screenshot da Página de Perfil" width="400"/></td>
-    <td align="center"><img src="URL_DA_SUA_IMAGEM_4_AQUI" alt="Screenshot do Carrinho de Compras" width="400"/></td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/de679a192371913b7d257513c36f81a0dc7a4b80/assets/perfil_cliente.jpeg" alt="Screenshot da Página de Perfil" width="400"/>
+      <br />
+      <sub><b>Página de Perfil do Cliente</b></sub>
+    </td>
+    <td align="center">
+      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/bb62f08cbb21464da2eabe79dcd76dbbfc7dc30a/assets/carinho_compras.jpeg" alt="Screenshot do Carrinho de Compras" width="400"/>
+      <br />
+      <sub><b>Página do Carrinho de Compras</b></sub>
+    </td>
   </tr>
 </table>
 
@@ -117,4 +132,4 @@ O trabalho de front-end foi concluído com sucesso. O próximo grande passo é o
 -   [ ] **Migração completa** da lógica de `localStorage` (carrinho, favoritos) para o banco de dados, associando os dados ao usuário logado.
 
 ---
-Feito com ❤️ por **[Roberto Silva]**.
+Feito com ❤️ por **Roberto Silva**.
