@@ -13,9 +13,27 @@ class ProductPage {
         this.updateCartCount();
     }
 
+    // --- NOVO MÉTODO AUXILIAR ---
+    // Ajusta o caminho da imagem para funcionar em subpastas no GitHub Pages
+    adjustImagePath(path) {
+        // Verifica se o caminho já foi ajustado ou é inválido
+        if (!path || typeof path !== 'string') {
+            return ''; // Retorna um caminho vazio ou um placeholder
+        }
+        
+        // Se a página atual não for a index.html, ajusta o caminho relativo
+        // A condição verifica se o caminho da URL contém "/pages/"
+        if (window.location.pathname.includes('/pages/')) {
+             // Transforma "./assets/..." em "../assets/..."
+            if (path.startsWith('./')) {
+                return `..${path.substring(1)}`;
+            }
+        }
+        return path;
+    }
+
     async loadProduct() {
         try {
-            // Pegar ID do produto do sessionStorage
             const productId = parseInt(sessionStorage.getItem('selectedProductId'));
             
             if (!productId) {
@@ -23,11 +41,11 @@ class ProductPage {
                 return;
             }
 
-            // Carregar dados dos produtos
-            const response = await fetch('../data/products.json');
+            // O caminho para o JSON também precisa ser ajustado
+            const jsonPath = this.adjustImagePath('./data/products.json');
+            const response = await fetch(jsonPath);
             const data = await response.json();
             
-            // Encontrar produto específico
             this.currentProduct = data.products.find(p => p.id === productId);
             
             if (!this.currentProduct) {
@@ -52,32 +70,23 @@ class ProductPage {
     renderProduct() {
         const product = this.currentProduct;
         
-        // Atualizar informações básicas
         document.getElementById('produto-nome').textContent = product.name;
         document.getElementById('produto-preco').textContent = `R$ ${product.price.toFixed(2).replace('.', ',')}`;
         document.getElementById('produto-parcela').textContent = `R$ ${(product.price / 3).toFixed(2).replace('.', ',')}`;
         document.getElementById('produto-descricao').textContent = product.description;
         
-        // Atualizar imagem
         const imgElement = document.getElementById('produto-imagem');
-        imgElement.src = product.image;
+        imgElement.src = this.adjustImagePath(product.image);
         imgElement.alt = product.name;
         
-        // Atualizar breadcrumb
         document.getElementById('breadcrumb-category').textContent = this.getCategoryName(product.category);
         document.getElementById('breadcrumb-product').textContent = product.name;
         
-        // Renderizar variantes
         this.renderVariants();
-        
-        // Renderizar detalhes
         this.renderDetails();
         
-        // Atualizar estoque
         this.maxQuantity = product.stock;
         document.getElementById('stock-info').textContent = `${product.stock} disponíveis`;
-        
-        // Atualizar título da página
         document.title = `${product.name} - UseDev`;
     }
 
@@ -129,14 +138,9 @@ class ProductPage {
     }
 
     selectVariant(type, value, element) {
-        // Remover seleção anterior do mesmo tipo
         const siblings = element.parentElement.querySelectorAll('.variant-option');
         siblings.forEach(sibling => sibling.classList.remove('selected'));
-        
-        // Adicionar seleção atual
         element.classList.add('selected');
-        
-        // Salvar seleção
         this.selectedVariants[type] = value;
     }
 
@@ -198,7 +202,7 @@ class ProductPage {
             productElement.dataset.productId = product.id;
             
             productElement.innerHTML = `
-                <img src="${product.image}" alt="${product.name}">
+                <img src="${this.adjustImagePath(product.image)}" alt="${product.name}">
                 <h4>${product.name}</h4>
                 <p>R$ ${product.price.toFixed(2).replace('.', ',')}</p>
             `;
@@ -213,7 +217,6 @@ class ProductPage {
     }
 
     setupEventListeners() {
-        // Controles de quantidade
         document.getElementById('decrease-qty').addEventListener('click', () => {
             if (this.quantity > 1) {
                 this.quantity--;
@@ -233,37 +236,16 @@ class ProductPage {
             if (value >= 1 && value <= this.maxQuantity) {
                 this.quantity = value;
             } else {
-                this.updateQuantityInput();
+                e.target.value = this.quantity; // Reseta para o valor válido anterior
             }
         });
 
-        // Botões principais
-        document.getElementById('adicionar-carrinho').addEventListener('click', () => {
-            this.addToCart();
-        });
-
-        document.getElementById('comprar-agora').addEventListener('click', () => {
-            this.buyNow();
-        });
-
-        // Modal
-        document.getElementById('modal-close').addEventListener('click', () => {
-            this.closeModal();
-        });
-
-        document.querySelector('.modal__overlay').addEventListener('click', () => {
-            this.closeModal();
-        });
-
-        // Formulário de compra
-        document.getElementById('form-compra').addEventListener('submit', (e) => {
-            this.handlePurchase(e);
-        });
-
-        // Buscar CEP
-        document.getElementById('buscar-cep').addEventListener('click', () => {
-            this.buscarCEP();
-        });
+        document.getElementById('adicionar-carrinho').addEventListener('click', () => this.addToCart());
+        document.getElementById('comprar-agora').addEventListener('click', () => this.buyNow());
+        document.getElementById('modal-close').addEventListener('click', () => this.closeModal());
+        document.querySelector('.modal__overlay').addEventListener('click', () => this.closeModal());
+        document.getElementById('form-compra').addEventListener('submit', (e) => this.handlePurchase(e));
+        document.getElementById('buscar-cep').addEventListener('click', () => this.buscarCEP());
     }
 
     updateQuantityInput() {
@@ -295,7 +277,6 @@ class ProductPage {
             variants: { ...this.selectedVariants }
         };
 
-        // Adicionar ao carrinho no localStorage
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         cart.push(cartItem);
         localStorage.setItem('cart', JSON.stringify(cart));
@@ -306,20 +287,13 @@ class ProductPage {
 
     buyNow() {
         if (!this.validateVariants()) return;
-        
         this.openModal();
     }
 
     openModal() {
         const modal = document.getElementById('modal-compra');
-        
-        // Preencher informações do produto no modal
         this.fillModalProductInfo();
-        
-        // Calcular valores
         this.updateOrderSummary();
-        
-        // Mostrar modal
         modal.classList.add('show');
         document.body.style.overflow = 'hidden';
     }
@@ -332,13 +306,12 @@ class ProductPage {
 
     fillModalProductInfo() {
         const container = document.getElementById('modal-produto-info');
-        
         const variantsText = Object.entries(this.selectedVariants)
             .map(([type, value]) => `${type}: ${value}`)
             .join(', ');
         
         container.innerHTML = `
-            <img src="${this.currentProduct.image}" alt="${this.currentProduct.name}" class="modal__produto-imagem">
+            <img src="${this.adjustImagePath(this.currentProduct.image)}" alt="${this.currentProduct.name}" class="modal__produto-imagem">
             <div class="modal__produto-info">
                 <div class="modal__produto-nome">${this.currentProduct.name}</div>
                 <div class="modal__produto-preco">R$ ${this.currentProduct.price.toFixed(2).replace('.', ',')}</div>
@@ -350,7 +323,7 @@ class ProductPage {
 
     updateOrderSummary() {
         const subtotal = this.currentProduct.price * this.quantity;
-        const frete = 0; // Frete grátis
+        const frete = 0;
         const total = subtotal + frete;
         
         document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
@@ -376,7 +349,6 @@ class ProductPage {
                 return;
             }
             
-            // Preencher campos automaticamente
             document.querySelector('input[name="endereco"]').value = data.logradouro;
             document.querySelector('input[name="bairro"]').value = data.bairro;
             document.querySelector('input[name="cidade"]').value = data.localidade;
@@ -394,7 +366,6 @@ class ProductPage {
         button.classList.add('loading');
         button.disabled = true;
         
-        // Simular processamento
         setTimeout(() => {
             button.classList.remove('loading');
             button.disabled = false;
@@ -402,7 +373,6 @@ class ProductPage {
             alert('Pedido realizado com sucesso! Você receberá um email de confirmação.');
             this.closeModal();
             
-            // Limpar formulário
             document.getElementById('form-compra').reset();
             
         }, 2000);
