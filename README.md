@@ -8,7 +8,7 @@
 <!-- Dica: Use uma tabela para organizar as imagens em uma grade 2x2. -->
 <table>
   <tr>
-    <td align="center"><img src="[(https://github.com/robertosilva19/loja_dev/blob/de679a192371913b7d257513c36f81a0dc7a4b80/assets/light_mode.jpeg)]" alt="Screenshot da Homepage" width="400"/></td>
+    <td align="center"><img src="[https://github.com/robertosilva19/loja_dev/blob/de679a192371913b7d257513c36f81a0dc7a4b80/assets/light_mode.jpeg]" alt="Screenshot da Homepage" width="400"/></td>
     <td align="center"><img src="(https://github.com/robertosilva19/loja_dev/blob/de679a192371913b7d257513c36f81a0dc7a4b80/assets/dark-mode.jpeg)" alt="Screenshot do Dark Mode" width="400"/></td>
   </tr>
   <tr>
