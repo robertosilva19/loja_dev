@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Busca - UseDev</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../css/cabecalho.css">
+    <link rel="stylesheet" href="../css/components/search-components.css">
+    <link rel="stylesheet" href="../css/pages/search-page.css">
+    <link rel="stylesheet" href="../css/rodape.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="cabecalho">
+        <nav class="cabecalho__nav">
+            <ul class="cabecalho__nav_list">
+                <li>
+                    <h1 class="cabecalho__logo">
+                        <a href="../index.html">
+                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
+                        </a>
+                    </h1>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
+                </li>
+                <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
+                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
+                    <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
+                        <img src="../assets/icons/perfil.svg" alt="perfil">
+                    </a>
+                </li>
+                <li class="cabecalho__nav_list_item">
+                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
+                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
+                        <span id="cart-count" class="cart-badge">0</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb">
+        <a href="../index.html">Home</a>
+        <span>/</span>
+        <span id="breadcrumb-query">Busca</span>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="search-page">
+        <div class="search-container-page">
+            <!-- Header de Resultados -->
+            <div class="search-header">
+                <div class="search-title">
+                    <h1 id="search-title">Resultados para ""</h1>
+                    <p id="search-subtitle">Encontramos <span id="results-count">0</span> produtos</p>
+                </div>
+                <div class="search-actions-header">
+                    <button class="save-search-btn" id="save-search">
+                        <img src="../assets/icons/bookmark.svg" alt="Salvar busca">
+                        Salvar busca
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros e Resultados -->
+            <div class="search-content">
+                <!-- Sidebar de Filtros -->
+                <aside class="search-filters">
+                    <div class="filters-header">
+                        <h2>Filtros</h2>
+                        <button class="clear-filters-btn" id="clear-all-filters">
+                            <img src="../assets/icons/x.svg" alt="Limpar">
+                            Limpar todos
+                        </button>
+                    </div>
+
+                    <!-- Filtros Ativos -->
+                    <div class="active-filters" id="active-filters" style="display: none;">
+                        <h3>Filtros ativos</h3>
+                        <div class="filter-tags" id="filter-tags"></div>
+                    </div>
+
+                    <!-- Categorias -->
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <h3>Categorias</h3>
+                            <button class="filter-toggle" data-target="categories">
+                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                            </button>
+                        </div>
+                        <div class="filter-content" id="categories">
+                            <div class="filter-options">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="roupas">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Roupas</span>
+                                    <span class="count">(12)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="canecas">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Canecas</span>
+                                    <span class="count">(8)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="acessorios">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Acessórios</span>
+                                    <span class="count">(15)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="livros">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Livros</span>
+                                    <span class="count">(6)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="adesivos">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Adesivos</span>
+                                    <span class="count">(20)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preço -->
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <h3>Preço</h3>
+                            <button class="filter-toggle" data-target="price">
+                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                            </button>
+                        </div>
+                        <div class="filter-content" id="price">
+                            <div class="price-range">
+                                <div class="range-inputs">
+                                    <input type="number" id="min-price" placeholder="Min" min="0">
+                                    <span>até</span>
+                                    <input type="number" id="max-price" placeholder="Max" min="0">
+                                </div>
+                                <div class="range-slider">
+                                    <input type="range" id="price-slider-min" min="0" max="500" value="0" step="5">
+                                    <input type="range" id="price-slider-max" min="0" max="500" value="500" step="5">
+                                </div>
+                                <div class="range-labels">
+                                    <span>R$ 0</span>
+                                    <span>R$ 500+</span>
+                                </div>
+                            </div>
+                            <div class="price-presets">
+                                <button class="price-preset" data-min="0" data-max="50">Até R$ 50</button>
+                                <button class="price-preset" data-min="50" data-max="100">R$ 50 - R$ 100</button>
+                                <button class="price-preset" data-min="100" data-max="200">R$ 100 - R$ 200</button>
+                                <button class="price-preset" data-min="200" data-max="999">Acima de R$ 200</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Avaliação -->
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <h3>Avaliação</h3>
+                            <button class="filter-toggle" data-target="rating">
+                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                            </button>
+                        </div>
+                        <div class="filter-content" id="rating">
+                            <div class="filter-options">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="rating" value="5">
+                                    <span class="checkmark"></span>
+                                    <div class="rating-stars">
+                                        <span class="stars">⭐⭐⭐⭐⭐</span>
+                                        <span class="count">(4)</span>
+                                    </div>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="rating" value="4">
+                                    <span class="checkmark"></span>
+                                    <div class="rating-stars">
+                                        <span class="stars">⭐⭐⭐⭐☆</span>
+                                        <span class="count">(12)</span>
+                                    </div>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="rating" value="3">
+                                    <span class="checkmark"></span>
+                                    <div class="rating-stars">
+                                        <span class="stars">⭐⭐⭐☆☆</span>
+                                        <span class="count">(8)</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disponibilidade -->
+                    <div class="filter-section">
+                        <div class="filter-header">
+                            <h3>Disponibilidade</h3>
+                            <button class="filter-toggle" data-target="availability">
+                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                            </button>
+                        </div>
+                        <div class="filter-content" id="availability">
+                            <div class="filter-options">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="availability" value="in-stock">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Em estoque</span>
+                                    <span class="count">(45)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="availability" value="on-sale">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Em promoção</span>
+                                    <span class="count">(12)</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="availability" value="new">
+                                    <span class="checkmark"></span>
+                                    <span class="label-text">Novidades</span>
+                                    <span class="count">(8)</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Resultados -->
+                <div class="search-results">
+                    <!-- Controles de Ordenação -->
+                    <div class="results-controls">
+                        <div class="results-info">
+                            <span id="results-range">1-12 de 45 resultados</span>
+                        </div>
+                        <div class="results-actions">
+                            <div class="sort-group">
+                                <label for="sort-results">Ordenar por:</label>
+                                <select id="sort-results">
+                                    <option value="relevance">Relevância</option>
+                                    <option value="price-asc">Menor preço</option>
+                                    <option value="price-desc">Maior preço</option>
+                                    <option value="name-asc">Nome (A-Z)</option>
+                                    <option value="name-desc">Nome (Z-A)</option>
+                                    <option value="newest">Mais recentes</option>
+                                    <option value="rating">Melhor avaliados</option>
+                                </select>
+                            </div>
+                            <div class="view-toggle">
+                                <button class="view-btn active" data-view="grid" title="Visualização em grade">
+                                    <img src="../assets/icons/grid.svg" alt="Grade">
+                                </button>
+                                <button class="view-btn" data-view="list" title="Visualização em lista">
+                                    <img src="../assets/icons/list.svg" alt="Lista">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Grid de Produtos -->
+                    <div class="products-grid" id="products-grid">
+                        <!-- Produtos serão inseridos aqui -->
+                    </div>
+
+                    <!-- Estados Especiais -->
+                    <div class="no-results" id="no-results" style="display: none;">
+                        <div class="no-results-icon">
+                            <img src="../assets/icons/search-x.svg" alt="Nenhum resultado">
+                        </div>
+                        <h2>Nenhum produto encontrado</h2>
+                        <p>Tente ajustar os filtros ou buscar por termos diferentes.</p>
+                        <div class="no-results-actions">
+                            <button class="btn-primary" onclick="searchPage.clearAllFilters()">
+                                Limpar filtros
+                            </button>
+                            <a href="../index.html" class="btn-secondary">
+                                Ver todos os produtos
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Loading -->
+                    <div class="search-loading" id="search-loading" style="display: none;">
+                        <div class="loading-spinner"></div>
+                        <p>Buscando produtos...</p>
+                    </div>
+
+                    <!-- Paginação -->
+                    <div class="pagination" id="pagination">
+                        <button class="pagination-btn prev" id="prev-page" disabled>
+                            <img src="../assets/icons/chevron-left.svg" alt="Anterior">
+                            Anterior
+                        </button>
+                        <div class="pagination-numbers" id="pagination-numbers">
+                            <!-- Números da paginação -->
+                        </div>
+                        <button class="pagination-btn next" id="next-page">
+                            Próximo
+                            <img src="../assets/icons/chevron-right.svg" alt="Próximo">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="rodape">
+        <div class="rodape__linha">
+            <div class="rodape__coluna rodape__coluna_logo">
+                <img src="../assets/icons/logo-verde.svg" alt="useDev logo">
+                <p class="rodape__coluna_logo_texto">Hora de abraçar o seu lado geek</p>
+            </div>
+            <div class="rodape__coluna">
+                <h5 class="rodape__coluna_titulo">Funcionamento</h5>
+                <ul class="rodape__coluna_list">
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8 as 18h</li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
+                    </li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="tel:+550800541320">0800 541 320</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="../js/main.js"></script>
+    <script src="../js/search-system.js"></script>
+    <script src="../js/search-page.js"></script>
+</body>
+</html>

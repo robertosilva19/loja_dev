@@ -5,18 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UseDev</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="./css/cabecalho.css">
-<link rel="stylesheet" href="./css/banner.css">
-<link rel="stylesheet" href="./css/categorias.css">
-<link rel="stylesheet" href="./css/promocoes.css">
-<link rel="stylesheet" href="./css/newsletter.css">
-<link rel="stylesheet" href="./css/rodape.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./css/cabecalho.css">
+    <link rel="stylesheet" href="./css/banner.css">
+    <link rel="stylesheet" href="./css/categorias.css">
+    <link rel="stylesheet" href="./css/promocoes.css">
+    <link rel="stylesheet" href="./css/newsletter.css">
+    <link rel="stylesheet" href="./css/rodape.css">
+    <link rel="stylesheet" href="./css/components/dark-mode.css">
+    <link rel="stylesheet" href="./css/components/reviews.css">
+    <link rel="stylesheet" href="./css/components/review-form.css">
+    <link rel="stylesheet" href="./css/components/pwa.css">
+    <link rel="manifest" href="/manifest.json">
+
+    <!-- Meta tags PWA -->
+    <meta name="theme-color" content="#00ff7f">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="UseDev">
+    <link rel="apple-touch-icon" href="/assets/pwa/icon-192x192.png">
 </head>
 <body>
-   
     <header class="cabecalho">
         <nav class="cabecalho__nav">
             <ul class="cabecalho__nav_list">
@@ -276,5 +287,28 @@
 
 <!-- Scripts -->
 <script src="./js/main.js"></script>
+<script src="../js/dark-mode.js"></script>
+<script src="/js/pwa-manager.js"></script>
+<script src="./js/reviews.js"></script>
+<script src="./js/review-form.js"></script>
+    
+<script>
+    // Demonstrar sistema de reviews ao carregar
+    document.addEventListener('DOMContentLoaded', () => {
+        // Aguardar os sistemas carregarem
+        setTimeout(() => {
+            if (window.Reviews) {
+                window.Reviews.render('prod_001', 'reviews-container');
+            }
+        }, 200);
+    });
+</script>
+
+<!-- Container para demonstrar reviews -->
+<section style="max-width: 1200px; margin: 2rem auto; padding: 0 1rem;">
+    <h2>Demo - Sistema de Reviews Completo</h2>
+    <div id="reviews-container"></div>
+</section>
+
 </body>
 </html>

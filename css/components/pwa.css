@@ -1,0 +1,438 @@
+/* PWA Components - Estilos para elementos PWA */
+
+/* Install Banner */
+.pwa-install-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--accent-green, #00ff7f), var(--accent-blue, #007bff));
+    color: white;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    animation: slideUp 0.5s ease-out;
+}
+
+.install-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.install-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.install-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 8px;
+}
+
+.install-text h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.install-text p {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.install-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-install {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-install:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+.btn-install img {
+    width: 16px;
+    height: 16px;
+    filter: invert(1);
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Update Banner */
+.pwa-update-banner {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: white;
+    border-radius: 16px;
+    padding: 1rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    animation: slideDown 0.5s ease-out;
+}
+
+.update-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.update-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+}
+
+.update-icon {
+    width: 24px;
+    height: 24px;
+    filter: invert(1);
+    animation: spin 2s linear infinite;
+}
+
+.update-text h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.update-text p {
+    font-size: 0.8rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+.update-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-update {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-update:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
+
+/* Offline Indicator */
+.offline-indicator {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #dc2626;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 1000;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.offline-indicator img {
+    width: 18px;
+    height: 18px;
+    filter: invert(1);
+}
+
+/* Share Button */
+.share-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.share-btn:hover {
+    background: var(--accent-green, #00ff7f);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* Loading States */
+.pwa-loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.pwa-loading::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-green, #00ff7f), transparent);
+    animation: loading 1.5s infinite;
+}
+
+/* Sync Indicator */
+.sync-indicator {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--accent-blue, #007bff);
+    color: white;
+    padding: 0.75rem;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    z-index: 1000;
+    animation: pulse 2s infinite;
+}
+
+.sync-indicator img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+    animation: spin 1s linear infinite;
+}
+
+/* Connection Status */
+.connection-status {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.connection-status.online {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.connection-status.offline {
+    background: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+/* PWA Install Button in Header */
+.pwa-install-btn {
+    background: linear-gradient(135deg, var(--accent-green, #00ff7f), var(--accent-blue, #007bff));
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pwa-install-btn.show {
+    display: flex;
+}
+
+.pwa-install-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 255, 127, 0.3);
+}
+
+.pwa-install-btn img {
+    width: 16px;
+    height: 16px;
+    filter: invert(1);
+}
+
+/* Animações */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes loading {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .pwa-install-banner,
+    .pwa-update-banner {
+        left: 10px;
+        right: 10px;
+        max-width: none;
+    }
+    
+    .install-banner-content,
+    .update-banner-content {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+    }
+    
+    .install-actions,
+    .update-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .btn-install,
+    .btn-update {
+        flex: 1;
+    }
+}
+
+@media (max-width: 480px) {
+    .install-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .update-info {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .offline-indicator {
+        left: 10px;
+        right: 10px;
+        transform: none;
+        justify-content: center;
+    }
+}
+
+/* Dark mode support */
+[data-theme="dark"] .share-btn {
+    background: rgba(26, 26, 26, 0.9);
+    color: white;
+}
+
+[data-theme="dark"] .share-btn:hover {
+    background: var(--accent-green, #00ff7f);
+}
+
+/* PWA específico - esconder elementos quando instalado */
+@media (display-mode: standalone) {
+    .pwa-install-banner {
+        display: none !important;
+    }
+    
+    .pwa-install-btn {
+        display: none !important;
+    }
+}

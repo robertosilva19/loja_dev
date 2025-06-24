@@ -1,0 +1,474 @@
+/* Sistema de Dark Mode Completo */
+
+/* Variáveis CSS para temas */
+:root {
+    /* Light Mode (padrão) */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --text-tertiary: #495057;
+    --border-color: #dee2e6;
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-medium: rgba(0, 0, 0, 0.15);
+    --shadow-heavy: rgba(0, 0, 0, 0.25);
+    
+    /* Cores de destaque mantidas */
+    --accent-green: #00ff7f;
+    --accent-blue: #007bff;
+    --accent-red: #dc2626;
+    --accent-yellow: #ffc107;
+    
+    /* Gradientes adaptativos */
+    --gradient-primary: linear-gradient(135deg, var(--accent-green) 0%, var(--accent-blue) 100%);
+    --gradient-secondary: linear-gradient(135deg, rgba(0, 255, 127, 0.1) 0%, rgba(0, 123, 255, 0.1) 100%);
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #2d2d2d;
+    --bg-tertiary: #3a3a3a;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-tertiary: #d0d0d0;
+    --border-color: #404040;
+    --shadow-light: rgba(0, 0, 0, 0.3);
+    --shadow-medium: rgba(0, 0, 0, 0.4);
+    --shadow-heavy: rgba(0, 0, 0, 0.6);
+    
+    /* Gradientes escuros */
+    --gradient-secondary: linear-gradient(135deg, rgba(0, 255, 127, 0.05) 0%, rgba(0, 123, 255, 0.05) 100%);
+}
+
+/* Auto Dark Mode (baseado na preferência do sistema) */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        --bg-primary: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --bg-tertiary: #3a3a3a;
+        --text-primary: #ffffff;
+        --text-secondary: #b0b0b0;
+        --text-tertiary: #d0d0d0;
+        --border-color: #404040;
+        --shadow-light: rgba(0, 0, 0, 0.3);
+        --shadow-medium: rgba(0, 0, 0, 0.4);
+        --shadow-heavy: rgba(0, 0, 0, 0.6);
+        --gradient-secondary: linear-gradient(135deg, rgba(0, 255, 127, 0.05) 0%, rgba(0, 123, 255, 0.05) 100%);
+    }
+}
+
+/* Toggle do Dark Mode */
+.theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.theme-toggle:hover {
+    background: var(--bg-tertiary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
+.theme-toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 24px;
+    background: var(--border-color);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.theme-toggle-switch::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    background: var(--bg-primary);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px var(--shadow-light);
+}
+
+[data-theme="dark"] .theme-toggle-switch {
+    background: var(--accent-green);
+}
+
+[data-theme="dark"] .theme-toggle-switch::before {
+    transform: translateX(26px);
+    background: var(--bg-primary);
+}
+
+.theme-toggle-icon {
+    width: 18px;
+    height: 18px;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle-icon.sun {
+    color: #fbbf24;
+    opacity: 1;
+}
+
+.theme-toggle-icon.moon {
+    color: #60a5fa;
+    opacity: 0.5;
+}
+
+[data-theme="dark"] .theme-toggle-icon.sun {
+    opacity: 0.5;
+}
+
+[data-theme="dark"] .theme-toggle-icon.moon {
+    opacity: 1;
+}
+
+/* Aplicação global do tema */
+body {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Headers e navegação */
+.cabecalho {
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 8px var(--shadow-light);
+}
+
+.cabecalho__nav_list_input {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.cabecalho__nav_list_input::placeholder {
+    color: var(--text-secondary);
+}
+
+.cabecalho__nav_list_input:focus {
+    background: var(--bg-primary);
+    border-color: var(--accent-green);
+}
+
+.cabecalho__nav_list_link {
+    color: var(--text-primary);
+}
+
+.cabecalho__nav_list_link:hover {
+    color: var(--accent-green);
+}
+
+/* Cards e componentes */
+.card,
+.produto,
+.carrinho__items,
+.resumo-card,
+.recomendados,
+.modal__content {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px var(--shadow-light);
+}
+
+.card:hover,
+.produto:hover {
+    box-shadow: 0 8px 25px var(--shadow-medium);
+}
+
+/* Formulários */
+input,
+textarea,
+select {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    background: var(--bg-primary);
+    border-color: var(--accent-green);
+    box-shadow: 0 0 0 3px rgba(0, 255, 127, 0.1);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+/* Botões */
+.btn,
+button {
+    transition: all 0.3s ease;
+}
+
+.btn-secondary {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-tertiary);
+    border-color: var(--accent-green);
+}
+
+/* Estados especiais para dark mode */
+[data-theme="dark"] .search-suggestions {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+}
+
+[data-theme="dark"] .search-suggestion-item:hover {
+    background: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .carrinho-item:hover {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .quantidade-controls {
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .quantidade-btn {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+[data-theme="dark"] .quantidade-btn:hover {
+    background: var(--accent-green);
+    color: var(--bg-primary);
+}
+
+[data-theme="dark"] .quantidade-input {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+}
+
+/* Breadcrumb */
+.breadcrumb {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.breadcrumb a {
+    color: var(--text-secondary);
+}
+
+.breadcrumb a:hover {
+    color: var(--accent-green);
+}
+
+/* Footer */
+.rodape {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+}
+
+.rodape__coluna_titulo {
+    color: var(--text-primary);
+}
+
+.rodape__coluna_link {
+    color: var(--text-secondary);
+}
+
+.rodape__coluna_link:hover {
+    color: var(--accent-green);
+}
+
+/* Notificações */
+.notificacao-toast {
+    background: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 25px var(--shadow-heavy);
+}
+
+/* Produtos */
+.produto-categoria {
+    color: var(--text-secondary);
+}
+
+.produto-preco {
+    color: var(--accent-green);
+}
+
+.produto-preco-original {
+    color: var(--text-secondary);
+}
+
+/* Modais */
+.modal__overlay {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+[data-theme="dark"] .modal__overlay {
+    background: rgba(0, 0, 0, 0.8);
+}
+
+/* Scrollbar personalizada para dark mode */
+[data-theme="dark"] ::-webkit-scrollbar {
+    width: 8px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}
+
+/* Animações de transição do tema */
+* {
+    transition: background-color 0.3s ease, 
+                color 0.3s ease, 
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
+}
+
+/* Estados loading e disabled em dark mode */
+[data-theme="dark"] .btn-loading::after {
+    border-top-color: var(--text-primary);
+}
+
+[data-theme="dark"] .btn:disabled {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+/* Imagens com filtro para dark mode */
+[data-theme="dark"] img:not(.no-filter) {
+    filter: brightness(0.9) contrast(1.1);
+}
+
+[data-theme="dark"] .cabecalho__logo img,
+[data-theme="dark"] .produto img {
+    filter: none;
+}
+
+/* Toggle minimalista para o header */
+.header-theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.header-theme-toggle:hover {
+    background: var(--bg-tertiary);
+    transform: scale(1.1);
+}
+
+.header-theme-toggle::before {
+    content: '☀️';
+    font-size: 18px;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .header-theme-toggle::before {
+    content: '🌙';
+}
+
+/* Efeito de onda no toggle */
+.header-theme-toggle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--accent-green);
+    opacity: 0.3;
+    transform: translate(-50%, -50%);
+    transition: all 0.6s ease;
+}
+
+.header-theme-toggle.animating::after {
+    width: 100px;
+    height: 100px;
+    opacity: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .theme-toggle {
+        padding: 0.4rem 0.8rem;
+        gap: 0.3rem;
+    }
+    
+    .theme-toggle-switch {
+        width: 40px;
+        height: 20px;
+    }
+    
+    .theme-toggle-switch::before {
+        width: 16px;
+        height: 16px;
+    }
+    
+    [data-theme="dark"] .theme-toggle-switch::before {
+        transform: translateX(20px);
+    }
+    
+    .theme-toggle-icon {
+        width: 16px;
+        height: 16px;
+    }
+}
+
+/* Prevenção de flash durante carregamento */
+html {
+    color-scheme: light dark;
+}
+
+html[data-theme="dark"] {
+    color-scheme: dark;
+}
+
+/* Performance otimization */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    .theme-toggle,
+    .theme-toggle-switch,
+    .theme-toggle-switch::before,
+    .theme-toggle-icon {
+        transition: none !important;
+        animation: none !important;
+    }
+}

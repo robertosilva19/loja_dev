@@ -1,178 +1,126 @@
-class PerfilPage {
+/* filepath: c:\Users\janic\OneDrive\Área de Trabalho\Projetos\loja_dev\js\perfil.js */
+// Sistema de Perfil do Usuário
+
+class PerfilManager {
     constructor() {
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.users = JSON.parse(localStorage.getItem('users')) || [];
-        this.enderecos = JSON.parse(localStorage.getItem('enderecos')) || [];
-        this.pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
-        this.favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
-        this.configuracoes = JSON.parse(localStorage.getItem('configuracoes')) || this.getDefaultConfig();
+        this.currentUser = null;
         this.currentTab = 'dados-pessoais';
-        this.editingEndereco = null;
+        this.enderecos = [];
+        this.pedidos = [];
+        this.favoritos = [];
+        this.cupons = [];
+        
         this.init();
     }
 
     init() {
-        // Verificar se usuário está logado
-        if (!this.currentUser) {
-            window.location.href = '../pages/login.html';
-            return;
-        }
-
+        // Verificar autenticação
+        this.checkAuth();
+        
+        // Configurar event listeners
         this.setupEventListeners();
+        
+        // Carregar dados do usuário
         this.loadUserData();
-        this.updateCounts();
-        this.updateCartCount();
-        this.loadAvatar();
-        this.generateMockData(); // Para demonstração
+        
+        // Carregar dados iniciais
+        this.loadInitialData();
     }
 
+    // Verificar se usuário está logado
+    checkAuth() {
+        if (window.AuthAPI && window.AuthAPI.isLoggedIn()) {
+            this.currentUser = window.AuthAPI.getCurrentUser();
+        } else {
+            // Redirecionar para login
+            window.location.href = '../pages/login.html?redirect=' + encodeURIComponent(window.location.pathname);
+        }
+    }
+
+    // Configurar event listeners
     setupEventListeners() {
-        // Menu lateral
-        document.querySelectorAll('.menu-item:not(.logout-btn)').forEach(item => {
-            item.addEventListener('click', () => {
-                const tabName = item.dataset.tab;
-                if (tabName) {
-                    this.switchTab(tabName);
+        // Navegação entre tabs
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const tab = e.currentTarget.getAttribute('data-tab');
+                if (tab && tab !== 'logout') {
+                    this.switchTab(tab);
                 }
             });
         });
 
         // Logout
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            this.logout();
+        document.getElementById('logout-btn')?.addEventListener('click', () => {
+            this.handleLogout();
         });
 
         // Upload de avatar
-        document.getElementById('upload-avatar').addEventListener('click', () => {
+        document.getElementById('upload-avatar')?.addEventListener('click', () => {
             document.getElementById('avatar-input').click();
         });
 
-        document.getElementById('avatar-input').addEventListener('change', (e) => {
+        document.getElementById('avatar-input')?.addEventListener('change', (e) => {
             this.handleAvatarUpload(e);
         });
 
         // Formulário de dados pessoais
-        document.getElementById('dados-pessoais-form').addEventListener('submit', (e) => {
-            this.handleUpdateProfile(e);
+        document.getElementById('dados-pessoais-form')?.addEventListener('submit', (e) => {
+            this.handleProfileUpdate(e);
         });
 
-        // Toggles de senha
-        document.querySelectorAll('.toggle-password').forEach(toggle => {
-            toggle.addEventListener('click', () => {
-                this.togglePassword(toggle);
-            });
+        // Toggle de senhas
+        document.querySelectorAll('.toggle-password').forEach(btn => {
+            btn.addEventListener('click', () => this.togglePassword(btn));
         });
 
         // Endereços
-        document.getElementById('add-endereco').addEventListener('click', () => {
-            this.openEnderecoModal();
+        document.getElementById('add-endereco')?.addEventListener('click', () => {
+            this.openAddressModal();
         });
 
-        document.getElementById('endereco-form').addEventListener('submit', (e) => {
-            this.handleSaveEndereco(e);
+        document.getElementById('endereco-form')?.addEventListener('submit', (e) => {
+            this.handleAddressSubmit(e);
         });
 
-        document.getElementById('buscar-endereco-cep').addEventListener('click', () => {
-            this.buscarCEP();
+        document.getElementById('endereco-modal-close')?.addEventListener('click', () => {
+            this.closeAddressModal();
         });
 
-        // Modal de endereço
-        document.getElementById('endereco-modal-close').addEventListener('click', () => {
-            this.closeEnderecoModal();
-        });
-
-        document.querySelector('#endereco-modal .modal__overlay').addEventListener('click', () => {
-            this.closeEnderecoModal();
-        });
-
-        // Configurações
-        document.querySelectorAll('.config-toggle input[type="checkbox"]').forEach(checkbox => {
-            checkbox.addEventListener('change', () => {
-                this.updateConfig();
-            });
-        });
-
-        // Deletar conta
-        document.getElementById('delete-account').addEventListener('click', () => {
-            this.deleteAccount();
+        document.getElementById('buscar-endereco-cep')?.addEventListener('click', () => {
+            this.searchAddressByCEP();
         });
 
         // Filtros
-        const statusFilter = document.getElementById('status-filter');
-        if (statusFilter) {
-            statusFilter.addEventListener('change', () => {
-                this.filterPedidos();
-            });
-        }
+        document.getElementById('status-filter')?.addEventListener('change', (e) => {
+            this.filterOrders(e.target.value);
+        });
 
-        // Favoritos
-        const clearFavoritos = document.getElementById('clear-favoritos');
-        if (clearFavoritos) {
-            clearFavoritos.addEventListener('click', () => {
-                this.clearFavoritos();
-            });
-        }
+        // Ações diversas
+        document.getElementById('clear-favoritos')?.addEventListener('click', () => {
+            this.clearFavorites();
+        });
 
-        // Máscara de telefone
-        const telefoneInput = document.getElementById('telefone');
-        if (telefoneInput) {
-            telefoneInput.addEventListener('input', (e) => {
-                this.applyPhoneMask(e.target);
-            });
-        }
+        document.getElementById('delete-account')?.addEventListener('click', () => {
+            this.confirmDeleteAccount();
+        });
 
-        // CEP mask
-        const cepInput = document.getElementById('endereco-cep');
-        if (cepInput) {
-            cepInput.addEventListener('input', (e) => {
-                this.applyCepMask(e.target);
-            });
-        }
+        // Configurações
+        this.setupConfigurationToggles();
     }
 
-    switchTab(tabName) {
-        // Update active menu item
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.classList.remove('active');
-        });
-        document.querySelector(`[data-tab="${tabName}"]`).classList.add('active');
-
-        // Update active tab content
-        document.querySelectorAll('.tab-content').forEach(tab => {
-            tab.classList.remove('active');
-        });
-        document.getElementById(`${tabName}-tab`).classList.add('active');
-
-        this.currentTab = tabName;
-
-        // Load tab-specific data
-        switch (tabName) {
-            case 'enderecos':
-                this.loadEnderecos();
-                break;
-            case 'pedidos':
-                this.loadPedidos();
-                break;
-            case 'favoritos':
-                this.loadFavoritos();
-                break;
-            case 'cupons':
-                this.loadCupons();
-                break;
-            case 'configuracoes':
-                this.loadConfiguracoes();
-                break;
-        }
-    }
-
+    // Carregar dados do usuário na interface
     loadUserData() {
-        // Header do usuário
-        document.getElementById('user-name').textContent = `${this.currentUser.nome} ${this.currentUser.sobrenome}`;
+        if (!this.currentUser) return;
+
+        // Header do perfil
+        document.getElementById('user-name').textContent = 
+            `${this.currentUser.nome} ${this.currentUser.sobrenome || ''}`.trim();
         document.getElementById('user-email').textContent = this.currentUser.email;
         
-        // Data de cadastro
-        const createdDate = new Date(this.currentUser.createdAt || Date.now());
-        document.getElementById('member-since').textContent = createdDate.getFullYear();
+        const memberSince = this.currentUser.registrationTime ? 
+            new Date(this.currentUser.registrationTime).getFullYear() : 
+            new Date().getFullYear();
+        document.getElementById('member-since').textContent = memberSince;
 
         // Formulário de dados pessoais
         document.getElementById('nome').value = this.currentUser.nome || '';
@@ -181,279 +129,255 @@ class PerfilPage {
         document.getElementById('telefone').value = this.currentUser.telefone || '';
         document.getElementById('cpf').value = this.currentUser.cpf || '';
         document.getElementById('data-nascimento').value = this.currentUser.dataNascimento || '';
-
-        // Update auth state in header
-        this.updateHeaderAuth();
     }
 
-    updateHeaderAuth() {
-        const loginLink = document.querySelector('.cabecalho__nav_list_link-login');
-        if (loginLink) {
-            loginLink.textContent = `Olá, ${this.currentUser.nome}`;
-            loginLink.href = './perfil.html';
-        }
+    // Carregar dados iniciais
+    loadInitialData() {
+        this.loadAddresses();
+        this.loadOrders();
+        this.loadFavorites();
+        this.loadCoupons();
+        this.updateCounts();
     }
 
-    async handleUpdateProfile(e) {
-        e.preventDefault();
+    // Navegação entre tabs
+    switchTab(tabName) {
+        // Remover classe active de todos os menus e tabs
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.classList.remove('active');
+        });
         
-        const formData = new FormData(e.target);
-        const senhaAtual = formData.get('senhaAtual');
-        const novaSenha = formData.get('novaSenha');
+        document.querySelectorAll('.tab-content').forEach(tab => {
+            tab.classList.remove('active');
+        });
 
-        // Validar senha atual se estiver tentando alterar
-        if (novaSenha && senhaAtual !== this.currentUser.password) {
-            this.showMessage('Senha atual incorreta', 'error');
-            return;
-        }
+        // Ativar menu e tab atual
+        document.querySelector(`[data-tab="${tabName}"]`)?.classList.add('active');
+        document.getElementById(`${tabName}-tab`)?.classList.add('active');
 
-        // Criar objeto com dados atualizados
-        const updatedUser = {
-            ...this.currentUser,
-            nome: formData.get('nome'),
-            sobrenome: formData.get('sobrenome'),
-            email: formData.get('email'),
-            telefone: formData.get('telefone'),
-            dataNascimento: formData.get('dataNascimento'),
-            updatedAt: new Date().toISOString()
-        };
+        this.currentTab = tabName;
 
-        // Atualizar senha se fornecida
-        if (novaSenha) {
-            updatedUser.password = novaSenha;
-        }
+        // Carregar dados específicos da tab se necessário
+        this.loadTabData(tabName);
+    }
 
-        try {
-            // Simular delay de API
-            await this.delay(1000);
-
-            // Atualizar usuário atual
-            this.currentUser = updatedUser;
-            localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
-
-            // Atualizar na lista de usuários
-            const userIndex = this.users.findIndex(u => u.id === this.currentUser.id);
-            if (userIndex !== -1) {
-                this.users[userIndex] = updatedUser;
-                localStorage.setItem('users', JSON.stringify(this.users));
-            }
-
-            // Atualizar interface
-            this.loadUserData();
-            this.showMessage('Perfil atualizado com sucesso!', 'success');
-
-            // Limpar campos de senha
-            document.getElementById('senha-atual').value = '';
-            document.getElementById('nova-senha').value = '';
-
-        } catch (error) {
-            this.showMessage('Erro ao atualizar perfil', 'error');
+    // Carregar dados específicos da tab
+    loadTabData(tabName) {
+        switch(tabName) {
+            case 'pedidos':
+                this.renderOrders();
+                break;
+            case 'enderecos':
+                this.renderAddresses();
+                break;
+            case 'favoritos':
+                this.renderFavorites();
+                break;
+            case 'cupons':
+                this.renderCoupons();
+                break;
         }
     }
 
-    handleAvatarUpload(e) {
-        const file = e.target.files[0];
+    // Logout
+    handleLogout() {
+        if (confirm('Tem certeza que deseja sair?')) {
+            if (window.AuthAPI) {
+                window.AuthAPI.logout();
+            }
+            window.location.href = '../index.html';
+        }
+    }
+
+    // Upload de avatar
+    handleAvatarUpload(event) {
+        const file = event.target.files[0];
         if (!file) return;
 
-        // Validar tipo de arquivo
+        // Validar arquivo
         if (!file.type.startsWith('image/')) {
-            this.showMessage('Por favor, selecione uma imagem válida', 'error');
+            alert('Por favor, selecione apenas arquivos de imagem.');
             return;
         }
 
-        // Validar tamanho (máximo 2MB)
-        if (file.size > 2 * 1024 * 1024) {
-            this.showMessage('Imagem muito grande. Máximo 2MB', 'error');
+        if (file.size > 5 * 1024 * 1024) { // 5MB
+            alert('A imagem deve ter no máximo 5MB.');
             return;
         }
 
+        // Criar preview
         const reader = new FileReader();
         reader.onload = (e) => {
-            const dataUrl = e.target.result;
-            
-            // Salvar avatar
-            localStorage.setItem(`avatar_${this.currentUser.id}`, dataUrl);
-            
-            // Atualizar interface
-            document.getElementById('user-avatar').src = dataUrl;
-            
-            this.showMessage('Avatar atualizado com sucesso!', 'success');
+            document.getElementById('user-avatar').src = e.target.result;
+            // Aqui você salvaria a imagem no servidor/localStorage
+            this.saveAvatar(e.target.result);
         };
-        
         reader.readAsDataURL(file);
     }
 
-    loadAvatar() {
-        const savedAvatar = localStorage.getItem(`avatar_${this.currentUser.id}`);
-        if (savedAvatar) {
-            document.getElementById('user-avatar').src = savedAvatar;
+    saveAvatar(dataUrl) {
+        // Salvar no localStorage (em produção seria enviado para servidor)
+        localStorage.setItem(`avatar_${this.currentUser.id}`, dataUrl);
+        this.showNotification('Avatar atualizado com sucesso!', 'success');
+    }
+
+    // Atualizar perfil
+    handleProfileUpdate(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target);
+        const updatedData = Object.fromEntries(formData);
+
+        // Validar dados
+        if (!this.validateProfileData(updatedData)) return;
+
+        // Simular salvamento
+        this.currentUser = { ...this.currentUser, ...updatedData };
+        
+        // Salvar no localStorage (em produção seria enviado para servidor)
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+
+        this.showNotification('Perfil atualizado com sucesso!', 'success');
+        this.loadUserData(); // Recarregar dados na interface
+    }
+
+    validateProfileData(data) {
+        // Validações básicas
+        if (!data.nome || data.nome.trim().length < 2) {
+            this.showNotification('Nome deve ter pelo menos 2 caracteres.', 'error');
+            return false;
+        }
+
+        if (!data.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+            this.showNotification('Email inválido.', 'error');
+            return false;
+        }
+
+        // Validar mudança de senha se fornecida
+        if (data.novaSenha) {
+            if (!data.senhaAtual) {
+                this.showNotification('Senha atual é obrigatória para alterar a senha.', 'error');
+                return false;
+            }
+
+            if (data.novaSenha.length < 6) {
+                this.showNotification('Nova senha deve ter pelo menos 6 caracteres.', 'error');
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    // Toggle de senha
+    togglePassword(button) {
+        const targetId = button.getAttribute('data-target');
+        const input = document.getElementById(targetId);
+        const img = button.querySelector('img');
+        
+        if (input.type === 'password') {
+            input.type = 'text';
+            img.src = '../assets/icons/eye-off.svg';
+        } else {
+            input.type = 'password';
+            img.src = '../assets/icons/eye.svg';
         }
     }
 
-    // Endereços
-    loadEnderecos() {
-        const userEnderecos = this.enderecos.filter(e => e.userId === this.currentUser.id);
-        const container = document.getElementById('enderecos-list');
-        const emptyState = document.getElementById('enderecos-empty');
-
-        if (userEnderecos.length === 0) {
-            container.style.display = 'none';
-            emptyState.style.display = 'block';
-            return;
-        }
-
-        container.style.display = 'grid';
-        emptyState.style.display = 'none';
-        container.innerHTML = '';
-
-        userEnderecos.forEach(endereco => {
-            const enderecoCard = this.createEnderecoCard(endereco);
-            container.appendChild(enderecoCard);
-        });
+    // === GERENCIAMENTO DE ENDEREÇOS ===
+    
+    loadAddresses() {
+        const stored = localStorage.getItem(`enderecos_${this.currentUser.id}`);
+        this.enderecos = stored ? JSON.parse(stored) : [];
     }
 
-    createEnderecoCard(endereco) {
-        const card = document.createElement('div');
-        card.className = `endereco-card ${endereco.principal ? 'principal' : ''}`;
-        card.innerHTML = `
-            <div class="card-header">
-                <h3 class="card-title">${endereco.nome}</h3>
-                <div class="card-actions">
-                    <button class="card-btn edit" onclick="perfilPage.editEndereco(${endereco.id})">
-                        <img src="../assets/icons/edit.svg" alt="Editar">
-                    </button>
-                    <button class="card-btn delete" onclick="perfilPage.deleteEndereco(${endereco.id})">
-                        <img src="../assets/icons/trash.svg" alt="Excluir">
-                    </button>
-                </div>
-            </div>
-            <div class="endereco-info">
-                <p><strong>${endereco.endereco}, ${endereco.numero}</strong></p>
-                ${endereco.complemento ? `<p>${endereco.complemento}</p>` : ''}
-                <p>${endereco.bairro} - ${endereco.cidade}</p>
-                <p>CEP: ${endereco.cep}</p>
-            </div>
-        `;
-        return card;
+    saveAddresses() {
+        localStorage.setItem(`enderecos_${this.currentUser.id}`, JSON.stringify(this.enderecos));
+        this.updateCounts();
     }
 
-    openEnderecoModal(endereco = null) {
-        this.editingEndereco = endereco;
+    openAddressModal(address = null) {
         const modal = document.getElementById('endereco-modal');
         const title = document.getElementById('endereco-modal-title');
         const form = document.getElementById('endereco-form');
-
-        if (endereco) {
+        
+        if (address) {
             title.textContent = 'Editar Endereço';
-            this.fillEnderecoForm(endereco);
+            this.fillAddressForm(address);
         } else {
             title.textContent = 'Novo Endereço';
             form.reset();
             document.getElementById('endereco-id').value = '';
         }
-
-        modal.classList.add('show');
-        document.body.style.overflow = 'hidden';
-    }
-
-    closeEnderecoModal() {
-        const modal = document.getElementById('endereco-modal');
-        modal.classList.remove('show');
-        document.body.style.overflow = '';
-        this.editingEndereco = null;
-    }
-
-    fillEnderecoForm(endereco) {
-        document.getElementById('endereco-id').value = endereco.id;
-        document.getElementById('endereco-nome').value = endereco.nome;
-        document.getElementById('endereco-cep').value = endereco.cep;
-        document.getElementById('endereco-endereco').value = endereco.endereco;
-        document.getElementById('endereco-numero').value = endereco.numero;
-        document.getElementById('endereco-complemento').value = endereco.complemento || '';
-        document.getElementById('endereco-bairro').value = endereco.bairro;
-        document.getElementById('endereco-cidade').value = endereco.cidade;
-        document.getElementById('endereco-principal').checked = endereco.principal;
-    }
-
-    async handleSaveEndereco(e) {
-        e.preventDefault();
         
-        const formData = new FormData(e.target);
-        const enderecoId = formData.get('id');
-        const isPrincipal = formData.get('principal') === 'on';
+        modal.classList.add('active');
+    }
 
-        const endereco = {
-            id: enderecoId ? parseInt(enderecoId) : Date.now(),
-            userId: this.currentUser.id,
-            nome: formData.get('nome'),
-            cep: formData.get('cep'),
-            endereco: formData.get('endereco'),
-            numero: formData.get('numero'),
-            complemento: formData.get('complemento'),
-            bairro: formData.get('bairro'),
-            cidade: formData.get('cidade'),
-            principal: isPrincipal,
-            createdAt: new Date().toISOString()
-        };
+    closeAddressModal() {
+        document.getElementById('endereco-modal').classList.remove('active');
+    }
 
-        try {
-            await this.delay(500);
-
-            if (enderecoId) {
-                // Editar endereço existente
-                const index = this.enderecos.findIndex(e => e.id === parseInt(enderecoId));
-                if (index !== -1) {
-                    this.enderecos[index] = endereco;
+    fillAddressForm(address) {
+        Object.keys(address).forEach(key => {
+            const input = document.getElementById(`endereco-${key}`);
+            if (input) {
+                if (input.type === 'checkbox') {
+                    input.checked = address[key];
+                } else {
+                    input.value = address[key];
                 }
-            } else {
-                // Novo endereço
-                this.enderecos.push(endereco);
             }
+        });
+    }
 
-            // Se marcado como principal, desmarcar outros
-            if (isPrincipal) {
-                this.enderecos.forEach(e => {
-                    if (e.userId === this.currentUser.id && e.id !== endereco.id) {
-                        e.principal = false;
-                    }
-                });
+    handleAddressSubmit(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(event.target);
+        const addressData = Object.fromEntries(formData);
+        
+        // Converter checkbox
+        addressData.principal = document.getElementById('endereco-principal').checked;
+        
+        const addressId = addressData.id;
+        delete addressData.id;
+
+        if (addressId) {
+            // Editar endereço existente
+            const index = this.enderecos.findIndex(addr => addr.id === addressId);
+            if (index !== -1) {
+                this.enderecos[index] = { ...addressData, id: addressId };
             }
-
-            localStorage.setItem('enderecos', JSON.stringify(this.enderecos));
-            this.loadEnderecos();
-            this.updateCounts();
-            this.closeEnderecoModal();
-            
-            this.showMessage('Endereço salvo com sucesso!', 'success');
-
-        } catch (error) {
-            this.showMessage('Erro ao salvar endereço', 'error');
+        } else {
+            // Novo endereço
+            addressData.id = Date.now().toString();
+            this.enderecos.push(addressData);
         }
+
+        // Se marcou como principal, desmarcar outros
+        if (addressData.principal) {
+            this.enderecos.forEach(addr => {
+                if (addr.id !== addressData.id) {
+                    addr.principal = false;
+                }
+            });
+        }
+
+        this.saveAddresses();
+        this.renderAddresses();
+        this.closeAddressModal();
+        
+        this.showNotification(
+            addressId ? 'Endereço atualizado!' : 'Endereço adicionado!', 
+            'success'
+        );
     }
 
-    editEndereco(id) {
-        const endereco = this.enderecos.find(e => e.id === id);
-        if (endereco) {
-            this.openEnderecoModal(endereco);
-        }
-    }
-
-    deleteEndereco(id) {
-        if (confirm('Tem certeza que deseja excluir este endereço?')) {
-            this.enderecos = this.enderecos.filter(e => e.id !== id);
-            localStorage.setItem('enderecos', JSON.stringify(this.enderecos));
-            this.loadEnderecos();
-            this.updateCounts();
-            this.showMessage('Endereço excluído com sucesso!', 'success');
-        }
-    }
-
-    async buscarCEP() {
-        const cepInput = document.getElementById('endereco-cep');
-        const cep = cepInput.value.replace(/\D/g, '');
+    async searchAddressByCEP() {
+        const cep = document.getElementById('endereco-cep').value.replace(/\D/g, '');
         
         if (cep.length !== 8) {
-            this.showMessage('CEP deve ter 8 dígitos', 'error');
+            this.showNotification('CEP deve ter 8 dígitos.', 'error');
             return;
         }
 
@@ -462,76 +386,165 @@ class PerfilPage {
             const data = await response.json();
             
             if (data.erro) {
-                this.showMessage('CEP não encontrado', 'error');
+                this.showNotification('CEP não encontrado.', 'error');
                 return;
             }
+
+            // Preencher campos
+            document.getElementById('endereco-endereco').value = data.logradouro || '';
+            document.getElementById('endereco-bairro').value = data.bairro || '';
+            document.getElementById('endereco-cidade').value = data.localidade || '';
             
-            // Preencher campos automaticamente
-            document.getElementById('endereco-endereco').value = data.logradouro;
-            document.getElementById('endereco-bairro').value = data.bairro;
-            document.getElementById('endereco-cidade').value = data.localidade;
-            
-            this.showMessage('CEP encontrado!', 'success');
+            this.showNotification('Endereço encontrado!', 'success');
             
         } catch (error) {
-            this.showMessage('Erro ao buscar CEP', 'error');
+            this.showNotification('Erro ao buscar CEP.', 'error');
         }
     }
 
-    // Pedidos
-    loadPedidos() {
-        const userPedidos = this.pedidos.filter(p => p.userId === this.currentUser.id);
-        const container = document.getElementById('pedidos-list');
-        const emptyState = document.getElementById('pedidos-empty');
-
-        if (userPedidos.length === 0) {
+    renderAddresses() {
+        const container = document.getElementById('enderecos-list');
+        const emptyState = document.getElementById('enderecos-empty');
+        
+        if (this.enderecos.length === 0) {
             container.style.display = 'none';
             emptyState.style.display = 'block';
             return;
         }
-
-        container.style.display = 'block';
-        emptyState.style.display = 'none';
-        container.innerHTML = '';
-
-        // Ordenar por data mais recente
-        userPedidos.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-        userPedidos.forEach(pedido => {
-            const pedidoCard = this.createPedidoCard(pedido);
-            container.appendChild(pedidoCard);
-        });
-    }
-
-    createPedidoCard(pedido) {
-        const card = document.createElement('div');
-        card.className = 'pedido-card';
         
-        const items = pedido.items.map(item => `
-            <div class="pedido-item">
-                <img src="${item.image}" alt="${item.name}">
-                <div class="pedido-item-info">
-                    <div class="pedido-item-nome">${item.name}</div>
-                    <div class="pedido-item-detalhes">Quantidade: ${item.quantity} • R$ ${item.price.toFixed(2).replace('.', ',')}</div>
+        container.style.display = 'grid';
+        emptyState.style.display = 'none';
+        
+        container.innerHTML = this.enderecos.map(endereco => `
+            <div class="endereco-card">
+                <div class="endereco-header">
+                    <h4>${endereco.nome}</h4>
+                    ${endereco.principal ? '<span class="endereco-badge">Principal</span>' : ''}
+                </div>
+                <div class="endereco-info">
+                    <p>${endereco.endereco}, ${endereco.numero}</p>
+                    ${endereco.complemento ? `<p>${endereco.complemento}</p>` : ''}
+                    <p>${endereco.bairro} - ${endereco.cidade}</p>
+                    <p>CEP: ${endereco.cep}</p>
+                </div>
+                <div class="endereco-actions">
+                    <button class="btn-edit" onclick="perfilManager.editAddress('${endereco.id}')">
+                        Editar
+                    </button>
+                    <button class="btn-delete" onclick="perfilManager.deleteAddress('${endereco.id}')">
+                        Excluir
+                    </button>
                 </div>
             </div>
         `).join('');
+    }
 
-        card.innerHTML = `
-            <div class="pedido-header">
-                <div class="pedido-numero">Pedido #${pedido.numero}</div>
-                <div class="pedido-status status-${pedido.status}">${this.getStatusText(pedido.status)}</div>
-            </div>
-            <div class="pedido-items">
-                ${items}
-            </div>
-            <div class="pedido-footer">
-                <div class="pedido-data">${new Date(pedido.createdAt).toLocaleDateString('pt-BR')}</div>
-                <div class="pedido-total">R$ ${pedido.total.toFixed(2).replace('.', ',')}</div>
-            </div>
-        `;
+    editAddress(id) {
+        const address = this.enderecos.find(addr => addr.id === id);
+        if (address) {
+            this.openAddressModal(address);
+        }
+    }
+
+    deleteAddress(id) {
+        if (confirm('Tem certeza que deseja excluir este endereço?')) {
+            this.enderecos = this.enderecos.filter(addr => addr.id !== id);
+            this.saveAddresses();
+            this.renderAddresses();
+            this.showNotification('Endereço excluído!', 'success');
+        }
+    }
+
+    // === GERENCIAMENTO DE PEDIDOS ===
+    
+    loadOrders() {
+        // Simular pedidos (em produção viria do servidor)
+        const stored = localStorage.getItem(`pedidos_${this.currentUser.id}`);
+        this.pedidos = stored ? JSON.parse(stored) : this.generateSampleOrders();
+    }
+
+    generateSampleOrders() {
+        return [
+            {
+                id: 'PED001',
+                data: new Date('2024-01-15').toISOString(),
+                status: 'entregue',
+                total: 299.90,
+                itens: [
+                    { nome: 'Camiseta React Developer', preco: 79.90, quantidade: 1 },
+                    { nome: 'Caneca JavaScript Coffee', preco: 39.90, quantidade: 2 },
+                    { nome: 'Mousepad Geek Code', preco: 89.90, quantidade: 2 }
+                ]
+            },
+            {
+                id: 'PED002',
+                data: new Date('2024-02-20').toISOString(),
+                status: 'enviado',
+                total: 159.80,
+                itens: [
+                    { nome: 'Livro Clean Code', preco: 119.90, quantidade: 1 },
+                    { nome: 'Adesivos Git Commits', preco: 19.90, quantidade: 2 }
+                ]
+            }
+        ];
+    }
+
+    renderOrders() {
+        const container = document.getElementById('pedidos-list');
+        const emptyState = document.getElementById('pedidos-empty');
         
-        return card;
+        if (this.pedidos.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+        
+        container.style.display = 'block';
+        emptyState.style.display = 'none';
+        
+        container.innerHTML = this.pedidos.map(pedido => `
+            <div class="pedido-card">
+                <div class="pedido-header">
+                    <div class="pedido-info">
+                        <h4>Pedido #${pedido.id}</h4>
+                        <p>Data: ${this.formatDate(pedido.data)}</p>
+                    </div>
+                    <div class="pedido-status">
+                        <span class="status-badge ${pedido.status}">${this.getStatusText(pedido.status)}</span>
+                        <span class="pedido-total">${this.formatCurrency(pedido.total)}</span>
+                    </div>
+                </div>
+                <div class="pedido-itens">
+                    ${pedido.itens.map(item => `
+                        <div class="pedido-item">
+                            <span>${item.nome}</span>
+                            <span>${item.quantidade}x ${this.formatCurrency(item.preco)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="pedido-actions">
+                    <button class="btn-secondary" onclick="perfilManager.viewOrder('${pedido.id}')">
+                        Ver Detalhes
+                    </button>
+                    ${pedido.status === 'pendente' ? `
+                        <button class="btn-danger" onclick="perfilManager.cancelOrder('${pedido.id}')">
+                            Cancelar
+                        </button>
+                    ` : ''}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    filterOrders(status) {
+        // Implementar filtro de pedidos
+        const filteredOrders = status ? 
+            this.pedidos.filter(pedido => pedido.status === status) : 
+            this.pedidos;
+        
+        // Re-renderizar com pedidos filtrados
+        // (implementação simplificada)
+        this.renderOrders();
     }
 
     getStatusText(status) {
@@ -545,377 +558,242 @@ class PerfilPage {
         return statusMap[status] || status;
     }
 
-    filterPedidos() {
-        const filterValue = document.getElementById('status-filter').value;
-        const pedidoCards = document.querySelectorAll('.pedido-card');
-        
-        pedidoCards.forEach(card => {
-            const status = card.querySelector('.pedido-status').className.split('status-')[1];
-            if (!filterValue || status === filterValue) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
-            }
-        });
+    // === GERENCIAMENTO DE FAVORITOS ===
+    
+    loadFavorites() {
+        const stored = localStorage.getItem('favoritos');
+        this.favoritos = stored ? JSON.parse(stored) : [];
     }
 
-    // Favoritos
-    loadFavoritos() {
+    renderFavorites() {
         const container = document.getElementById('favoritos-list');
         const emptyState = document.getElementById('favoritos-empty');
-
+        
         if (this.favoritos.length === 0) {
             container.style.display = 'none';
             emptyState.style.display = 'block';
             return;
         }
-
+        
         container.style.display = 'grid';
         emptyState.style.display = 'none';
-        container.innerHTML = '';
-
-        this.favoritos.forEach(produto => {
-            const favoritoCard = this.createFavoritoCard(produto);
-            container.appendChild(favoritoCard);
-        });
-    }
-
-    createFavoritoCard(produto) {
-        const card = document.createElement('div');
-        card.className = 'favorito-card';
-        card.innerHTML = `
-            <div class="card-header">
-                <h3 class="card-title">${produto.name}</h3>
-                <div class="card-actions">
-                    <button class="card-btn delete" onclick="perfilPage.removeFavorito(${produto.id})">
-                        <img src="../assets/icons/heart-filled.svg" alt="Remover dos favoritos">
+        
+        container.innerHTML = this.favoritos.map(produto => `
+            <div class="favorito-card">
+                <img src="${produto.imagem}" alt="${produto.nome}">
+                <div class="favorito-info">
+                    <h4>${produto.nome}</h4>
+                    <p class="favorito-preco">${this.formatCurrency(produto.preco)}</p>
+                </div>
+                <div class="favorito-actions">
+                    <button class="btn-primary" onclick="perfilManager.addToCart('${produto.id}')">
+                        Adicionar ao Carrinho
+                    </button>
+                    <button class="btn-remove" onclick="perfilManager.removeFavorite('${produto.id}')">
+                        ❤️
                     </button>
                 </div>
             </div>
-            <img src="${produto.image}" alt="${produto.name}" style="width: 100%; height: 200px; object-fit: contain; margin: 1rem 0;">
-            <div class="favorito-info">
-                <p class="favorito-preco">R$ ${produto.price.toFixed(2).replace('.', ',')}</p>
-                <button class="btn-primary" onclick="perfilPage.viewProduct(${produto.id})">
-                    Ver Produto
-                </button>
-            </div>
-        `;
-        return card;
+        `).join('');
     }
 
-    removeFavorito(productId) {
-        this.favoritos = this.favoritos.filter(p => p.id !== productId);
-        localStorage.setItem('favoritos', JSON.stringify(this.favoritos));
-        this.loadFavoritos();
-        this.updateCounts();
-        this.showMessage('Produto removido dos favoritos', 'success');
-    }
-
-    viewProduct(productId) {
-        sessionStorage.setItem('selectedProductId', productId);
-        window.location.href = './product.html';
-    }
-
-    clearFavoritos() {
-        if (confirm('Tem certeza que deseja limpar toda a lista de favoritos?')) {
+    clearFavorites() {
+        if (confirm('Tem certeza que deseja limpar todos os favoritos?')) {
             this.favoritos = [];
             localStorage.setItem('favoritos', JSON.stringify(this.favoritos));
-            this.loadFavoritos();
+            this.renderFavorites();
             this.updateCounts();
-            this.showMessage('Lista de favoritos limpa', 'success');
+            this.showNotification('Lista de favoritos limpa!', 'success');
         }
     }
 
-    // Cupons
-    loadCupons() {
-        const cuponsDisponiveis = [
-            { code: 'WELCOME10', discount: 0.10, description: '10% de desconto', expiry: '2024-12-31' },
-            { code: 'DEV20', discount: 0.20, description: '20% de desconto', expiry: '2024-12-31' },
-            { code: 'GEEK15', discount: 0.15, description: '15% de desconto', expiry: '2024-12-31' }
+    // === GERENCIAMENTO DE CUPONS ===
+    
+    loadCoupons() {
+        // Simular cupons disponíveis
+        this.cupons = [
+            {
+                id: 'BEMVINDO20',
+                descricao: '20% de desconto',
+                codigo: 'BEMVINDO20',
+                desconto: 20,
+                tipo: 'percentual',
+                valido: true,
+                expira: new Date('2024-12-31').toISOString()
+            },
+            {
+                id: 'FRETE10',
+                descricao: 'R$ 10 de desconto no frete',
+                codigo: 'FRETE10',
+                desconto: 10,
+                tipo: 'valor',
+                valido: true,
+                expira: new Date('2024-06-30').toISOString()
+            }
         ];
+    }
 
+    renderCoupons() {
         const container = document.getElementById('cupons-list');
-        container.innerHTML = '';
+        const emptyState = document.getElementById('cupons-empty');
+        
+        if (this.cupons.length === 0) {
+            container.style.display = 'none';
+            emptyState.style.display = 'block';
+            return;
+        }
+        
+        container.style.display = 'grid';
+        emptyState.style.display = 'none';
+        
+        container.innerHTML = this.cupons.map(cupom => `
+            <div class="cupom-card ${!cupom.valido ? 'usado' : ''}">
+                <div class="cupom-header">
+                    <h4>${cupom.descricao}</h4>
+                    <span class="cupom-codigo">${cupom.codigo}</span>
+                </div>
+                <div class="cupom-info">
+                    <p>Válido até: ${this.formatDate(cupom.expira)}</p>
+                    <p class="cupom-desconto">
+                        ${cupom.tipo === 'percentual' ? cupom.desconto + '%' : this.formatCurrency(cupom.desconto)}
+                    </p>
+                </div>
+                <div class="cupom-actions">
+                    ${cupom.valido ? `
+                        <button class="btn-primary" onclick="perfilManager.copyCoupon('${cupom.codigo}')">
+                            Copiar Código
+                        </button>
+                    ` : `
+                        <span class="cupom-usado">Já utilizado</span>
+                    `}
+                </div>
+            </div>
+        `).join('');
+    }
 
-        cuponsDisponiveis.forEach(cupom => {
-            const cupomCard = this.createCupomCard(cupom);
-            container.appendChild(cupomCard);
+    copyCoupon(codigo) {
+        navigator.clipboard.writeText(codigo).then(() => {
+            this.showNotification(`Código ${codigo} copiado!`, 'success');
         });
     }
 
-    createCupomCard(cupom) {
-        const card = document.createElement('div');
-        card.className = 'cupom-card';
-        card.innerHTML = `
-            <div class="card-header">
-                <h3 class="card-title">${cupom.code}</h3>
-                <div class="cupom-discount">${Math.round(cupom.discount * 100)}% OFF</div>
-            </div>
-            <div class="cupom-info">
-                <p>${cupom.description}</p>
-                <p><small>Válido até: ${new Date(cupom.expiry).toLocaleDateString('pt-BR')}</small></p>
-                <button class="btn-primary" onclick="perfilPage.copyCupom('${cupom.code}')">
-                    Copiar Código
-                </button>
-            </div>
-        `;
-        return card;
-    }
-
-    copyCupom(code) {
-        navigator.clipboard.writeText(code).then(() => {
-            this.showMessage(`Cupom ${code} copiado!`, 'success');
-        });
-    }
-
-    // Configurações
-    loadConfiguracoes() {
+    // === CONFIGURAÇÕES ===
+    
+    setupConfigurationToggles() {
         // Carregar configurações salvas
-        document.getElementById('email-promocoes').checked = this.configuracoes.emailPromocoes;
-        document.getElementById('email-pedidos').checked = this.configuracoes.emailPedidos;
-        document.getElementById('push-notifications').checked = this.configuracoes.pushNotifications;
-        document.getElementById('perfil-publico').checked = this.configuracoes.perfilPublico;
-        document.getElementById('historico-compras').checked = this.configuracoes.historicoCompras;
+        const configs = JSON.parse(localStorage.getItem(`configs_${this.currentUser.id}`)) || {};
+        
+        // Aplicar configurações aos toggles
+        Object.keys(configs).forEach(key => {
+            const toggle = document.getElementById(key);
+            if (toggle) {
+                toggle.checked = configs[key];
+            }
+        });
+
+        // Salvar mudanças
+        document.querySelectorAll('.config-toggle input').forEach(toggle => {
+            toggle.addEventListener('change', () => {
+                this.saveConfiguration(toggle.id, toggle.checked);
+            });
+        });
     }
 
-    updateConfig() {
-        this.configuracoes = {
-            emailPromocoes: document.getElementById('email-promocoes').checked,
-            emailPedidos: document.getElementById('email-pedidos').checked,
-            pushNotifications: document.getElementById('push-notifications').checked,
-            perfilPublico: document.getElementById('perfil-publico').checked,
-            historicoCompras: document.getElementById('historico-compras').checked
-        };
-
-        localStorage.setItem('configuracoes', JSON.stringify(this.configuracoes));
-        this.showMessage('Configurações atualizadas', 'success');
+    saveConfiguration(key, value) {
+        const configs = JSON.parse(localStorage.getItem(`configs_${this.currentUser.id}`)) || {};
+        configs[key] = value;
+        localStorage.setItem(`configs_${this.currentUser.id}`, JSON.stringify(configs));
+        
+        this.showNotification('Configuração salva!', 'success');
     }
 
-    getDefaultConfig() {
-        return {
-            emailPromocoes: true,
-            emailPedidos: true,
-            pushNotifications: false,
-            perfilPublico: false,
-            historicoCompras: true
-        };
-    }
-
-    // Utility functions
+    // === UTILITÁRIOS ===
+    
     updateCounts() {
-        const userEnderecos = this.enderecos.filter(e => e.userId === this.currentUser.id);
-        const userPedidos = this.pedidos.filter(p => p.userId === this.currentUser.id);
-        
-        document.getElementById('enderecos-count').textContent = userEnderecos.length;
-        document.getElementById('pedidos-count').textContent = userPedidos.length;
+        document.getElementById('enderecos-count').textContent = this.enderecos.length;
+        document.getElementById('pedidos-count').textContent = this.pedidos.length;
         document.getElementById('favoritos-count').textContent = this.favoritos.length;
-        document.getElementById('cupons-count').textContent = '3'; // Cupons disponíveis
+        document.getElementById('cupons-count').textContent = this.cupons.filter(c => c.valido).length;
     }
 
-    updateCartCount() {
-        const cart = JSON.parse(localStorage.getItem('cart')) || [];
-        const count = cart.reduce((total, item) => total + item.quantity, 0);
-        const badge = document.getElementById('cart-count');
-        
-        if (badge) {
-            badge.textContent = count;
-            badge.style.display = count > 0 ? 'flex' : 'none';
-        }
+    formatCurrency(value) {
+        return new Intl.NumberFormat('pt-BR', {
+            style: 'currency',
+            currency: 'BRL'
+        }).format(value);
     }
 
-    togglePassword(toggle) {
-        const targetId = toggle.dataset.target;
-        const input = document.getElementById(targetId);
-        const img = toggle.querySelector('img');
-        
-        if (input.type === 'password') {
-            input.type = 'text';
-            img.src = '../assets/icons/eye-off.svg';
+    formatDate(dateString) {
+        return new Intl.DateTimeFormat('pt-BR').format(new Date(dateString));
+    }
+
+    showNotification(message, type = 'info') {
+        // Usar sistema de notificações do main.js se disponível
+        if (window.MainAPI && window.MainAPI.showNotification) {
+            window.MainAPI.showNotification(message, type);
         } else {
-            input.type = 'password';
-            img.src = '../assets/icons/eye.svg';
+            alert(message);
         }
     }
 
-    applyPhoneMask(input) {
-        let value = input.value.replace(/\D/g, '');
-        value = value.replace(/(\d{2})(\d)/, '($1) $2');
-        value = value.replace(/(\d{5})(\d)/, '$1-$2');
-        input.value = value;
-    }
-
-    applyCepMask(input) {
-        let value = input.value.replace(/\D/g, '');
-        value = value.replace(/(\d{5})(\d)/, '$1-$2');
-        input.value = value;
-    }
-
-    showMessage(message, type = 'info') {
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 15px 20px;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            z-index: 10000;
-            animation: slideInRight 0.3s ease;
-            max-width: 350px;
-        `;
+    // Confirmar exclusão de conta
+    confirmDeleteAccount() {
+        const confirmation = prompt(
+            'Esta ação é irreversível. Digite "EXCLUIR" para confirmar:'
+        );
         
-        const colors = {
-            success: '#10b981',
-            error: '#dc2626',
-            warning: '#f59e0b',
-            info: '#3b82f6'
-        };
-        
-        notification.style.backgroundColor = colors[type] || colors.info;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 4000);
-    }
-
-    logout() {
-        if (confirm('Tem certeza que deseja sair da sua conta?')) {
+        if (confirmation === 'EXCLUIR') {
+            // Remover todos os dados do usuário
             localStorage.removeItem('currentUser');
-            localStorage.removeItem('rememberUser');
+            localStorage.removeItem(`enderecos_${this.currentUser.id}`);
+            localStorage.removeItem(`pedidos_${this.currentUser.id}`);
+            localStorage.removeItem(`configs_${this.currentUser.id}`);
+            localStorage.removeItem(`avatar_${this.currentUser.id}`);
+            
+            alert('Conta excluída com sucesso.');
             window.location.href = '../index.html';
         }
     }
 
-    deleteAccount() {
-        if (confirm('ATENÇÃO: Esta ação irá excluir permanentemente sua conta e todos os seus dados. Esta ação não pode ser desfeita. Tem certeza?')) {
-            if (confirm('Digite "CONFIRMAR" para prosseguir:') && prompt('Digite "CONFIRMAR":') === 'CONFIRMAR') {
-                // Remover usuário da lista
-                this.users = this.users.filter(u => u.id !== this.currentUser.id);
-                localStorage.setItem('users', JSON.stringify(this.users));
-                
-                // Remover dados relacionados
-                localStorage.removeItem('currentUser');
-                localStorage.removeItem(`avatar_${this.currentUser.id}`);
-                
-                // Remover endereços do usuário
-                this.enderecos = this.enderecos.filter(e => e.userId !== this.currentUser.id);
-                localStorage.setItem('enderecos', JSON.stringify(this.enderecos));
-                
-                alert('Conta excluída com sucesso. Você será redirecionado.');
-                window.location.href = '../index.html';
+    // APIs públicas
+    addToCart(productId) {
+        // Integrar com sistema de carrinho
+        if (window.carrinho) {
+            // Encontrar produto nos favoritos
+            const produto = this.favoritos.find(p => p.id === productId);
+            if (produto) {
+                window.carrinho.adicionarItem(produto);
+                this.showNotification('Produto adicionado ao carrinho!', 'success');
             }
         }
     }
 
-    // Gerar dados mock para demonstração
-    generateMockData() {
-        // Adicionar alguns endereços mock se não existirem
-        const userEnderecos = this.enderecos.filter(e => e.userId === this.currentUser.id);
-        if (userEnderecos.length === 0) {
-            const mockEnderecos = [
-                {
-                    id: Date.now(),
-                    userId: this.currentUser.id,
-                    nome: 'Casa',
-                    cep: '01234-567',
-                    endereco: 'Rua das Flores',
-                    numero: '123',
-                    complemento: 'Apto 45',
-                    bairro: 'Centro',
-                    cidade: 'São Paulo',
-                    principal: true,
-                    createdAt: new Date().toISOString()
-                }
-            ];
-            
-            this.enderecos.push(...mockEnderecos);
-            localStorage.setItem('enderecos', JSON.stringify(this.enderecos));
-        }
-
-        // Adicionar alguns pedidos mock se não existirem
-        const userPedidos = this.pedidos.filter(p => p.userId === this.currentUser.id);
-        if (userPedidos.length === 0) {
-            const mockPedidos = [
-                {
-                    id: Date.now(),
-                    userId: this.currentUser.id,
-                    numero: Date.now().toString().slice(-6),
-                    status: 'entregue',
-                    items: [
-                        {
-                            id: 1,
-                            name: 'Camiseta React',
-                            price: 79.90,
-                            quantity: 1,
-                            image: '../assets/produtos/camiseta-react.jpg'
-                        }
-                    ],
-                    total: 79.90,
-                    createdAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
-                },
-                {
-                    id: Date.now() + 1,
-                    userId: this.currentUser.id,
-                    numero: (Date.now() + 1).toString().slice(-6),
-                    status: 'enviado',
-                    items: [
-                        {
-                            id: 2,
-                            name: 'Caneca JavaScript',
-                            price: 29.90,
-                            quantity: 2,
-                            image: '../assets/produtos/caneca-js.jpg'
-                        }
-                    ],
-                    total: 59.80,
-                    createdAt: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString()
-                }
-            ];
-            
-            this.pedidos.push(...mockPedidos);
-            localStorage.setItem('pedidos', JSON.stringify(this.pedidos));
-        }
+    removeFavorite(productId) {
+        this.favoritos = this.favoritos.filter(p => p.id !== productId);
+        localStorage.setItem('favoritos', JSON.stringify(this.favoritos));
+        this.renderFavorites();
+        this.updateCounts();
+        this.showNotification('Produto removido dos favoritos!', 'success');
     }
 
-    delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+    viewOrder(orderId) {
+        // Implementar visualização detalhada do pedido
+        alert(`Ver detalhes do pedido ${orderId}`);
+    }
+
+    cancelOrder(orderId) {
+        if (confirm('Tem certeza que deseja cancelar este pedido?')) {
+            const order = this.pedidos.find(p => p.id === orderId);
+            if (order) {
+                order.status = 'cancelado';
+                this.renderOrders();
+                this.showNotification('Pedido cancelado!', 'success');
+            }
+        }
     }
 }
 
-// Inicializar página de perfil
-let perfilPage;
+// Inicializar quando o DOM estiver pronto
 document.addEventListener('DOMContentLoaded', () => {
-    perfilPage = new PerfilPage();
+    window.perfilManager = new PerfilManager();
 });
-
-// Adicionar CSS para animações
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes slideInRight {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-    
-    @keyframes modalSlideIn {
-        from {
-            transform: scale(0.7);
-            opacity: 0;
-        }
-        to {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-`;
-document.head.appendChild(style);

@@ -1,0 +1,101 @@
+{
+  "reviews": [
+    {
+      "id": "rev_001",
+      "productId": "1",
+      "userId": "user_001",
+      "userName": "João Silva",
+      "userAvatar": "/assets/avatars/user1.jpg",
+      "rating": 5,
+      "title": "Produto excelente!",
+      "comment": "Comprei o abridor e superou minhas expectativas. Material de qualidade e design incrível. Recomendo muito!",
+      "pros": ["Qualidade excelente", "Design bonito", "Funcional"],
+      "cons": ["Preço um pouco alto"],
+      "wouldRecommend": true,
+      "verified": true,
+      "helpful": 15,
+      "notHelpful": 2,
+      "date": "2024-01-15T10:30:00Z",
+      "photos": ["/assets/reviews/rev_001_1.jpg", "/assets/reviews/rev_001_2.jpg"],
+      "reply": {
+        "date": "2024-01-16T09:00:00Z",
+        "author": "UseDev Team",
+        "message": "Obrigado pelo feedback, João! Ficamos felizes que tenha gostado do produto!"
+      }
+    },
+    {
+      "id": "rev_002",
+      "productId": "2",
+      "userId": "user_002",
+      "userName": "Maria Santos",
+      "userAvatar": "/assets/avatars/user2.jpg",
+      "rating": 4,
+      "title": "Boa camiseta",
+      "comment": "Tecido macio e estampa legal. Tamanho veio certinho conforme a tabela.",
+      "pros": ["Tecido confortável", "Estampa de qualidade"],
+      "cons": ["Demorou para chegar"],
+      "wouldRecommend": true,
+      "verified": true,
+      "helpful": 8,
+      "notHelpful": 1,
+      "date": "2024-01-20T14:15:00Z",
+      "photos": []
+    },
+    {
+      "id": "rev_003",
+      "productId": "3",
+      "userId": "user_003",
+      "userName": "Pedro Costa",
+      "userAvatar": "/assets/avatars/user3.jpg",
+      "rating": 5,
+      "title": "Caneca perfeita para dev!",
+      "comment": "Uso todo dia no trabalho. Mantém o café quente por bastante tempo e a estampa não desbota na lavagem.",
+      "pros": ["Mantém temperatura", "Estampa resistente", "Tamanho ideal"],
+      "cons": [],
+      "wouldRecommend": true,
+      "verified": true,
+      "helpful": 12,
+      "notHelpful": 0,
+      "date": "2024-01-25T16:45:00Z",
+      "photos": ["/assets/reviews/rev_003_1.jpg"]
+    }
+  ],
+  "summary": {
+    "1": {
+      "totalReviews": 15,
+      "averageRating": 4.6,
+      "ratingDistribution": {
+        "5": 10,
+        "4": 3,
+        "3": 1,
+        "2": 1,
+        "1": 0
+      },
+      "recommendationPercentage": 93
+    },
+    "2": {
+      "totalReviews": 8,
+      "averageRating": 4.2,
+      "ratingDistribution": {
+        "5": 4,
+        "4": 3,
+        "3": 1,
+        "2": 0,
+        "1": 0
+      },
+      "recommendationPercentage": 87
+    },
+    "3": {
+      "totalReviews": 12,
+      "averageRating": 4.8,
+      "ratingDistribution": {
+        "5": 9,
+        "4": 2,
+        "3": 1,
+        "2": 0,
+        "1": 0
+      },
+      "recommendationPercentage": 95
+    }
+  }
+}
