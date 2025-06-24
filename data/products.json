@@ -5,7 +5,7 @@
       "name": "Abridor de Garrafas Geek",
       "price": 29.90,
       "category": "acessorios",
-      "image": "/assets/produtos/abridor.png",
+      "image": "./assets/produtos/abridor.png",
       "description": "Abridor de garrafas temático perfeito para desenvolvedores que precisam relaxar após longas sessões de código.",
       "details": {
         "material": "Metal resistente",
@@ -28,7 +28,7 @@
       "name": "Camiseta Dev Life",
       "price": 39.90,
       "category": "roupas",
-      "image": "/assets/produtos/camiseta.png",
+      "image": "./assets/produtos/camiseta.png",
       "description": "Camiseta confortável para verdadeiros programadores. Feita com algodão premium para máximo conforto durante maratonas de código.",
       "details": {
         "material": "100% Algodão",
@@ -56,7 +56,7 @@
       "name": "Caneca Code Coffee",
       "price": 19.90,
       "category": "canecas",
-      "image": "/assets/produtos/caneca.png",
+      "image": "./assets/produtos/caneca.png",
       "description": "Caneca perfeita para o café dos programadores. Design exclusivo com frases motivacionais para desenvolvedores.",
       "details": {
         "material": "Cerâmica de alta qualidade",
@@ -79,7 +79,7 @@
       "name": "Camisa Desenvolvedor",
       "price": 49.90,
       "category": "roupas",
-      "image": "/assets/produtos/camisa.png",
+      "image": "./assets/produtos/camisa.png",
       "description": "Camisa social para o desenvolvedor moderno. Perfeita para reuniões importantes e apresentações.",
       "details": {
         "material": "Algodão e Poliéster",
@@ -107,7 +107,7 @@
       "name": "Quadro Motivacional Code",
       "price": 59.90,
       "category": "decoracao",
-      "image": "/assets/produtos/quadro.png",
+      "image": "./assets/produtos/quadro.png",
       "description": "Quadro decorativo motivacional para seu setup. Inspire-se todos os dias com frases que todo programador entende.",
       "details": {
         "material": "MDF com impressão de alta qualidade",
@@ -135,7 +135,7 @@
       "name": "Copo Térmico Smart",
       "price": 29.90,
       "category": "canecas",
-      "image": "/assets/produtos/copo.png",
+      "image": "./assets/produtos/copo.png",
       "description": "Copo térmico inteligente para manter sua bebida na temperatura ideal durante longas sessões de programação.",
       "details": {
         "material": "Aço inoxidável",
@@ -158,7 +158,7 @@
       "name": "Boné Programmer",
       "price": 39.90,
       "category": "acessorios",
-      "image": "/assets/produtos/boné.png",
+      "image": "./assets/produtos/boné.png",
       "description": "Boné estiloso para desenvolvedores. Design exclusivo com bordados que representam a cultura dev.",
       "details": {
         "material": "100% Algodão",
@@ -186,7 +186,7 @@
       "name": "Mousepad Gaming Pro",
       "price": 29.90,
       "category": "acessorios",
-      "image": "/assets/produtos/mousepad.png",
+      "image": "./assets/produtos/mousepad.png",
       "description": "Mousepad de alta performance para melhorar sua produtividade e gaming. Surface lisa para precisão máxima.",
       "details": {
         "material": "Tecido de alta densidade",
