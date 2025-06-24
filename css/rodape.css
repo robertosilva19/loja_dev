@@ -34,7 +34,7 @@
 }
 
 .rodape__coluna_titulo {
-    font-family: var(--fonte-texto);
+    font-family: var(--cor-texto);
     font-weight: 700;
     font-size: 20px;
     color: var(--cor-texto);

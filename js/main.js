@@ -14,7 +14,7 @@ class LojaDevApp {
 
     async loadProducts() {
         try {
-            const response = await fetch('./data/products.json');
+            const response = await fetch('../data/products.json');
             const data = await response.json();
             this.products = data.products;
         } catch (error) {
@@ -278,8 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Adicionar CSS para animação da notificação
-const style = document.createElement('style');
-style.textContent = `
+const mainGlobalStyles = document.createElement('style');
+mainGlobalStyles.textContent = `
     @keyframes slideIn {
         from {
             transform: translateX(100%);
@@ -291,7 +291,7 @@ style.textContent = `
         }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(mainGlobalStyles);
 
 // Adicionar no final do arquivo main.js:
 function updateAuthState() {

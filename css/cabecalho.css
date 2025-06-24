@@ -1,69 +1,90 @@
-.cabecalho__nav_list {
-    display: grid;
-    grid-template-columns: 1fr auto 50% auto auto auto;
-    gap: 40px;
-    list-style-type: none;
-    align-items: center;
-    width: 100%;
-}
-
+/* --- ESTILO BASE DO CABEÇALHO --- */
 .cabecalho {
-    padding: 32px 12.5%;
+    padding: 1.5rem 5%; /* Espaçamento interno */
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.cabecalho__nav {
+    display: flex; /* A MÁGICA COMEÇA AQUI! */
+    justify-content: space-between; /* Espaça os grupos de itens */
+    align-items: center; /* Alinha tudo verticalmente */
     width: 100%;
+    gap: 1.5rem;
 }
 
-.cabecalho__logo {
-    width: 79.61px;
+.cabecalho__logo img {
     height: 48px;
+    display: block;
 }
 
-.cabecalho__nav_list_link {
-    font-size: 20px;
-    line-height: 24px;
-    text-decoration: none;
-    color: var(--cor-links);
-    font-family: var(--fonte-texto)
+/* Lista de navegação principal (contém "Sobre nós" e a busca) */
+.cabecalho__nav_list {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; /* Permite que este grupo cresça */
 }
 
+/* Barra de busca */
 .cabecalho__nav_list_item-input {
     position: relative;
+    width: 100%;
+    max-width: 500px;
 }
 
 .cabecalho__nav_list_input {
     width: 100%;
-    height: 100%;
-    padding: 24px 20px;
-    box-sizing: border-box;
-    background-color: var(--cor-texto);
+    height: 48px;
+    padding: 0 45px 0 20px;
     border-radius: 32px;
-    border: none;
-    font-size: 20px;
-    line-height: 24px;
-    font-family: var(--fonte-texto);
-    color: var(--cor-links);
+    border: 1px solid #ccc;
+    font-size: 1rem;
 }
 
 .pesquisa-icon {
     position: absolute;
-    right: 17.5px;
+    right: 18px;
     top: 50%;
     transform: translateY(-50%);
-    width: 24px;
-    height: 24px;
+    color: #555;
     pointer-events: none;
+}
+
+/* Ações do Usuário (Login, Perfil, Carrinho) */
+.cabecalho__nav_user-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.cabecalho__nav_list_link {
+    text-decoration: none;
+    color: var(--cor-links);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+.cabecalho__nav_list_link i {
+    font-size: 1.5rem;
 }
 
 /* Badge do carrinho */
 .cabecalho__nav_list_link-carrinho {
     position: relative;
-    display: flex;
-    align-items: center;
 }
-
 .cart-badge {
     position: absolute;
-    top: -8px;
-    right: -8px;
+    top: -5px;
+    right: -10px;
+    /* ... (resto do seu estilo do badge) ... */
     background-color: var(--cor-verde-neon);
     color: var(--cor-preta);
     border-radius: 50%;
@@ -73,54 +94,50 @@
     align-items: center;
     justify-content: center;
     font-size: 0.75rem;
-    font-weight: 600;
-    font-family: var(--fonte-titulo);
+    font-weight: 700;
 }
 
-.cart-badge:empty {
-    display: none;
-}
-
-/* Produtos clicáveis */
-.promocoes__list_item {
+/* Botão Hambúrguer (inicialmente escondido) */
+.hamburger-btn {
+    display: none; /* Escondido em telas grandes */
+    background: none;
+    border: none;
+    font-size: 1.8rem;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    color: var(--cor-preta);
 }
 
-.promocoes__list_item:hover {
-    transform: translateY(-5px);
-}
 
-@media screen and (max-width: 768px) {
-    .cabecalho__nav_list {
-        grid-template-areas: 
-        "logo sobre login perfil carrinho"
-        "input input input input input";
-        grid-template-columns: 1fr 2fr .5fr .5fr .5fr;
+/* --- MEDIA QUERIES PARA RESPONSIVIDADE --- */
+
+/* Para telas menores que 1024px */
+@media (max-width: 1024px) {
+    .cabecalho__nav_list,
+    .cabecalho__nav_user-actions .cabecalho__nav_list_link-login {
+        display: none; /* Esconde os itens de menu e o link de login */
     }
 
-    .cabecalho__logo {
-        grid-area: logo;
-        justify-self: center;
+    .hamburger-btn {
+        display: block; /* Mostra o botão hambúrguer */
     }
 
-    .cabecalho__nav_list_item-sobre {
-        grid-area: sobre;
+    /* Estilo para o menu mobile quando estiver aberto */
+    .cabecalho__nav.mobile-menu-open .cabecalho__nav_list,
+    .cabecalho__nav.mobile-menu-open .cabecalho__nav_user-actions .cabecalho__nav_list_link-login {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: white;
+        padding: 1rem 0;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        align-items: center;
+        gap: 1.5rem;
     }
-
-    .cabecalho__nav_list_item-login {
-        grid-area: login;
-    }
-
-    .cabecalho__nav_list_item-perfil {
-        grid-area: perfil;
-    }
-
-    .cabecalho__nav_list_item-carrinho {
-        grid-area: carrinho;
-    }
-
-    .cabecalho__nav_list_item-input {
-        grid-area: input;
+    
+    .cabecalho__nav.mobile-menu-open .cabecalho__nav_list_item-input {
+        width: 90%;
     }
 }

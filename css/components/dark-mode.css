@@ -7,6 +7,7 @@
     --bg-secondary: #f8f9fa;
     --bg-tertiary: #e9ecef;
     --text-primary: #212529;
+    --bg-footer: #0B254B;
     --text-secondary: #6c757d;
     --text-tertiary: #495057;
     --border-color: #dee2e6;
@@ -31,6 +32,7 @@
     --bg-secondary: #2d2d2d;
     --bg-tertiary: #3a3a3a;
     --text-primary: #ffffff;
+    --bg-footer: #0B254B;
     --text-secondary: #b0b0b0;
     --text-tertiary: #d0d0d0;
     --border-color: #404040;
@@ -49,6 +51,7 @@
         --bg-secondary: #2d2d2d;
         --bg-tertiary: #3a3a3a;
         --text-primary: #ffffff;
+        --bg-footer: #0B254B;
         --text-secondary: #b0b0b0;
         --text-tertiary: #d0d0d0;
         --border-color: #404040;
@@ -279,7 +282,7 @@ button {
 
 /* Footer */
 .rodape {
-    background: var(--bg-secondary);
+    background: var(--bg-footer); /* <-- USE A NOVA VARIÁVEL AQUI TAMBÉM */
     border-top: 1px solid var(--border-color);
 }
 

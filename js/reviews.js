@@ -215,27 +215,29 @@ class ReviewsSystem {
         return total / reviews.length;
     }
 
-    // Gerar HTML das estrelas
+    // Gerar HTML das estrelas (VERSÃO ATUALIZADA COM FONT AWESOME)
     generateStarsHTML(rating) {
         const fullStars = Math.floor(rating);
         const hasHalfStar = rating % 1 >= 0.5;
-        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-
         let starsHTML = '';
-        
+
+        // Adiciona um estilo para garantir que as estrelas fiquem da cor certa
+        const starStyle = 'color: #fdd835;'; // Cor amarela para as estrelas
+
         // Estrelas cheias
         for (let i = 0; i < fullStars; i++) {
-            starsHTML += '<span class="star filled"></span>';
+            starsHTML += `<i class="fa-solid fa-star" style="${starStyle}"></i>`;
         }
         
         // Meia estrela
         if (hasHalfStar) {
-            starsHTML += '<span class="star half"></span>';
+            starsHTML += `<i class="fa-solid fa-star-half-stroke" style="${starStyle}"></i>`;
         }
         
-        // Estrelas vazias
+        // Estrelas vazias (as que faltam para completar 5)
+        const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
         for (let i = 0; i < emptyStars; i++) {
-            starsHTML += '<span class="star"></span>';
+            starsHTML += `<i class="fa-regular fa-star" style="${starStyle}"></i>`; // Usamos fa-regular para a estrela vazia
         }
         
         return starsHTML;
@@ -251,7 +253,7 @@ class ReviewsSystem {
                     <div class="review-user">
                         <div class="review-avatar">${review.userAvatar}</div>
                         <div class="review-user-info">
-                            <h4>${review.userName} ${review.verified ? '<span class="verified-purchase"><img src="./assets/icons/verified.svg" alt="Verificado">Compra verificada</span>' : ''}</h4>
+                            <h4>${review.userName} ${review.verified ? '<span class="verified-purchase"><i class="fa-solid fa-circle-check"></i> Compra verificada</span>' : ''}</h4>
                             <div class="review-date">${this.formatDate(review.date)}</div>
                         </div>
                     </div>
@@ -279,13 +281,13 @@ class ReviewsSystem {
                     <div class="review-helpful">
                         <span>Esta avaliação foi útil?</span>
                         <button class="helpful-btn" onclick="reviewsSystem.markHelpful('${review.id}', true)">
-                            <img src="./assets/icons/thumbs-up.svg" alt="Útil">
-                            Sim (${review.helpful})
-                        </button>
+    <i class="fa-solid fa-thumbs-up"></i>
+    Sim (${review.helpful})
+</button>
                         <button class="helpful-btn" onclick="reviewsSystem.markHelpful('${review.id}', false)">
-                            <img src="./assets/icons/thumbs-down.svg" alt="Não útil">
-                            Não (${review.notHelpful})
-                        </button>
+    <i class="fa-solid fa-thumbs-down"></i>
+    Não (${review.notHelpful})
+</button>
                     </div>
                 </div>
             </div>

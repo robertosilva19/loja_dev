@@ -354,17 +354,18 @@ class AuthManager {
     }
 
     // Toggle de senha
-    togglePassword(button) {
-        const targetId = button.getAttribute('data-target');
-        const input = document.getElementById(targetId);
-        const img = button.querySelector('img');
+    togglePassword(toggleBtn) {
+        const passwordInput = toggleBtn.closest('.form-group').querySelector('input');
+        const icon = toggleBtn.querySelector('#password-toggle-icon') || toggleBtn;
         
-        if (input.type === 'password') {
-            input.type = 'text';
-            img.src = '../assets/icons/eye-off.svg';
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash'); // 'fa-eye-slash' é o ícone do olho cortado
         } else {
-            input.type = 'password';
-            img.src = '../assets/icons/eye.svg';
+            passwordInput.type = 'password';
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
         }
     }
 

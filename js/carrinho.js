@@ -657,42 +657,42 @@ class CarrinhoManager {
                 name: 'Camiseta React Developer',
                 category: 'Roupas',
                 price: 79.90,
-                image: '../assets/produtos/camiseta-react.jpg'
+                image: '/assets/produtos/camiseta.png'
             },
             {
                 id: 2,
                 name: 'Caneca JavaScript Coffee',
                 category: 'Canecas',
                 price: 29.90,
-                image: '../assets/produtos/caneca-js.jpg'
+                image: '/assets/produtos/caneca.png'
             },
             {
                 id: 3,
                 name: 'Mousepad Geek Code',
                 category: 'Acessórios',
                 price: 45.90,
-                image: '../assets/produtos/mousepad-code.jpg'
+                image: '/assets/produtos/mousepad.png'
             },
             {
                 id: 4,
                 name: 'Livro Clean Code',
                 category: 'Livros',
                 price: 89.90,
-                image: '../assets/produtos/livro-clean-code.jpg'
+                image: '/assets/produtos/livro-clean-code.jpg'
             },
             {
                 id: 5,
                 name: 'Adesivos Git Commits',
                 category: 'Adesivos',
                 price: 15.90,
-                image: '../assets/produtos/adesivos-git.jpg'
+                image: '/assets/produtos/'
             },
             {
                 id: 6,
                 name: 'Camiseta Python Programming',
                 category: 'Roupas',
                 price: 69.90,
-                image: '../assets/produtos/camiseta-python.jpg'
+                image: '/assets/produtos/camisa.png'
             }
         ];
     }
@@ -731,9 +731,9 @@ window.CarrinhoAPI = {
     }
 };
 
-// Adicionar animações CSS dinamicamente
-const style = document.createElement('style');
-style.textContent = `
+// Adicionar animações CSS dinamicamente (com nome único)
+const carrinhoAnimationStyle = document.createElement('style');
+carrinhoAnimationStyle.textContent = `
     @keyframes slideIn {
         from {
             opacity: 0;
@@ -744,7 +744,7 @@ style.textContent = `
             transform: translateX(0);
         }
     }
-    
+
     @keyframes slideOut {
         from {
             opacity: 1;
@@ -756,4 +756,4 @@ style.textContent = `
         }
     }
 `;
-document.head.appendChild(style);
+document.head.appendChild(carrinhoAnimationStyle);

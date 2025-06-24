@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - UseDev</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     <link rel="stylesheet" href="../css/cabecalho.css">
     <link rel="stylesheet" href="../css/pages/auth.css">
     <link rel="stylesheet" href="../css/rodape.css">
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/logo.svg">
 </head>
+
 <body>
     <!-- Header -->
     <header class="cabecalho">
@@ -28,11 +34,13 @@
                     <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
                 </li>
                 <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
-                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
+                    <input type="search" id="search" placeholder="O que você procura?"
+                        class="cabecalho__nav_list_input">
                     <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
                 </li>
                 <li class="cabecalho__nav_list_item">
-                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                    <a href="../pages/login.html"
+                        class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
                 </li>
                 <li class="cabecalho__nav_list_item">
                     <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
@@ -63,18 +71,16 @@
                 <form id="login-form" class="auth-form">
                     <div class="form-group">
                         <label for="login-email">Email</label>
-                        <input type="email" id="login-email" name="email" required 
-                               placeholder="seu@email.com">
+                        <input type="email" id="login-email" name="email" required placeholder="seu@email.com">
                         <span class="form-error" id="login-email-error"></span>
                     </div>
 
                     <div class="form-group">
                         <label for="login-password">Senha</label>
                         <div class="password-field">
-                            <input type="password" id="login-password" name="password" required 
-                                   placeholder="Sua senha">
+                            <input type="password" id="login-password" name="password" required placeholder="Sua senha">
                             <button type="button" class="toggle-password" data-target="login-password">
-                                <img src="../assets/icons/eye.svg" alt="Mostrar senha">
+                                <i class="fa-solid fa-eye"></i>
                             </button>
                         </div>
                         <span class="form-error" id="login-password-error"></span>
@@ -104,18 +110,18 @@
 
                     <div class="social-login">
                         <button type="button" class="social-button google-login">
-                            <img src="../assets/icons/google.svg" alt="Google">
+                            <i class="fa-brands fa-google"></i>
                             Entrar com Google
                         </button>
                         <button type="button" class="social-button facebook-login">
-                            <img src="../assets/icons/facebook.svg" alt="Facebook">
+                            <i class="fa-brands fa-facebook"></i>
                             Entrar com Facebook
                         </button>
                     </div>
                 </form>
 
                 <div class="auth-footer">
-                    <p>Não tem uma conta? 
+                    <p>Não tem uma conta?
                         <a href="#" id="show-register">Criar conta</a>
                     </p>
                 </div>
@@ -133,36 +139,33 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="register-nome">Nome</label>
-                            <input type="text" id="register-nome" name="nome" required 
-                                   placeholder="Seu nome">
+                            <input type="text" id="register-nome" name="nome" required placeholder="Seu nome">
                             <span class="form-error" id="register-nome-error"></span>
                         </div>
                         <div class="form-group">
                             <label for="register-sobrenome">Sobrenome</label>
-                            <input type="text" id="register-sobrenome" name="sobrenome" required 
-                                   placeholder="Seu sobrenome">
+                            <input type="text" id="register-sobrenome" name="sobrenome" required
+                                placeholder="Seu sobrenome">
                             <span class="form-error" id="register-sobrenome-error"></span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="register-email">Email</label>
-                        <input type="email" id="register-email" name="email" required 
-                               placeholder="seu@email.com">
+                        <input type="email" id="register-email" name="email" required placeholder="seu@email.com">
                         <span class="form-error" id="register-email-error"></span>
                     </div>
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="register-telefone">Telefone</label>
-                            <input type="tel" id="register-telefone" name="telefone" required 
-                                   placeholder="(11) 99999-9999">
+                            <input type="tel" id="register-telefone" name="telefone" required
+                                placeholder="(11) 99999-9999">
                             <span class="form-error" id="register-telefone-error"></span>
                         </div>
                         <div class="form-group">
                             <label for="register-cpf">CPF</label>
-                            <input type="text" id="register-cpf" name="cpf" required 
-                                   placeholder="000.000.000-00">
+                            <input type="text" id="register-cpf" name="cpf" required placeholder="000.000.000-00">
                             <span class="form-error" id="register-cpf-error"></span>
                         </div>
                     </div>
@@ -170,10 +173,10 @@
                     <div class="form-group">
                         <label for="register-password">Senha</label>
                         <div class="password-field">
-                            <input type="password" id="register-password" name="password" required 
-                                   placeholder="Mínimo 6 caracteres">
+                            <input type="password" id="register-password" name="password" required
+                                placeholder="Mínimo 6 caracteres">
                             <button type="button" class="toggle-password" data-target="register-password">
-                                <img src="../assets/icons/eye.svg" alt="Mostrar senha">
+                                <i class="fa-solid fa-eye" id="password-toggle-icon"></i>
                             </button>
                         </div>
                         <div class="password-strength" id="password-strength">
@@ -188,10 +191,10 @@
                     <div class="form-group">
                         <label for="register-confirm-password">Confirmar Senha</label>
                         <div class="password-field">
-                            <input type="password" id="register-confirm-password" name="confirmPassword" required 
-                                   placeholder="Confirme sua senha">
+                            <input type="password" id="register-confirm-password" name="confirmPassword" required
+                                placeholder="Confirme sua senha">
                             <button type="button" class="toggle-password" data-target="register-confirm-password">
-                                <img src="../assets/icons/eye.svg" alt="Mostrar senha">
+                                <i class="fa-solid fa-eye"></i>
                             </button>
                         </div>
                         <span class="form-error" id="register-confirm-password-error"></span>
@@ -201,7 +204,7 @@
                         <label class="checkbox-wrapper">
                             <input type="checkbox" id="accept-terms" name="terms" required>
                             <span class="checkmark"></span>
-                            Aceito os <a href="../pages/termos.html" target="_blank">Termos de Uso</a> 
+                            Aceito os <a href="../pages/termos.html" target="_blank">Termos de Uso</a>
                             e <a href="../pages/politicas.html" target="_blank">Política de Privacidade</a>
                         </label>
                         <span class="form-error" id="register-terms-error"></span>
@@ -228,18 +231,18 @@
 
                     <div class="social-login">
                         <button type="button" class="social-button google-register">
-                            <img src="../assets/icons/google.svg" alt="Google">
+                            <i class="fa-brands fa-google"></i>
                             Cadastrar com Google
                         </button>
                         <button type="button" class="social-button facebook-register">
-                            <img src="../assets/icons/facebook.svg" alt="Facebook">
+                            <i class="fa-brands fa-facebook"></i>
                             Cadastrar com Facebook
                         </button>
                     </div>
                 </form>
 
                 <div class="auth-footer">
-                    <p>Já tem uma conta? 
+                    <p>Já tem uma conta?
                         <a href="#" id="show-login">Fazer login</a>
                     </p>
                 </div>
@@ -256,8 +259,7 @@
                 <form id="forgot-password-form" class="auth-form">
                     <div class="form-group">
                         <label for="forgot-email">Email</label>
-                        <input type="email" id="forgot-email" name="email" required 
-                               placeholder="seu@email.com">
+                        <input type="email" id="forgot-email" name="email" required placeholder="seu@email.com">
                         <span class="form-error" id="forgot-email-error"></span>
                     </div>
 
@@ -270,7 +272,7 @@
                 </form>
 
                 <div class="auth-footer">
-                    <p>Lembrou da senha? 
+                    <p>Lembrou da senha?
                         <a href="#" id="back-to-login">Voltar ao login</a>
                     </p>
                 </div>
@@ -307,4 +309,5 @@
     <script src="../js/main.js"></script>
     <script src="../js/auth.js"></script>
 </body>
+
 </html>

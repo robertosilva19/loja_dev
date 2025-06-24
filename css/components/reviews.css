@@ -49,31 +49,6 @@
     gap: 2px;
 }
 
-.star {
-    width: 20px;
-    height: 20px;
-    background-image: url('../assets/icons/star.svg');
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.3;
-    transition: all 0.3s ease;
-}
-
-.star.filled {
-    background-image: url('../assets/icons/star-filled.svg');
-    opacity: 1;
-    filter: brightness(0) saturate(100%) invert(64%) sepia(98%) saturate(3207%) hue-rotate(130deg);
-}
-
-.star.half {
-    background: linear-gradient(90deg, 
-        var(--accent-green, #00ff7f) 50%, 
-        rgba(0,0,0,0.1) 50%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    opacity: 1;
-}
-
 .reviews-count {
     color: var(--text-secondary, #6c757d);
     font-size: 0.9rem;
