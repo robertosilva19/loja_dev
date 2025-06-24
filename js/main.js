@@ -14,7 +14,7 @@ class LojaDevApp {
 
     async loadProducts() {
         try {
-            const response = await fetch('../data/products.json');
+            const response = await fetch('./data/products.json'); // Correto e universal
             const data = await response.json();
             this.products = data.products;
         } catch (error) {
