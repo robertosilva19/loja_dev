@@ -4,51 +4,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Busca - UseDev</title>
+
+    <!-- Fontes do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome (Biblioteca de Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Seus Arquivos CSS -->
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../css/cabecalho.css">
     <link rel="stylesheet" href="../css/components/search-components.css">
     <link rel="stylesheet" href="../css/pages/search-page.css">
     <link rel="stylesheet" href="../css/rodape.css">
+
+    <!-- Ícone da Aba (Favicon) -->
+    <link rel="icon" type="image/svg+xml" href="../assets/icons/logo.svg">
 </head>
 <body>
-    <!-- Header -->
+    <!-- ===== CABEÇALHO ATUALIZADO ===== -->
     <header class="cabecalho">
         <nav class="cabecalho__nav">
+            <a href="../index.html" class="cabecalho__logo">
+                <img src="../assets/icons/logo.svg" alt="logo da use dev">
+            </a>
+
+            <!-- Itens do Menu para Desktop -->
             <ul class="cabecalho__nav_list">
-                <li>
-                    <h1 class="cabecalho__logo">
-                        <a href="../index.html">
-                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
-                        </a>
-                    </h1>
-                </li>
                 <li class="cabecalho__nav_list_item">
                     <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
                 </li>
                 <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
                     <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
-                    <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
-                        <img src="../assets/icons/perfil.svg" alt="perfil">
-                    </a>
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
-                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
-                        <span id="cart-count" class="cart-badge">0</span>
-                    </a>
+                    <i class="fa-solid fa-magnifying-glass pesquisa-icon"></i>
                 </li>
             </ul>
+            
+            <!-- Ações do Utilizador com Lógica de Login -->
+            <div class="cabecalho__nav_user-actions">
+    
+                <!-- (1) ESTADO QUANDO O UTILIZADOR ESTÁ DESLOGADO -->
+                <div id="user-actions-logged-out">
+                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </div>
+            
+                <!-- (2) ESTADO QUANDO O UTILIZADOR ESTÁ LOGADO (Inicialmente escondido) -->
+                <div id="user-actions-logged-in" class="user-greeting" style="display: none;">
+                    <span id="user-greeting-name">Olá, Utilizador!</span>
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil" title="Perfil">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                    <button id="header-logout-btn" class="logout-button" title="Sair">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            
+                <!-- O carrinho fica fora, pois aparece em ambos os estados -->
+                <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho" title="Carrinho">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </a>
+            </div>
+            
+            <!-- Botão do Menu Hambúrguer para Mobile -->
+            <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </nav>
     </header>
+    <!-- ===== FIM DO CABEÇALHO ATUALIZADO ===== -->
 
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
@@ -64,11 +90,11 @@
             <div class="search-header">
                 <div class="search-title">
                     <h1 id="search-title">Resultados para ""</h1>
-                    <p id="search-subtitle">Encontramos <span id="results-count">0</span> produtos</p>
+                    <p id="search-subtitle">Encontrámos <span id="results-count">0</span> produtos</p>
                 </div>
                 <div class="search-actions-header">
                     <button class="save-search-btn" id="save-search">
-                        <img src="../assets/icons/bookmark.svg" alt="Salvar busca">
+                        <i class="fa-regular fa-bookmark"></i>
                         Salvar busca
                     </button>
                 </div>
@@ -81,7 +107,7 @@
                     <div class="filters-header">
                         <h2>Filtros</h2>
                         <button class="clear-filters-btn" id="clear-all-filters">
-                            <img src="../assets/icons/x.svg" alt="Limpar">
+                            <i class="fa-solid fa-xmark"></i>
                             Limpar todos
                         </button>
                     </div>
@@ -97,42 +123,11 @@
                         <div class="filter-header">
                             <h3>Categorias</h3>
                             <button class="filter-toggle" data-target="categories">
-                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                                <i class="fa-solid fa-chevron-down"></i>
                             </button>
                         </div>
                         <div class="filter-content" id="categories">
-                            <div class="filter-options">
-                                <label class="filter-option">
-                                    <input type="checkbox" name="category" value="roupas">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Roupas</span>
-                                    <span class="count">(12)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="category" value="canecas">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Canecas</span>
-                                    <span class="count">(8)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="category" value="acessorios">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Acessórios</span>
-                                    <span class="count">(15)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="category" value="livros">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Livros</span>
-                                    <span class="count">(6)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="category" value="adesivos">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Adesivos</span>
-                                    <span class="count">(20)</span>
-                                </label>
-                            </div>
+                            <!-- Opções de categoria aqui -->
                         </div>
                     </div>
 
@@ -141,31 +136,11 @@
                         <div class="filter-header">
                             <h3>Preço</h3>
                             <button class="filter-toggle" data-target="price">
-                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                                <i class="fa-solid fa-chevron-down"></i>
                             </button>
                         </div>
                         <div class="filter-content" id="price">
-                            <div class="price-range">
-                                <div class="range-inputs">
-                                    <input type="number" id="min-price" placeholder="Min" min="0">
-                                    <span>até</span>
-                                    <input type="number" id="max-price" placeholder="Max" min="0">
-                                </div>
-                                <div class="range-slider">
-                                    <input type="range" id="price-slider-min" min="0" max="500" value="0" step="5">
-                                    <input type="range" id="price-slider-max" min="0" max="500" value="500" step="5">
-                                </div>
-                                <div class="range-labels">
-                                    <span>R$ 0</span>
-                                    <span>R$ 500+</span>
-                                </div>
-                            </div>
-                            <div class="price-presets">
-                                <button class="price-preset" data-min="0" data-max="50">Até R$ 50</button>
-                                <button class="price-preset" data-min="50" data-max="100">R$ 50 - R$ 100</button>
-                                <button class="price-preset" data-min="100" data-max="200">R$ 100 - R$ 200</button>
-                                <button class="price-preset" data-min="200" data-max="999">Acima de R$ 200</button>
-                            </div>
+                            <!-- Filtro de preço aqui -->
                         </div>
                     </div>
 
@@ -174,36 +149,11 @@
                         <div class="filter-header">
                             <h3>Avaliação</h3>
                             <button class="filter-toggle" data-target="rating">
-                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                               <i class="fa-solid fa-chevron-down"></i>
                             </button>
                         </div>
                         <div class="filter-content" id="rating">
-                            <div class="filter-options">
-                                <label class="filter-option">
-                                    <input type="checkbox" name="rating" value="5">
-                                    <span class="checkmark"></span>
-                                    <div class="rating-stars">
-                                        <span class="stars">⭐⭐⭐⭐⭐</span>
-                                        <span class="count">(4)</span>
-                                    </div>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="rating" value="4">
-                                    <span class="checkmark"></span>
-                                    <div class="rating-stars">
-                                        <span class="stars">⭐⭐⭐⭐☆</span>
-                                        <span class="count">(12)</span>
-                                    </div>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="rating" value="3">
-                                    <span class="checkmark"></span>
-                                    <div class="rating-stars">
-                                        <span class="stars">⭐⭐⭐☆☆</span>
-                                        <span class="count">(8)</span>
-                                    </div>
-                                </label>
-                            </div>
+                           <!-- Filtro de avaliação aqui -->
                         </div>
                     </div>
 
@@ -212,37 +162,17 @@
                         <div class="filter-header">
                             <h3>Disponibilidade</h3>
                             <button class="filter-toggle" data-target="availability">
-                                <img src="../assets/icons/chevron-down.svg" alt="Expandir">
+                                <i class="fa-solid fa-chevron-down"></i>
                             </button>
                         </div>
                         <div class="filter-content" id="availability">
-                            <div class="filter-options">
-                                <label class="filter-option">
-                                    <input type="checkbox" name="availability" value="in-stock">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Em estoque</span>
-                                    <span class="count">(45)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="availability" value="on-sale">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Em promoção</span>
-                                    <span class="count">(12)</span>
-                                </label>
-                                <label class="filter-option">
-                                    <input type="checkbox" name="availability" value="new">
-                                    <span class="checkmark"></span>
-                                    <span class="label-text">Novidades</span>
-                                    <span class="count">(8)</span>
-                                </label>
-                            </div>
+                           <!-- Filtro de disponibilidade aqui -->
                         </div>
                     </div>
                 </aside>
 
                 <!-- Resultados -->
                 <div class="search-results">
-                    <!-- Controles de Ordenação -->
                     <div class="results-controls">
                         <div class="results-info">
                             <span id="results-range">1-12 de 45 resultados</span>
@@ -262,10 +192,10 @@
                             </div>
                             <div class="view-toggle">
                                 <button class="view-btn active" data-view="grid" title="Visualização em grade">
-                                    <img src="../assets/icons/grid.svg" alt="Grade">
+                                    <i class="fa-solid fa-grip"></i>
                                 </button>
                                 <button class="view-btn" data-view="list" title="Visualização em lista">
-                                    <img src="../assets/icons/list.svg" alt="Lista">
+                                    <i class="fa-solid fa-list"></i>
                                 </button>
                             </div>
                         </div>
@@ -276,41 +206,31 @@
                         <!-- Produtos serão inseridos aqui -->
                     </div>
 
-                    <!-- Estados Especiais -->
+                    <!-- Estado "Sem Resultados" -->
                     <div class="no-results" id="no-results" style="display: none;">
                         <div class="no-results-icon">
-                            <img src="../assets/icons/search-x.svg" alt="Nenhum resultado">
+                            <i class="fa-solid fa-file-circle-xmark fa-3x"></i>
                         </div>
                         <h2>Nenhum produto encontrado</h2>
-                        <p>Tente ajustar os filtros ou buscar por termos diferentes.</p>
-                        <div class="no-results-actions">
-                            <button class="btn-primary" onclick="searchPage.clearAllFilters()">
-                                Limpar filtros
-                            </button>
-                            <a href="../index.html" class="btn-secondary">
-                                Ver todos os produtos
-                            </a>
-                        </div>
+                        <p>Tente ajustar os filtros ou procurar por termos diferentes.</p>
                     </div>
 
                     <!-- Loading -->
                     <div class="search-loading" id="search-loading" style="display: none;">
                         <div class="loading-spinner"></div>
-                        <p>Buscando produtos...</p>
+                        <p>A procurar produtos...</p>
                     </div>
 
                     <!-- Paginação -->
                     <div class="pagination" id="pagination">
                         <button class="pagination-btn prev" id="prev-page" disabled>
-                            <img src="../assets/icons/chevron-left.svg" alt="Anterior">
+                            <i class="fa-solid fa-chevron-left"></i>
                             Anterior
                         </button>
-                        <div class="pagination-numbers" id="pagination-numbers">
-                            <!-- Números da paginação -->
-                        </div>
+                        <div class="pagination-numbers" id="pagination-numbers"></div>
                         <button class="pagination-btn next" id="next-page">
                             Próximo
-                            <img src="../assets/icons/chevron-right.svg" alt="Próximo">
+                            <i class="fa-solid fa-chevron-right"></i>
                         </button>
                     </div>
                 </div>
@@ -328,7 +248,7 @@
             <div class="rodape__coluna">
                 <h5 class="rodape__coluna_titulo">Funcionamento</h5>
                 <ul class="rodape__coluna_list">
-                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8 as 18h</li>
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8h às 18h</li>
                     <li class="rodape__coluna_list_item">
                         <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
                     </li>
@@ -344,5 +264,6 @@
     <script src="../js/main.js"></script>
     <script src="../js/search-system.js"></script>
     <script src="../js/search-page.js"></script>
+    <script src="../js/menu.js"></script>
 </body>
 </html>

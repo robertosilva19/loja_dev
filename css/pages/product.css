@@ -357,3 +357,44 @@
         font-size: 0.8rem;
     }
 }
+
+.produto__actions-secundarias {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.produto__actions-secundarias .favorite-btn {
+    background-color: transparent;
+    border: 1px solid var(--border-color, #eee);
+    color: var(--text-secondary, #666);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.2s ease-in-out;
+}
+
+.produto__actions-secundarias .favorite-btn:hover {
+    background-color: rgba(220, 38, 38, 0.05);
+    color: #dc2626;
+    border-color: rgba(220, 38, 38, 0.3);
+}
+
+.produto__actions-secundarias .favorite-btn.favorited {
+    background-color: rgba(220, 38, 38, 0.1);
+    color: #dc2626;
+    border-color: rgba(220, 38, 38, 0.5);
+}
+
+.produto__actions-secundarias .favorite-btn .fa-heart {
+    transition: transform 0.2s ease;
+}
+
+.produto__actions-secundarias .favorite-btn:hover .fa-heart {
+    transform: scale(1.1);
+}

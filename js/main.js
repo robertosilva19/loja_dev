@@ -1,3 +1,5 @@
+// Gestor Principal da Aplicação UseDev
+
 class LojaDevApp {
     constructor() {
         this.products = [];
@@ -6,33 +8,32 @@ class LojaDevApp {
     }
 
     async init() {
-        await this.loadProducts();
-        this.renderProducts();
+        // Carrega os produtos apenas se estivermos na página inicial
+        if (document.querySelector('.promocoes__list')) {
+            await this.loadProducts();
+            this.renderProducts();
+        }
+        // As configurações de eventos gerais podem continuar aqui
         this.setupEventListeners();
-        // ... outras inicializações ...
     }
 
     async loadProducts() {
         try {
-            // --- A GRANDE MUDANÇA ESTÁ AQUI ---
-            // Antes, buscávamos de um arquivo local.
-            // Agora, buscamos da nossa nova API de back-end!
-            const response = await fetch('http://localhost:3001/api/produtos');
+            // Usa um caminho relativo para funcionar em qualquer ambiente
+            const response = await fetch('./data/products.json');
 
             if (!response.ok) {
-                // Se a resposta da API não for bem-sucedida, lança um erro.
                 throw new Error(`Erro na API: ${response.statusText}`);
             }
 
             const productsData = await response.json();
-            this.products = productsData;
-            this.filteredProducts = productsData; // Inicialmente, todos os produtos são mostrados
+            this.products = productsData.products; // Ajustado para pegar o array de produtos
+            this.filteredProducts = this.products;
             
-            console.log('Produtos carregados com sucesso da API!', this.products);
+            console.log('Produtos carregados com sucesso!', this.products);
 
         } catch (error) {
-            console.error('Erro ao carregar produtos da API:', error);
-            // Aqui você pode mostrar uma mensagem de erro na tela para o usuário.
+            console.error('Erro ao carregar produtos:', error);
             const productList = document.querySelector('.promocoes__list');
             if (productList) {
                 productList.innerHTML = `<p class="error-message">Não foi possível carregar os produtos. Tente novamente mais tarde.</p>`;
@@ -44,28 +45,25 @@ class LojaDevApp {
         const productList = document.querySelector('.promocoes__list');
         if (!productList) return;
 
-        productList.innerHTML = ''; // Limpa a lista antes de renderizar
+        productList.innerHTML = ''; 
 
-        if (productsToRender.length === 0) {
+        if (!productsToRender || productsToRender.length === 0) {
             productList.innerHTML = `<p>Nenhum produto encontrado.</p>`;
             return;
         }
 
         productsToRender.forEach(product => {
-            // Ajusta o caminho da imagem para funcionar no GitHub Pages e localmente
-            const imagePath = window.location.pathname.includes('/pages/') 
-                ? `..${product.imagem_url.substring(1)}` 
-                : product.imagem_url;
+            const imagePath = product.image; // Caminho já é relativo a partir do JSON
 
             const productCard = document.createElement('li');
             productCard.className = 'promocoes__list_item';
-            productCard.dataset.productId = product.id; // Usando o ID do banco de dados
+            productCard.dataset.productId = product.id;
 
             productCard.innerHTML = `
-                <img src="${imagePath}" alt="${product.nome}">
+                <img src="${imagePath}" alt="${product.name}">
                 <div class="promocoes__list_item_descricao">
-                    <h4>${product.nome}</h4>
-                    <p>R$ ${parseFloat(product.preco).toFixed(2).replace('.', ',')}</p>
+                    <h4>${product.name}</h4>
+                    <p>R$ ${parseFloat(product.price).toFixed(2).replace('.', ',')}</p>
                 </div>
             `;
 
@@ -79,11 +77,61 @@ class LojaDevApp {
     }
 
     setupEventListeners() {
-        // Lógica para filtros ou busca, se houver
+        // Lógica futura para filtros ou busca na página inicial
     }
 }
 
-// Inicializar a aplicação
+
+/**
+ * GESTÃO DO ESTADO DE LOGIN NO CABEÇALHO
+ * Esta função verifica se um utilizador está logado (verificando o localStorage)
+ * e atualiza o cabeçalho para mostrar as informações corretas.
+ * É executada em todas as páginas que incluem o main.js.
+ */
+function atualizarEstadoCabecalho() {
+    const utilizadorLogado = JSON.parse(localStorage.getItem('currentUser'));
+    const token = localStorage.getItem('userToken');
+
+    const acoesDeslogado = document.getElementById('user-actions-logged-out');
+    const acoesLogado = document.getElementById('user-actions-logged-in');
+    const nomeUtilizadorEl = document.getElementById('user-greeting-name');
+    const btnLogout = document.getElementById('header-logout-btn');
+
+    // Garante que os elementos existem antes de tentar manipulá-los
+    if (!acoesDeslogado || !acoesLogado || !nomeUtilizadorEl || !btnLogout) {
+        console.warn("Elementos do cabeçalho para autenticação não encontrados nesta página.");
+        return;
+    }
+
+    if (utilizadorLogado && token) {
+        // Se o utilizador estiver logado:
+        // 1. Mostra a saudação e os botões de perfil/sair
+        acoesLogado.style.display = 'flex';
+        acoesDeslogado.style.display = 'none';
+
+        // 2. Personaliza a saudação com o nome do utilizador
+        nomeUtilizadorEl.textContent = `Olá, ${utilizadorLogado.nome}`;
+
+        // 3. Adiciona o evento de clique ao botão de logout
+        btnLogout.onclick = () => {
+            if (confirm('Tem a certeza que deseja sair?')) {
+                localStorage.removeItem('currentUser');
+                localStorage.removeItem('userToken');
+                // Recarrega a página para refletir o estado de deslogado
+                window.location.href = '/index.html'; // Redireciona para a página inicial
+            }
+        };
+
+    } else {
+        // Se o utilizador não estiver logado:
+        // Mostra apenas o botão de Login
+        acoesLogado.style.display = 'none';
+        acoesDeslogado.style.display = 'block';
+    }
+}
+
+// Inicializar a aplicação e o estado do cabeçalho
 document.addEventListener('DOMContentLoaded', () => {
     new LojaDevApp();
+    atualizarEstadoCabecalho();
 });

@@ -22,56 +22,71 @@
     <link rel="stylesheet" href="./css/components/review-form.css">
     <link rel="stylesheet" href="./css/components/pwa.css">
     <link rel="manifest" href="./data/manifest.json">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <!-- Meta tags PWA -->
     <meta name="theme-color" content="#00ff7f">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <meta name="apple-mobile-web-app-title" content="UseDev">
     <link rel="apple-touch-icon" href="./assets/pwa/icon-192x192.png">
-    <link rel="icon" type="image/svg+xml" href="../assets/icons/logo.svg">
+    <link rel="icon" type="image/svg+xml" href="./assets/icons/logo.svg">
 </head>
 
 <body>
+    <!-- ===== CABEÇALHO ATUALIZADO ===== -->
     <header class="cabecalho">
         <nav class="cabecalho__nav">
-
             <a href="index.html" class="cabecalho__logo">
                 <img src="./assets/icons/logo.svg" alt="logo da use dev">
             </a>
 
+            <!-- Itens do Menu para Desktop -->
             <ul class="cabecalho__nav_list">
                 <li class="cabecalho__nav_list_item">
                     <a href="./pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
                 </li>
                 <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
-                    <input type="search" id="search" placeholder="O que você procura?"
-                        class="cabecalho__nav_list_input">
+                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
                     <i class="fa-solid fa-magnifying-glass pesquisa-icon"></i>
                 </li>
             </ul>
-
+            
+            <!-- Ações do Utilizador com Lógica de Login -->
             <div class="cabecalho__nav_user-actions">
-                <a href="./pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
-                <a href="./pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil"
-                    title="Perfil">
-                    <i class="fa-solid fa-user"></i>
-                </a>
-                <a href="./pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho"
-                    title="Carrinho">
+    
+                <!-- (1) ESTADO QUANDO O UTILIZADOR ESTÁ DESLOGADO -->
+                <div id="user-actions-logged-out">
+                    <a href="./pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </div>
+            
+                <!-- (2) ESTADO QUANDO O UTILIZADOR ESTÁ LOGADO (Inicialmente escondido) -->
+                <div id="user-actions-logged-in" class="user-greeting" style="display: none;">
+                    <span id="user-greeting-name">Olá, Utilizador!</span>
+                    <a href="./pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil" title="Perfil">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                    <button id="header-logout-btn" class="logout-button" title="Sair">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            
+                <!-- O carrinho fica fora, pois aparece em ambos os estados -->
+                <a href="./pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho" title="Carrinho">
                     <i class="fa-solid fa-cart-shopping"></i>
                     <span id="cart-count" class="cart-badge">0</span>
                 </a>
             </div>
-
+            
+            <!-- Botão do Menu Hambúrguer para Mobile -->
             <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
-
         </nav>
     </header>
+    <!-- ===== FIM DO CABEÇALHO ATUALIZADO ===== -->
+
     <section class="banner">
-        <img class="banner__imagem" src="./assets/banner.png" alt="Uma pessoa vestindo uma camiseta da UseDev" />
+        <img class="banner__imagem" src="./assets/banner.png" alt="Uma pessoa a vestir uma camiseta da UseDev" />
         <div class="banner__container">
             <h2 class="banner__container-titulo">Hora de abraçar <span>o seu lado geek!</span></h2>
             <button class="banner__container-botao">Ver as novidades!</button>
@@ -80,7 +95,7 @@
 
     <section class="categorias">
         <h3 class="categorias__titulo">Categorias</h3>
-        <p class="categorias__texto">De roupas a gadgets tecnológicos temos tudo para atender suas paixões e hobbies com
+        <p class="categorias__texto">De roupas a gadgets tecnológicos temos tudo para atender às suas paixões e hobbies com
             estilo e autenticidade.</p>
         <ul class="categorias__list">
             <li class="categorias__list_item categorias__list_item-roupas">
@@ -113,75 +128,20 @@
     <section class="promocoes">
         <h3 class="promocoes__titulo">Promos especiais</h3>
         <ul class="promocoes__list">
-            <li class="promocoes__list_item" data-product-id="1">
-                <img src="./assets/produtos/abridor.png" alt="Abridor de garrafas">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Abridor</h4>
-                    <p>R$ 29,90</p>
-                </div>
-            </li>
-            <li class="promocoes__list_item" data-product-id="2">
-                <img src="./assets/produtos/camiseta.png" alt="Camiseta">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Camiseta</h4>
-                    <p>R$ 39,90</p>
-                </div>
-            </li>
-            <li class="promocoes__list_item" data-product-id="3">
-                <img src="./assets/produtos/caneca.png" alt="Caneca">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Caneca</h4>
-                    <p>R$ 19,90</p>
-                </div>
-            </li>
-            <li class="promocoes__list_item" data-product-id="4">
-                <img src="./assets/produtos/camisa.png" alt="camisa">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Camisa</h4>
-                    <p>R$ 49,90</p>
-                </div>
-            </li>
-            <li class="promocoes__list_item" data-product-id="5">
-                <img src="./assets/produtos/quadro.png" alt="Quadro">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Quadro</h4>
-                    <p>R$ 59,90</p>
-                </div>
-            </li>
-            <li class="promocoes__list_item" data-product-id="6">
-                <img src="./assets/produtos/copo.png" alt="Copo">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Copo</h4>
-                    <p>R$ 29,90</p>
-                </div>
-            </li>
-            <li class="promocoes__list_item" data-product-id="7">
-                <img src="./assets/produtos/boné.png" alt="Boné">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Boné</h4>
-                    <p>R$ 39,90</p>
-                </div>
-            </li>
-            <li class="promocoes__list_item" data-product-id="8">
-                <img src="./assets/produtos/mousepad.png" alt="Mousepad">
-                <div class="promocoes__list_item_descricao">
-                    <h4>Mousepad</h4>
-                    <p>R$ 29,90</p>
-                </div>
-            </li>
+            <!-- Os produtos da API serão renderizados aqui pelo main.js -->
         </ul>
     </section>
+
     <section class="newsletter">
         <h3 class="newsletter__titulo">Inscreva-se para ganhar descontos!</h3>
-        <h4 class="newsletter__texto">Cadastre seu email, receba novidades e descontos imperdíveis antes de todo mundo!
+        <h4 class="newsletter__texto">Registe o seu email, receba novidades e descontos imperdíveis antes de todo o mundo!
         </h4>
         <div class="newsletter__container">
-            <input type="email" name="email" id="email" placeholder="Digite seu melhor endereço de email"
+            <input type="email" name="email" id="email" placeholder="Digite o seu melhor endereço de email"
                 class="newsletter__container_input">
             <button class="newsletter__container_botao">Inscrever</button>
         </div>
     </section>
-
 
     <footer class="rodape">
         <div class="rodape__linha">
@@ -193,7 +153,7 @@
                 <h5 class="rodape__coluna_titulo">Funcionamento</h5>
                 <ul class="rodape__coluna_list">
                     <li class="rodape__coluna_list_item">
-                        Segunda a Sexta - 8 as 18h
+                        Segunda a Sexta - 8h às 18h
                     </li>
                     <li class="rodape__coluna_list_item">
                         <a class="rodape__coluna_link" href="mailto:sac@usedev.com">
@@ -269,7 +229,7 @@
             </div>
 
             <div class="rodape__coluna">
-                <h5 class="rodape__coluna_titulo">Siga nossas redes</h5>
+                <h5 class="rodape__coluna_titulo">Siga as nossas redes</h5>
                 <ul class="rodape__coluna_list-redes-sociais">
                     <li class="rodape__coluna_list-item-redes-sociais">
                         <a href="#">
@@ -294,10 +254,9 @@
     <!-- Scripts -->
     <script src="./js/main.js"></script>
     <script src="./js/dark-mode.js"></script>
-
     <script src="./js/reviews.js"></script>
-
     <script src="./js/form-reviews.js"></script>
+    <script src="./js/menu.js"></script> <!-- Script para o menu hambúrguer -->
 
     <script>
         // Demonstrar sistema de reviews ao carregar

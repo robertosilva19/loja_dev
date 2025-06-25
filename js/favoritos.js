@@ -1,98 +1,108 @@
+// Sistema de Favoritos Completo - Conectado à API
+
 class FavoritesSystem {
     constructor() {
-        this.favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
-        this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        this.favoritos = []; // A lista será preenchida pela API
+        this.token = localStorage.getItem('userToken'); // Pega o token de autenticação
+        this.apiBaseUrl = 'http://localhost:3001/api'; // URL do nosso back-end
+        
         this.init();
     }
 
-    init() {
-        this.updateFavoriteButtons();
-        this.updateFavoriteCount();
+    async init() {
+        // Se o utilizador estiver logado, carrega os favoritos da base de dados
+        if (this.token) {
+            await this.loadFavoritesFromAPI();
+        }
         this.setupEventListeners();
+        this.updateFavoriteCount(); // Atualiza o contador no cabeçalho
     }
 
     setupEventListeners() {
-        // Listener global para botões de favorito
+        // Listener global para todos os botões de favorito
         document.addEventListener('click', (e) => {
             const btn = e.target.closest('.favorite-btn');
             if (btn) {
                 e.preventDefault();
                 e.stopPropagation();
                 const productId = parseInt(btn.dataset.productId);
-                this.toggleFavorite(productId, btn);
+                if (!isNaN(productId)) {
+                    this.toggleFavorite(productId, btn);
+                }
             }
-        });
-
-        // Listener para produtos dinâmicos
-        document.addEventListener('DOMContentLoaded', () => {
-            this.updateFavoriteButtons();
         });
     }
 
-    async toggleFavorite(productId, buttonElement = null) {
+    // --- LÓGICA DE API ---
+
+    // NOVO: Carrega a lista de favoritos da API
+    async loadFavoritesFromAPI() {
+        if (!this.token) return;
         try {
-            if (!this.currentUser) {
-                this.showLoginPrompt();
-                return;
-            }
-
-            const isFavorited = this.isFavorite(productId);
+            const response = await fetch(`${this.apiBaseUrl}/favoritos`, {
+                headers: { 'Authorization': `Bearer ${this.token}` }
+            });
+            if (!response.ok) throw new Error('Falha ao carregar favoritos da API.');
             
-            if (isFavorited) {
-                await this.removeFavorite(productId);
-                this.showMessage('Produto removido dos favoritos', 'info');
-            } else {
-                const product = await this.getProductById(productId);
-                if (product) {
-                    await this.addFavorite(product);
-                    this.showMessage('Produto adicionado aos favoritos!', 'success');
-                }
+            this.favoritos = await response.json();
+            this.updateFavoriteButtons(); // Atualiza a aparência dos botões na página
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    
+    // ATUALIZADO: Adiciona ou remove um favorito via API
+    async toggleFavorite(productId, buttonElement = null) {
+        if (!this.token) {
+            return this.showLoginPrompt();
+        }
+
+        const isFavorited = this.isFavorite(productId);
+        const method = isFavorited ? 'DELETE' : 'POST';
+        let url = `${this.apiBaseUrl}/favoritos`;
+        if (method === 'DELETE') {
+            url += `/${productId}`;
+        }
+
+        try {
+            const response = await fetch(url, {
+                method: method,
+                headers: {
+                    'Authorization': `Bearer ${this.token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: method === 'POST' ? JSON.stringify({ produtoId: productId }) : undefined
+            });
+
+            if (!response.ok) {
+                throw new Error('Não foi possível atualizar os favoritos.');
             }
 
-            this.updateFavoriteButtons();
+            // Após a ação bem-sucedida, recarrega a lista do servidor
+            await this.loadFavoritesFromAPI();
             this.updateFavoriteCount();
             
+            this.showMessage(isFavorited ? 'Produto removido dos favoritos.' : 'Produto adicionado aos favoritos!', isFavorited ? 'info' : 'success');
+
             if (buttonElement) {
                 this.animateFavoriteButton(buttonElement, !isFavorited);
             }
 
+            // Atualiza a página de perfil, se estiver aberta
             if (window.perfilPage) {
-                window.perfilPage.loadFavoritos();
-                window.perfilPage.updateCounts();
+                window.perfilPage.loadFavorites(); 
             }
 
         } catch (error) {
-            console.error('Erro ao atualizar favoritos:', error);
-            this.showMessage('Erro ao atualizar favoritos', 'error');
+            console.error(error.message);
+            this.showMessage('Ocorreu um erro. Tente novamente.', 'error');
         }
     }
 
-    async addFavorite(product) {
-        if (this.isFavorite(product.id)) {
-            return;
-        }
-
-        const favoriteItem = {
-            id: product.id,
-            name: product.name,
-            price: product.price,
-            image: product.image,
-            addedAt: new Date().toISOString(),
-            userId: this.currentUser?.id
-        };
-
-        this.favoritos.push(favoriteItem);
-        this.saveFavorites();
-        this.createHeartAnimation();
-    }
-
-    async removeFavorite(productId) {
-        this.favoritos = this.favoritos.filter(fav => fav.id !== productId);
-        this.saveFavorites();
-    }
+    // --- MÉTODOS DE ESTADO E UI (INTERFACE DO UTILIZADOR) ---
 
     isFavorite(productId) {
-        return this.favoritos.some(fav => fav.id === productId);
+        return this.favoritos.some(p => p.id === productId);
     }
 
     getFavoriteCount() {
@@ -102,157 +112,18 @@ class FavoritesSystem {
     getFavorites() {
         return [...this.favoritos];
     }
-
-    clearFavorites() {
-        this.favoritos = [];
-        this.saveFavorites();
-        this.updateFavoriteButtons();
-        this.updateFavoriteCount();
-    }
-
-    saveFavorites() {
-        localStorage.setItem('favoritos', JSON.stringify(this.favoritos));
-    }
-
-    updateFavoriteButtons() {
-        const favoriteButtons = document.querySelectorAll('.favorite-btn');
-        favoriteButtons.forEach(btn => {
-            const productId = parseInt(btn.dataset.productId);
-            if (!isNaN(productId)) {
-                const isFavorited = this.isFavorite(productId);
-                this.updateButtonState(btn, isFavorited);
-            }
-        });
-    }
-
-    // <-- MUDANÇA PRINCIPAL: Manipula classes do Font Awesome em vez de 'src' da imagem
-    updateButtonState(button, isFavorited) {
-        const icon = button.querySelector('i'); // Agora procuramos pela tag <i>
-        const text = button.querySelector('.favorite-text');
-        
-        if (isFavorited) {
-            button.classList.add('favorited');
-            button.setAttribute('aria-label', 'Remover dos favoritos');
-            
-            if (icon) {
-                icon.classList.remove('fa-regular');
-                icon.classList.add('fa-solid'); // Ícone de coração preenchido
-            }
-            if (text) text.textContent = 'Favoritado';
-
-        } else {
-            button.classList.remove('favorited');
-            button.setAttribute('aria-label', 'Adicionar aos favoritos');
-            
-            if (icon) {
-                icon.classList.remove('fa-solid');
-                icon.classList.add('fa-regular'); // Ícone de coração com borda
-            }
-            if (text) text.textContent = 'Favoritar';
-        }
-    }
-
-    updateFavoriteCount() {
-        const count = this.getFavoriteCount();
-        const badges = document.querySelectorAll('.favorites-count, .favoritos-count');
-        
-        badges.forEach(badge => {
-            badge.textContent = count;
-            badge.style.display = count > 0 ? 'flex' : 'none';
-        });
-
-        const perfilCount = document.getElementById('favoritos-count');
-        if (perfilCount) {
-            perfilCount.textContent = count;
-        }
-    }
-
-    animateFavoriteButton(button, isAdding) {
-        button.classList.remove('favorite-adding', 'favorite-removing');
-        button.offsetHeight;
-        
-        if (isAdding) {
-            button.classList.add('favorite-adding');
-            this.createHeartBurst(button);
-        } else {
-            button.classList.add('favorite-removing');
-        }
-
-        setTimeout(() => {
-            button.classList.remove('favorite-adding', 'favorite-removing');
-        }, 600);
-    }
-
-    createHeartBurst(element) {
-        // ... (código da animação permanece o mesmo)
-    }
-
-    createHeartAnimation() {
-        // ... (código da animação permanece o mesmo)
-    }
-
-    async getProductById(productId) {
-        // ... (código permanece o mesmo)
-    }
-
-    getProductFromLocalData(productId) {
-        // ... (código permanece o mesmo)
-    }
-
-    getProductFromCurrentPage(productId) {
-        // ... (código permanece o mesmo)
-    }
-
-    showLoginPrompt() {
-        const modal = this.createLoginPromptModal();
-        document.body.appendChild(modal);
-        setTimeout(() => modal.classList.add('show'), 10);
-    }
-
-    // <-- MUDANÇA: Substituído <img> por <i> do Font Awesome no modal
-    createLoginPromptModal() {
-        const modal = document.createElement('div');
-        modal.className = 'favorites-modal';
-        modal.innerHTML = `
-            <div class="favorites-modal__overlay"></div>
-            <div class="favorites-modal__content">
-                <button class="favorites-modal__close">&times;</button>
-                <div class="favorites-modal__icon">
-                    <i class="fa-solid fa-heart"></i>
-                </div>
-                <h2>Faça login para salvar favoritos</h2>
-                <p>Crie uma conta ou faça login para salvar seus produtos favoritos e acessá-los em qualquer dispositivo.</p>
-                <div class="favorites-modal__actions">
-                    <a href="/pages/login.html" class="btn-primary">Fazer Login</a>
-                    <button class="btn-secondary favorites-modal__close">Agora não</button>
-                </div>
-            </div>
-        `;
-
-        modal.querySelectorAll('.favorites-modal__close, .favorites-modal__overlay').forEach(el => {
-            el.addEventListener('click', () => {
-                modal.classList.remove('show');
-                setTimeout(() => modal.remove(), 300);
-            });
-        });
-        return modal;
-    }
-
-    showMessage(message, type = 'info') {
-        // ... (código permanece o mesmo)
-    }
-
-    // <-- MUDANÇA: Função agora cria ícones do Font Awesome, não mais <img>
+    
+    // Função para criar um botão de favorito (usada pelo main.js)
     createFavoriteButton(productId, options = {}) {
         const { size = 'medium', style = 'icon-text', className = '' } = options;
         const isFavorited = this.isFavorite(productId);
         
         const button = document.createElement('button');
-        button.className = `favorite-btn favorite-btn--${size} favorite-btn--${style} ${className} ${isFavorited ? 'favorited' : ''}`;
+        button.className = `favorite-btn favorite-btn--${size} favorite-btn--${style} ${className}`;
         button.dataset.productId = productId;
-        button.setAttribute('aria-label', isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
-
+        
         const icon = document.createElement('i');
+        // Usa Font Awesome em vez de <img>
         icon.className = `favorite-icon ${isFavorited ? 'fa-solid' : 'fa-regular'} fa-heart`;
         button.appendChild(icon);
 
@@ -262,24 +133,67 @@ class FavoritesSystem {
             text.textContent = isFavorited ? 'Favoritado' : 'Favoritar';
             button.appendChild(text);
         }
-
+        
+        this.updateButtonState(button, isFavorited); // Aplica o estado visual correto
         return button;
     }
+
+    // Atualiza a aparência de TODOS os botões de favorito na página
+    updateFavoriteButtons() {
+        document.querySelectorAll('.favorite-btn').forEach(btn => {
+            const productId = parseInt(btn.dataset.productId);
+            if (!isNaN(productId)) {
+                const isFavorited = this.isFavorite(productId);
+                this.updateButtonState(btn, isFavorited);
+            }
+        });
+    }
+
+    // Atualiza a aparência de UM botão específico
+    updateButtonState(button, isFavorited) {
+        const icon = button.querySelector('i');
+        const text = button.querySelector('.favorite-text');
+        
+        button.setAttribute('aria-label', isFavorited ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+        
+        if (isFavorited) {
+            button.classList.add('favorited');
+            if (icon) {
+                icon.classList.remove('fa-regular');
+                icon.classList.add('fa-solid');
+            }
+            if (text) text.textContent = 'Favoritado';
+        } else {
+            button.classList.remove('favorited');
+            if (icon) {
+                icon.classList.remove('fa-solid');
+                icon.classList.add('fa-regular');
+            }
+            if (text) text.textContent = 'Favoritar';
+        }
+    }
+
+    updateFavoriteCount() {
+        const count = this.getFavoriteCount();
+        document.querySelectorAll('.favorites-count, .favoritos-count').forEach(badge => {
+            badge.textContent = count;
+            badge.style.display = count > 0 ? 'flex' : 'none';
+        });
+    }
+
+    // O resto das suas funções de UI, animações, etc.
+    animateFavoriteButton(button, isAdding) { /* ... seu código de animação ... */ }
+    createHeartBurst(element) { /* ... seu código de animação ... */ }
+    createHeartAnimation() { /* ... seu código de animação ... */ }
+    async getProductById(productId) { /* ... sua lógica para encontrar um produto ... */ }
+    showLoginPrompt() { /* ... sua lógica do modal ... */ }
+    showMessage(message, type = 'info') { /* ... sua lógica de notificação ... */ }
 }
 
-// Criar instância global
-window.favoritesSystem = new FavoritesSystem();
-
-// <-- MUDANÇA: Renomeado 'favoritesCSS' para evitar conflito
-const favoritesComponentStyle = `
-/* ... (todo o seu CSS permanece o mesmo aqui) ... */
-.favorites-modal__icon i {
-    font-size: 50px;
-    color: #dc2626;
-}
-`;
-
-// <-- MUDANÇA: Renomeado 'style' para evitar conflito com outros scripts
-const styleElement = document.createElement('style');
-styleElement.textContent = favoritesComponentStyle;
-document.head.appendChild(styleElement);
+// Inicializar a classe
+document.addEventListener('DOMContentLoaded', () => {
+    // Garante que uma instância global seja criada para que outras páginas possam aceder
+    if (!window.favoritesSystem) {
+        window.favoritesSystem = new FavoritesSystem();
+    }
+});

@@ -1,55 +1,82 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produto - UseDev</title>
+
+    <!-- Fontes do Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome (Biblioteca de Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <!-- Seus Arquivos CSS -->
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../css/cabecalho.css">
     <link rel="stylesheet" href="../css/pages/product.css">
     <link rel="stylesheet" href="../css/components/modal.css">
     <link rel="stylesheet" href="../css/rodape.css">
-    <link rel="icon" href="../assets/icons/logo.svg">
+
+    <!-- Ícone da Aba (Favicon) -->
+    <link rel="icon" href="../assets/icons/logo.svg" type="image/svg+xml">
 </head>
+
 <body>
-    <!-- Header -->
+    <!-- ===== CABEÇALHO ATUALIZADO ===== -->
     <header class="cabecalho">
         <nav class="cabecalho__nav">
+            <a href="../index.html" class="cabecalho__logo">
+                <img src="../assets/icons/logo.svg" alt="logo da use dev">
+            </a>
+
+            <!-- Itens do Menu para Desktop -->
             <ul class="cabecalho__nav_list">
-                <li>
-                    <h1 class="cabecalho__logo">
-                        <a href="../index.html">
-                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
-                        </a>
-                    </h1>
-                </li>
                 <li class="cabecalho__nav_list_item">
                     <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
                 </li>
                 <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
-                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
-                    <img src="../assets/icons/search.svg" alt="lupa" class="pesquisa-icon">
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
-                        <img src="../assets/icons/perfil.svg" alt="perfil">
-                    </a>
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
-                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
-                        <span id="cart-count" class="cart-badge">0</span>
-                    </a>
+                    <input type="search" id="search" placeholder="O que você procura?"
+                        class="cabecalho__nav_list_input">
+                    <i class="fa-solid fa-magnifying-glass pesquisa-icon"></i>
                 </li>
             </ul>
+
+            <!-- Ações do Utilizador com Lógica de Login -->
+            <div class="cabecalho__nav_user-actions">
+                <div id="user-actions-logged-out">
+                    <a href="../pages/login.html"
+                        class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </div>
+                <div id="user-actions-logged-in" class="user-greeting" style="display: none;">
+                    <span id="user-greeting-name">Olá, Utilizador!</span>
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil"
+                        title="Perfil">
+                        <i class="fa-solid fa-user"></i>
+                    </a>
+                    <button id="header-logout-btn" class="logout-button" title="Sair">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+                <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho"
+                    title="Carrinho">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </a>
+            </div>
+
+            <!-- Botão do Menu Hambúrguer para Mobile -->
+            <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </nav>
     </header>
+    <!-- ===== FIM DO CABEÇALHO ATUALIZADO ===== -->
 
     <!-- Breadcrumb -->
     <nav class="breadcrumb">
@@ -70,7 +97,7 @@
                     <!-- Thumbnails serão inseridas via JS -->
                 </div>
             </div>
-            
+
             <!-- Informações do produto -->
             <div class="produto__info">
                 <h1 id="produto-nome" class="produto__nome"></h1>
@@ -80,18 +107,12 @@
                     </div>
                     <span class="rating-text">(4.8) 127 avaliações</span>
                 </div>
-                
                 <div class="produto__preco-container">
                     <span id="produto-preco" class="produto__preco"></span>
                     <span class="produto__preco-parcelado">ou 3x de <span id="produto-parcela"></span> sem juros</span>
                 </div>
-                
                 <p id="produto-descricao" class="produto__descricao"></p>
-                
-                <!-- Variantes do produto -->
                 <div id="produto-variantes" class="produto__variantes"></div>
-                
-                <!-- Quantidade -->
                 <div class="produto__quantidade">
                     <label for="quantidade">Quantidade:</label>
                     <div class="quantidade-controls">
@@ -101,25 +122,26 @@
                     </div>
                     <span id="stock-info" class="stock-info"></span>
                 </div>
-                
-                <!-- Botões de ação -->
                 <div class="produto__actions">
                     <button id="adicionar-carrinho" class="produto__botao produto__botao--carrinho">
-                        <img src="../assets/icons/carrinho.svg" alt="carrinho">
+                        <i class="fa-solid fa-cart-plus"></i>
                         Adicionar ao Carrinho
                     </button>
-                    
                     <button id="comprar-agora" class="produto__botao produto__botao--comprar">
                         Comprar Agora
                     </button>
                 </div>
-
-                <!-- Informações adicionais -->
                 <div class="produto__details" id="produto-details">
                     <h3>Detalhes do Produto</h3>
                     <div class="details-grid" id="details-content">
                         <!-- Detalhes serão inseridos via JS -->
                     </div>
+                </div>
+                <div class="produto__actions-secundarias">
+                    <button class="favorite-btn" id="product-favorite-btn">
+                        <i class="fa-regular fa-heart"></i>
+                        <span>Adicionar aos Favoritos</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -138,14 +160,14 @@
         <div class="modal__overlay"></div>
         <div class="modal__content">
             <button class="modal__close" id="modal-close">&times;</button>
-            
+
             <h2 class="modal__title">Finalizar Compra</h2>
-            
+
             <!-- Resumo do produto -->
             <div class="modal__produto" id="modal-produto-info">
                 <!-- Informações do produto serão inseridas via JS -->
             </div>
-            
+
             <!-- Formulário de compra -->
             <form id="form-compra" class="modal__form">
                 <div class="form-section">
@@ -211,7 +233,7 @@
                         <span id="total">R$ 0,00</span>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="modal__botao-finalizar">
                     Finalizar Pedido
                 </button>
@@ -229,7 +251,7 @@
             <div class="rodape__coluna">
                 <h5 class="rodape__coluna_titulo">Funcionamento</h5>
                 <ul class="rodape__coluna_list">
-                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8 as 18h</li>
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8h às 18h</li>
                     <li class="rodape__coluna_list_item">
                         <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
                     </li>
@@ -241,11 +263,13 @@
         </div>
     </footer>
 
-    <!-- Scripts -->
-    <script src="../js/favoritos.js"></script> 
-    
+    <!-- Scripts na Ordem Correta -->
     <script src="../js/main.js"></script>
+    <script src="../js/carrinho.js"></script>
+    <script src="../js/favoritos.js"></script>
+    <script src="../js/menu.js"></script>
     <script src="../js/product.js"></script>
 
 </body>
+
 </html>

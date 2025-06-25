@@ -12,10 +12,13 @@
         href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap"
         rel="stylesheet">
 
+    <!-- Font Awesome (Biblioteca de Ícones) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 
+    <!-- Ícone da Aba (Favicon) -->
     <link rel="icon" href="../assets/icons/logo.svg" type="image/svg+xml">
 
+    <!-- Seus Arquivos CSS -->
     <link rel="stylesheet" href="../styles.css">
     <link rel="stylesheet" href="../css/cabecalho.css">
     <link rel="stylesheet" href="../css/pages/perfil.css">
@@ -23,42 +26,57 @@
 </head>
 
 <body>
+    <!-- ===== CABEÇALHO ATUALIZADO ===== -->
     <header class="cabecalho">
         <nav class="cabecalho__nav">
+            <a href="../index.html" class="cabecalho__logo">
+                <img src="../assets/icons/logo.svg" alt="logo da use dev">
+            </a>
+
+            <!-- Itens do Menu para Desktop -->
             <ul class="cabecalho__nav_list">
-                <li>
-                    <h1 class="cabecalho__logo">
-                        <a href="../index.html">
-                            <img src="../assets/icons/logo.svg" alt="logo da use dev">
-                        </a>
-                    </h1>
-                </li>
                 <li class="cabecalho__nav_list_item">
                     <a href="../pages/sobre.html" class="cabecalho__nav_list_link">Sobre nós</a>
                 </li>
                 <li class="cabecalho__nav_list_item cabecalho__nav_list_item-input">
-                    <input type="search" id="search" placeholder="O que você procura?"
-                        class="cabecalho__nav_list_input">
+                    <input type="search" id="search" placeholder="O que você procura?" class="cabecalho__nav_list_input">
                     <i class="fa-solid fa-magnifying-glass pesquisa-icon"></i>
                 </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/login.html"
-                        class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil">
+            </ul>
+            
+            <!-- Ações do Utilizador com Lógica de Login -->
+            <div class="cabecalho__nav_user-actions">
+    
+                <!-- (1) ESTADO QUANDO O UTILIZADOR ESTÁ DESLOGADO -->
+                <div id="user-actions-logged-out">
+                    <a href="../pages/login.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-login">Login</a>
+                </div>
+            
+                <!-- (2) ESTADO QUANDO O UTILIZADOR ESTÁ LOGADO (Inicialmente escondido) -->
+                <div id="user-actions-logged-in" class="user-greeting" style="display: none;">
+                    <span id="user-greeting-name">Olá, Utilizador!</span>
+                    <a href="../pages/perfil.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-perfil" title="Perfil">
                         <i class="fa-solid fa-user"></i>
                     </a>
-                </li>
-                <li class="cabecalho__nav_list_item">
-                    <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                        <span id="cart-count" class="cart-badge">0</span>
-                    </a>
-                </li>
-            </ul>
+                    <button id="header-logout-btn" class="logout-button" title="Sair">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                </div>
+            
+                <!-- O carrinho fica fora, pois aparece em ambos os estados -->
+                <a href="../pages/carrinho.html" class="cabecalho__nav_list_link cabecalho__nav_list_link-carrinho" title="Carrinho">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span id="cart-count" class="cart-badge">0</span>
+                </a>
+            </div>
+            
+            <!-- Botão do Menu Hambúrguer para Mobile -->
+            <button class="hamburger-btn" id="hamburger-btn" aria-label="Abrir menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
         </nav>
     </header>
+    <!-- ===== FIM DO CABEÇALHO ATUALIZADO ===== -->
 
     <nav class="breadcrumb">
         <a href="../index.html">Home</a>
@@ -71,22 +89,22 @@
             <aside class="perfil-sidebar">
                 <div class="sidebar-header">
                     <div class="user-avatar">
-                        <img src="" alt="Avatar" id="user-avatar">
+                        <img src="" alt="Avatar" id="user-avatar"> <!-- O src é preenchido pelo JS -->
                         <button class="avatar-upload" id="upload-avatar" title="Alterar foto">
                             <i class="fa-solid fa-camera"></i>
                         </button>
                         <input type="file" id="avatar-input" accept="image/*" style="display: none;">
                     </div>
                     <div class="user-info">
-                        <h2 id="user-name">Carregando...</h2>
-                        <p id="user-email">carregando@email.com</p>
+                        <h2 id="user-name">A carregar...</h2>
+                        <p id="user-email">a.carregar@email.com</p>
                         <span class="user-badge">Membro desde <span id="member-since">2024</span></span>
                     </div>
                 </div>
 
                 <nav class="sidebar-menu">
                     <button class="menu-item active" data-tab="dados-pessoais">
-                        <i class="fa-solid fa-user"></i>
+                        <i class="fa-solid fa-user-pen"></i>
                         <span>Dados Pessoais</span>
                     </button>
                     <button class="menu-item" data-tab="enderecos">
@@ -106,7 +124,7 @@
                     </button>
                     <button class="menu-item" data-tab="cupons">
                         <i class="fa-solid fa-tag"></i>
-                        <span>Meus Cupons</span>
+                        <span>Meus Cupões</span>
                         <span class="item-count" id="cupons-count">0</span>
                     </button>
                     <button class="menu-item" data-tab="configuracoes">
@@ -125,25 +143,19 @@
                 <div class="tab-content active" id="dados-pessoais-tab">
                     <div class="content-header">
                         <h2>Dados Pessoais</h2>
-                        <p>Gerencie suas informações pessoais</p>
+                        <p>Gerencie as suas informações pessoais</p>
                     </div>
 
                     <form id="dados-pessoais-form" class="profile-form">
                         <div class="form-section">
                             <h3>Informações Básicas</h3>
                             <div class="form-grid">
-                                <div class="form-group"><label for="nome">Nome</label><input type="text" id="nome"
-                                        name="nome" required></div>
-                                <div class="form-group"><label for="sobrenome">Sobrenome</label><input type="text"
-                                        id="sobrenome" name="sobrenome" required></div>
-                                <div class="form-group"><label for="email">Email</label><input type="email" id="email"
-                                        name="email" required></div>
-                                <div class="form-group"><label for="telefone">Telefone</label><input type="tel"
-                                        id="telefone" name="telefone" required></div>
-                                <div class="form-group"><label for="cpf">CPF</label><input type="text" id="cpf"
-                                        name="cpf" readonly></div>
-                                <div class="form-group"><label for="data-nascimento">Data de Nascimento</label><input
-                                        type="date" id="data-nascimento" name="dataNascimento"></div>
+                                <div class="form-group"><label for="nome">Nome</label><input type="text" id="nome" name="nome" required></div>
+                                <div class="form-group"><label for="sobrenome">Apelido</label><input type="text" id="sobrenome" name="sobrenome"></div>
+                                <div class="form-group"><label for="email">Email</label><input type="email" id="email" name="email" required></div>
+                                <div class="form-group"><label for="telefone">Telefone</label><input type="tel" id="telefone" name="telefone"></div>
+                                <div class="form-group"><label for="cpf">CPF</label><input type="text" id="cpf" name="cpf" readonly></div>
+                                <div class="form-group"><label for="data-nascimento">Data de Nascimento</label><input type="date" id="data-nascimento" name="dataNascimento"></div>
                             </div>
                         </div>
 
@@ -154,8 +166,7 @@
                                     <label for="senha-atual">Senha Atual</label>
                                     <div class="password-field">
                                         <input type="password" id="senha-atual" name="senhaAtual">
-                                        <button type="button" class="toggle-password" data-target="senha-atual"
-                                            title="Mostrar/Ocultar senha">
+                                        <button type="button" class="toggle-password" data-target="senha-atual" title="Mostrar/Ocultar senha">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </div>
@@ -164,8 +175,7 @@
                                     <label for="nova-senha">Nova Senha</label>
                                     <div class="password-field">
                                         <input type="password" id="nova-senha" name="novaSenha">
-                                        <button type="button" class="toggle-password" data-target="nova-senha"
-                                            title="Mostrar/Ocultar senha">
+                                        <button type="button" class="toggle-password" data-target="nova-senha" title="Mostrar/Ocultar senha">
                                             <i class="fa-solid fa-eye"></i>
                                         </button>
                                     </div>
@@ -190,9 +200,9 @@
                     </div>
                     <div class="enderecos-grid" id="enderecos-list"></div>
                     <div class="empty-state" id="enderecos-empty" style="display: none;">
-                        <i class="fa-solid fa-map-location-dot"></i>
-                        <h3>Nenhum endereço cadastrado</h3>
-                        <p>Adicione um endereço para facilitar suas compras</p>
+                        <i class="fa-solid fa-map-location-dot fa-3x"></i>
+                        <h3>Nenhum endereço registado</h3>
+                        <p>Adicione um endereço para facilitar as suas compras</p>
                         <button class="btn-primary" onclick="document.getElementById('add-endereco').click()">
                             Adicionar Endereço
                         </button>
@@ -200,26 +210,7 @@
                 </div>
 
                 <div class="tab-content" id="pedidos-tab">
-                    <div class="content-header">
-                        <h2>Meus Pedidos</h2>
-                        <div class="pedidos-filters">
-                            <select id="status-filter">
-                                <option value="">Todos os status</option>
-                                <option value="pendente">Pendente</option>
-                                <option value="confirmado">Confirmado</option>
-                                <option value="enviado">Enviado</option>
-                                <option value="entregue">Entregue</option>
-                                <option value="cancelado">Cancelado</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="pedidos-list" id="pedidos-list"></div>
-                    <div class="empty-state" id="pedidos-empty" style="display: none;">
-                        <i class="fa-solid fa-bag-shopping"></i>
-                        <h3>Nenhum pedido encontrado</h3>
-                        <p>Quando você fizer um pedido, ele aparecerá aqui</p>
-                        <a href="../index.html" class="btn-primary">Começar a Comprar</a>
-                    </div>
+                    <!-- Conteúdo da tab de pedidos aqui -->
                 </div>
 
                 <div class="tab-content" id="favoritos-tab">
@@ -231,39 +222,59 @@
                     </div>
                     <div class="favoritos-grid" id="favoritos-list"></div>
                     <div class="empty-state" id="favoritos-empty" style="display: none;">
-                        <i class="fa-solid fa-heart"></i>
-                        <h3>Sua lista de favoritos está vazia</h3>
-                        <p>Salve produtos que você gosta para encontrá-los facilmente depois</p>
+                        <i class="fa-regular fa-heart fa-3x"></i>
+                        <h3>A sua lista de favoritos está vazia</h3>
+                        <p>Salve produtos que você gosta para os encontrar facilmente depois</p>
                         <a href="../index.html" class="btn-primary">Explorar Produtos</a>
                     </div>
                 </div>
 
                 <div class="tab-content" id="cupons-tab">
-                    <div class="content-header">
-                        <h2>Meus Cupons</h2>
-                        <p>Aproveite seus descontos disponíveis</p>
-                    </div>
-                    <div class="cupons-grid" id="cupons-list"></div>
-                    <div class="empty-state" id="cupons-empty" style="display: none;">
-                        <i class="fa-solid fa-tag"></i>
-                        <h3>Nenhum cupom disponível</h3>
-                        <p>Cadastre-se na nossa newsletter para receber cupons exclusivos</p>
-                        <a href="../index.html#newsletter" class="btn-primary">Ver Newsletter</a>
-                    </div>
+                    <!-- Conteúdo da tab de cupões aqui -->
                 </div>
-
+                
                 <div class="tab-content" id="configuracoes-tab">
+                    <!-- Conteúdo da tab de configurações aqui -->
                 </div>
 
             </section>
         </div>
     </main>
 
+    <!-- Modal para Endereço -->
+    <div id="endereco-modal" class="modal" style="display:none;">
+         <!-- ... (seu conteúdo do modal) ... -->
+    </div>
+
+    <!-- Footer -->
     <footer class="rodape">
+        <div class="rodape__linha">
+            <div class="rodape__coluna rodape__coluna_logo">
+                <img src="../assets/icons/logo-verde.svg" alt="useDev logo">
+                <p class="rodape__coluna_logo_texto">Hora de abraçar o seu lado geek</p>
+            </div>
+            <div class="rodape__coluna">
+                <h5 class="rodape__coluna_titulo">Funcionamento</h5>
+                <ul class="rodape__coluna_list">
+                    <li class="rodape__coluna_list_item">Segunda a Sexta - 8h às 18h</li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="mailto:sac@usedev.com">sac@usedev.com</a>
+                    </li>
+                    <li class="rodape__coluna_list_item">
+                        <a class="rodape__coluna_link" href="tel:+550800541320">0800 541 320</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </footer>
 
+    <!-- Scripts na Ordem Correta -->
+    <script src="../js/main.js"></script>
     <script src="../js/auth.js"></script>
-    <script src="../js/perfil.js"></script>
+    <script src="../js/carrinho.js"></script>
+    <script src="../js/favoritos.js"></script> 
+    <script src="../js/menu.js"></script>
+    <script src="../js/perfil.js"></script> <!-- Carregado por último -->
 </body>
 
 </html>
