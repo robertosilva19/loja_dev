@@ -71,3 +71,19 @@ SELECT table_name
 FROM information_schema.tables 
 WHERE table_schema = 'public'
 ORDER BY table_name;
+
+CREATE TABLE carrinho_itens (
+    id SERIAL PRIMARY KEY,
+    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE, -- Se o utilizador for apagado, o seu carrinho também é.
+    produto_id INTEGER NOT NULL REFERENCES produtos(id) ON DELETE CASCADE,
+    quantidade INTEGER NOT NULL DEFAULT 1 CHECK (quantidade > 0), -- Garante que a quantidade seja sempre positiva.
+    adicionado_em TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+
+    -- Garante que um utilizador não adicione o mesmo produto múltiplas vezes como linhas separadas.
+    -- A lógica para ATUALIZAR a quantidade será feita na API.
+    UNIQUE (usuario_id, produto_id)
+);
+
+select * from carrinho_itens;
+
+select * from favoritos;
