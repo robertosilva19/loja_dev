@@ -1,0 +1,6 @@
+# Arquivos que o Git deve ignorar
+node_modules
+.env
+
+# Arquivos de log
+*.log
