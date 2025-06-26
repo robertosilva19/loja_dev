@@ -47,7 +47,7 @@ app.post('/api/usuarios/login', async (req, res) => {
         if (!utilizador) return res.status(401).json({ error: 'Credenciais inválidas.' });
         const senhaValida = await bcrypt.compare(senha, utilizador.senha_hash);
         if (!senhaValida) return res.status(401).json({ error: 'Credenciais inválidas.' });
-        const token = jwt.sign({ id: utilizador.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: utilizador.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
         res.json({ token, utilizador: { id: utilizador.id, nome: utilizador.nome, email: utilizador.email } });
     } catch (error) {
         console.error('Erro ao fazer login:', error);

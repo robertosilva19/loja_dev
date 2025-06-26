@@ -12,8 +12,9 @@ class ProductPage {
     async init() {
         await this.loadProduct();
         this.setupEventListeners();
-        // A contagem do carrinho é agora gerida globalmente, mas podemos chamar para garantir
         this.updateCartCount(); 
+        // NOVA LINHA: Configurar o botão de favoritos após carregar o produto
+        this.setupFavoriteButton();
     }
 
     // Ajusta caminhos para funcionar em subpastas (GitHub Pages)
@@ -81,6 +82,50 @@ class ProductPage {
         this.renderDetails();
     }
 
+    // NOVO MÉTODO: Configurar o botão de favoritos
+    setupFavoriteButton() {
+        if (!this.currentProduct) return;
+        
+        const favoriteButton = document.getElementById('product-favorite-btn');
+        if (favoriteButton) {
+            // Define o product ID no botão
+            favoriteButton.dataset.productId = this.currentProduct.id;
+            
+            // Aguarda o sistema de favoritos estar pronto
+            if (window.favoritesSystem) {
+                window.favoritesSystem.updateButtonState(
+                    favoriteButton, 
+                    window.favoritesSystem.isFavorite(this.currentProduct.id)
+                );
+            } else {
+                // Se o sistema ainda não estiver pronto, aguarda um pouco
+                setTimeout(() => {
+                    if (window.favoritesSystem) {
+                        window.favoritesSystem.updateButtonState(
+                            favoriteButton, 
+                            window.favoritesSystem.isFavorite(this.currentProduct.id)
+                        );
+                    }
+                }, 500);
+            }
+            
+            // Adiciona listener específico se necessário (o sistema global já cuida disso)
+            favoriteButton.addEventListener('click', (e) => {
+                e.preventDefault();
+                console.log('Botão de favoritos clicado para produto:', this.currentProduct.id);
+                
+                if (window.favoritesSystem) {
+                    window.favoritesSystem.toggleFavorite(this.currentProduct.id, favoriteButton);
+                } else {
+                    console.error('Sistema de favoritos não encontrado');
+                    alert('Sistema de favoritos não está disponível. Tente recarregar a página.');
+                }
+            });
+        } else {
+            console.warn('Botão de favoritos não encontrado na página');
+        }
+    }
+
     setupEventListeners() {
         document.getElementById('decrease-qty').addEventListener('click', () => {
             if (this.quantity > 1) {
@@ -115,8 +160,7 @@ class ProductPage {
         document.getElementById('buscar-cep')?.addEventListener('click', () => this.buscarCEP());
     }
 
-    // --- LÓGICA DE INTERAÇÃO COM SISTEMAS GLOBAIS ---
-
+    // LÓGICA DE INTERAÇÃO COM SISTEMAS GLOBAIS
     addToCart() {
         console.log('Botão "Adicionar ao Carrinho" clicado! A tentar adicionar o produto:', this.currentProduct);
         if (!this.validateVariants()) return;
@@ -126,7 +170,6 @@ class ProductPage {
             variants: { ...this.selectedVariants }
         };
 
-        // Chama a função global do nosso sistema de carrinho
         if (window.carrinhoManager) {
             window.carrinhoManager.adicionarProduto(productToAdd, this.quantity);
         } else {
@@ -136,13 +179,10 @@ class ProductPage {
     }
 
     updateCartCount() {
-        // Deferir para o carrinhoManager global que já escuta eventos
         if (window.carrinhoManager && typeof window.carrinhoManager.atualizarContadorCarrinho === 'function') {
             window.carrinhoManager.atualizarContadorCarrinho();
         }
     }
-
-    // --- RESTANTE DO SEU CÓDIGO COMPLETO ---
 
     getCategoryName(category) {
         const categories = { 'roupas': 'Roupas', 'canecas': 'Canecas', 'acessorios': 'Acessórios', 'decoracao': 'Decoração' };
@@ -329,4 +369,3 @@ class ProductPage {
 document.addEventListener('DOMContentLoaded', () => {
     new ProductPage();
 });
-
