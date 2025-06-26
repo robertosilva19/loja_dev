@@ -189,6 +189,44 @@ app.put('/api/carrinho/:produtoId', verificarToken, async (req, res) => {
     }
 });
 
+// =================== (NOVO) ROTA DE PEDIDOS (Protegida) ===================
+
+app.get('/api/pedidos', verificarToken, async (req, res) => {
+    try {
+        const idDoUtilizador = req.utilizador.id;
+
+        // Esta consulta SQL é avançada:
+        // 1. Seleciona os dados da tabela 'pedidos'.
+        // 2. Usa um LEFT JOIN para incluir os 'itens_pedido' e os 'produtos' correspondentes.
+        // 3. Agrupa os resultados por pedido, para não termos linhas duplicadas.
+        // 4. Usa json_agg para agregar todos os itens de um pedido num único campo JSON chamado 'itens'.
+        const resultado = await db.query(
+            `SELECT
+                p.id,
+                p.status,
+                p.total,
+                p.data_pedido,
+                json_agg(json_build_object(
+                    'produto_nome', pr.nome,
+                    'quantidade', ip.quantidade,
+                    'preco_unitario', ip.preco_unitario
+                )) AS itens
+             FROM pedidos p
+             JOIN itens_pedido ip ON p.id = ip.pedido_id
+             JOIN produtos pr ON ip.produto_id = pr.id
+             WHERE p.usuario_id = $1
+             GROUP BY p.id
+             ORDER BY p.data_pedido DESC`,
+            [idDoUtilizador]
+        );
+
+        res.json(resultado.rows);
+    } catch (error) {
+        console.error('Erro ao buscar pedidos:', error);
+        res.status(500).json({ error: 'Erro no servidor ao buscar pedidos.' });
+    }
+});
+
 
 // --- Inicialização do Servidor ---
 app.listen(PORT, () => {
