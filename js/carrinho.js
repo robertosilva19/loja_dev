@@ -25,7 +25,7 @@ class CarrinhoManager {
         if (this.token) {
             await this.loadCartFromAPI();
         } else {
-            // Se não houver login, o carrinho permanece vazio. Poderíamos adicionar uma lógica de "carrinho de convidado" aqui.
+            // Se não houver login, o carrinho permanece vazio.
             this.carrinho = []; 
             this.atualizarInterfaceCompleta();
         }
@@ -48,6 +48,8 @@ class CarrinhoManager {
             this.atualizarInterfaceCompleta();
         } catch (error) {
             console.error('Erro ao carregar carrinho da API:', error);
+            this.carrinho = []; // Garante que o carrinho fica vazio em caso de erro
+            this.atualizarInterfaceCompleta();
         }
     }
 
@@ -62,7 +64,7 @@ class CarrinhoManager {
                 body: JSON.stringify({ produtoId: produto.id, quantidade })
             });
             await this.loadCartFromAPI();
-            this.mostrarNotificacao(`${produto.nome} adicionado ao carrinho!`, 'sucesso');
+            this.mostrarNotificacao(`${produto.name} adicionado ao carrinho!`, 'sucesso');
         } catch (error) {
             this.mostrarNotificacao('Erro ao adicionar produto.', 'error');
         }
@@ -103,10 +105,14 @@ class CarrinhoManager {
             console.error('Erro ao atualizar quantidade:', error);
         }
     }
+    
+    confirmarLimpeza() {
+        if (confirm('Tem certeza que deseja limpar todo o carrinho?')) {
+            this.limparCarrinho();
+        }
+    }
 
     async limparCarrinho() {
-        if (!confirm('Tem a certeza que deseja limpar todo o carrinho?')) return;
-        
         try {
             for (const item of this.carrinho) {
                 await fetch(`${this.apiBaseUrl}/carrinho/${item.id}`, {
@@ -120,8 +126,8 @@ class CarrinhoManager {
             this.mostrarNotificacao('Erro ao limpar o carrinho.', 'error');
         }
     }
-
-    // --- MÉTODOS DE UI E UTILITÁRIOS (O seu código original, mantido e adaptado) ---
+    
+    // --- MÉTODOS DE UI E UTILITÁRIOS ---
 
     adjustPath(path) {
         if (!path) return '';
@@ -139,7 +145,7 @@ class CarrinhoManager {
         const cupomInput = document.getElementById('cupom-input');
         if (cupomInput) cupomInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') this.aplicarCupom(); });
         const btnLimpar = document.getElementById('limpar-carrinho');
-        if (btnLimpar) btnLimpar.addEventListener('click', () => this.limparCarrinho());
+        if (btnLimpar) btnLimpar.addEventListener('click', () => this.confirmarLimpeza());
         const btnFinalizar = document.getElementById('finalizar-compra');
         if (btnFinalizar) btnFinalizar.addEventListener('click', () => this.abrirCheckout());
         this.setupModalCheckout();
@@ -159,6 +165,7 @@ class CarrinhoManager {
         const carrinhoVazio = document.getElementById('carrinho-vazio');
         const carrinhoProdutos = document.getElementById('carrinho-produtos');
         if (!carrinhoVazio || !carrinhoProdutos) return;
+
         if (this.carrinho.length === 0) {
             carrinhoVazio.style.display = 'block';
             carrinhoProdutos.style.display = 'none';
@@ -173,6 +180,7 @@ class CarrinhoManager {
     renderizarProdutos() {
         const listaProdutos = document.getElementById('lista-produtos');
         if (!listaProdutos) return;
+
         listaProdutos.innerHTML = this.carrinho.map(produto => {
             const imagePath = this.adjustPath(produto.imagem_url || './assets/placeholder.png');
             const preco = parseFloat(produto.preco).toFixed(2).replace('.', ',');
@@ -209,20 +217,24 @@ class CarrinhoManager {
         const frete = this.calcularFrete(subtotal);
         const desconto = this.calcularDesconto(subtotal);
         const total = subtotal + frete - desconto;
+        
         document.getElementById('total-items').textContent = this.carrinho.reduce((acc, item) => acc + item.quantidade, 0);
         document.getElementById('subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+        
         const freteElement = document.getElementById('frete');
         freteElement.textContent = frete === 0 ? 'Grátis' : `R$ ${frete.toFixed(2).replace('.', ',')}`;
         freteElement.classList.toggle('frete-gratis', frete === 0);
+
         const linhaDesconto = document.getElementById('linha-desconto');
         linhaDesconto.style.display = desconto > 0 ? 'flex' : 'none';
         document.getElementById('desconto').textContent = `- R$ ${desconto.toFixed(2).replace('.', ',')}`;
+        
         document.getElementById('total-geral').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
         const btnFinalizar = document.getElementById('finalizar-compra');
         if (btnFinalizar) btnFinalizar.disabled = this.carrinho.length === 0;
     }
 
-    calcularSubtotal() { return this.carrinho.reduce((total, produto) => total + (produto.preco * produto.quantidade), 0); }
+    calcularSubtotal() { return this.carrinho.reduce((total, produto) => total + (parseFloat(produto.preco) * produto.quantidade), 0); }
     calcularFrete(subtotal) { return subtotal >= 99 ? 0 : 15; }
     calcularDesconto(subtotal) {
         if (!this.cupomAplicado) return 0;
@@ -230,17 +242,18 @@ class CarrinhoManager {
         if (!cupom) return 0;
         return cupom.tipo === 'percentual' ? subtotal * (cupom.valor / 100) : Math.min(cupom.valor, subtotal);
     }
-
+    
     aumentarQuantidade(produtoId) {
         const produto = this.carrinho.find(item => item.id === produtoId);
         if (produto) this.atualizarQuantidade(produtoId, produto.quantidade + 1);
     }
+
     diminuirQuantidade(produtoId) {
         const produto = this.carrinho.find(item => item.id === produtoId);
         if (produto && produto.quantidade > 1) {
             this.atualizarQuantidade(produtoId, produto.quantidade - 1);
         } else if (produto && produto.quantidade === 1) {
-            if (confirm(`Deseja remover ${produto.nome} do carrinho?`)) {
+            if(confirm(`Deseja remover ${produto.nome} do carrinho?`)) {
                 this.removerProduto(produtoId);
             }
         }
@@ -261,20 +274,21 @@ class CarrinhoManager {
             this.produtosDisponiveis = [];
         }
     }
+
     carregarProdutosRecomendados() {
         const container = document.getElementById('produtos-recomendados');
         if (!container) return;
         const produtosNoCarrinho = this.carrinho.map(item => item.id);
         const recomendados = this.produtosDisponiveis.filter(p => !produtosNoCarrinho.includes(p.id)).slice(0, 4);
         container.innerHTML = recomendados.map(produto => {
-            const imagePath = this.adjustPath(produto.image);
-            return `
+             const imagePath = this.adjustPath(produto.image);
+             return `
             <div class="produto-recomendado" onclick="sessionStorage.setItem('selectedProductId', ${produto.id}); window.location.href='../pages/product.html'">
                 <img src="${imagePath}" alt="${produto.name}">
                 <div class="produto-recomendado-info">
                     <h4>${produto.name}</h4>
                     <div class="produto-recomendado-preco">R$ ${parseFloat(produto.price).toFixed(2).replace('.', ',')}</div>
-                    <button class="btn-adicionar-recomendado" onclick="event.stopPropagation(); carrinhoManager.adicionarProduto(${JSON.stringify(produto)})">
+                    <button class="btn-adicionar-recomendado" onclick="event.stopPropagation(); carrinhoManager.adicionarProduto(JSON.parse('${JSON.stringify(produto).replace(/'/g, "\\'")}'))">
                         Adicionar
                     </button>
                 </div>
@@ -282,13 +296,73 @@ class CarrinhoManager {
         }).join('');
     }
 
-    setupModalCheckout() { /* ... Sua lógica do modal ... */ }
-    abrirCheckout() { /* ... Sua lógica do modal ... */ }
-    fecharModal() { /* ... Sua lógica do modal ... */ }
-    preencherCheckout() { /* ... Sua lógica do modal ... */ }
-    atualizarResumoCheckout() { /* ... Sua lógica do modal ... */ }
-    async buscarCep() { /* ... Sua lógica do CEP ... */ }
-    async processarCheckout(e) { /* ... Sua lógica do checkout ... */ }
+    setupModalCheckout() {
+        const modal = document.getElementById('modal-checkout');
+        const btnClose = document.getElementById('modal-close');
+        const overlay = modal?.querySelector('.modal__overlay');
+        if (btnClose) btnClose.addEventListener('click', () => this.fecharModal());
+        if (overlay) overlay.addEventListener('click', () => this.fecharModal());
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal?.style.display === 'block') this.fecharModal();
+        });
+    }
+
+    abrirCheckout() {
+        if (this.carrinho.length === 0) return this.mostrarNotificacao('O carrinho está vazio', 'erro');
+        const modal = document.getElementById('modal-checkout');
+        if (modal) {
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            this.preencherCheckout();
+        }
+    }
+
+    fecharModal() {
+        const modal = document.getElementById('modal-checkout');
+        if (modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    }
+
+    preencherCheckout() {
+        const checkoutLista = document.getElementById('checkout-lista');
+        if (checkoutLista) {
+            checkoutLista.innerHTML = this.carrinho.map(produto => {
+                const imagePath = this.adjustPath(produto.imagem_url || produto.image);
+                return `
+                <div class="checkout-item">
+                    <div class="checkout-item-info">
+                        <img src="${imagePath}" alt="${produto.nome}">
+                        <div>
+                            <strong>${produto.nome}</strong>
+                            <div>Quantidade: ${produto.quantidade}</div>
+                        </div>
+                    </div>
+                    <div class="checkout-item-preco">R$ ${(produto.preco * produto.quantidade).toFixed(2).replace('.', ',')}</div>
+                </div>`;
+            }).join('');
+        }
+        this.atualizarResumoCheckout();
+    }
+
+    atualizarResumoCheckout() {
+        const subtotal = this.calcularSubtotal();
+        const frete = this.calcularFrete(subtotal);
+        const desconto = this.calcularDesconto(subtotal);
+        const total = subtotal + frete - desconto;
+        document.getElementById('checkout-subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+        document.getElementById('checkout-frete').textContent = frete === 0 ? 'Grátis' : `R$ ${frete.toFixed(2).replace('.', ',')}`;
+        const descontoLinha = document.getElementById('checkout-desconto-linha');
+        if(descontoLinha){
+            descontoLinha.style.display = desconto > 0 ? 'flex' : 'none';
+            document.getElementById('checkout-desconto').textContent = `- R$ ${desconto.toFixed(2).replace('.', ',')}`;
+        }
+        document.getElementById('checkout-total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    }
+
+    async buscarCep() { /* ... sua lógica de CEP ... */ }
+    async processarCheckout(e) { /* ... sua lógica de checkout ... */ }
 
     atualizarContadorCarrinho() {
         const contador = document.getElementById('cart-count');
@@ -304,12 +378,49 @@ class CarrinhoManager {
         if (notificacaoExistente) notificacaoExistente.remove();
         const notificacao = document.createElement('div');
         notificacao.className = `notificacao-toast ${tipo}`;
-        notificacao.innerHTML = `<div class="toast-content">...</div>`;
+        notificacao.innerHTML = `
+            <div class="toast-content">
+                <span class="toast-icon">${this.getIconePorTipo(tipo)}</span>
+                <span class="toast-message">${mensagem}</span>
+            </div>
+            <button class="toast-close" onclick="this.parentElement.remove()">×</button>
+        `;
+        // Estilos e lógica de remoção
         document.body.appendChild(notificacao);
         setTimeout(() => notificacao.remove(), 4000);
+    }
+
+    getIconePorTipo(tipo) {
+        const icones = { 'sucesso': '✅', 'erro': '❌', 'info': 'ℹ️', 'aviso': '⚠️' };
+        return icones[tipo] || icones.info;
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    window.carrinhoManager = new CarrinhoManager();
+    // Garante que uma instância global seja criada
+    if (!window.carrinhoManager) {
+        window.carrinhoManager = new CarrinhoManager();
+    }
 });
+
+// API pública para outras páginas
+window.CarrinhoAPI = {
+    adicionar: (produto, quantidade = 1) => window.carrinhoManager?.adicionarProduto(produto, quantidade),
+    remover: (produtoId) => window.carrinhoManager?.removerProduto(produtoId),
+    obterItens: () => window.carrinhoManager?.carrinho || [],
+    obterTotal: () => {
+        if (!window.carrinhoManager) return 0;
+        const cm = window.carrinhoManager;
+        const subtotal = cm.calcularSubtotal();
+        const frete = cm.calcularFrete(subtotal);
+        const desconto = cm.calcularDesconto(subtotal);
+        return subtotal + frete - desconto;
+    }
+};
+
+const carrinhoAnimationStyle = document.createElement('style');
+carrinhoAnimationStyle.textContent = `
+    @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes slideOut { from { opacity: 1; transform: translateX(0); } to { opacity: 0; transform: translateX(100%); } }
+`;
+document.head.appendChild(carrinhoAnimationStyle);

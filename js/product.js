@@ -118,6 +118,7 @@ class ProductPage {
     // --- LÓGICA DE INTERAÇÃO COM SISTEMAS GLOBAIS ---
 
     addToCart() {
+        console.log('Botão "Adicionar ao Carrinho" clicado! A tentar adicionar o produto:', this.currentProduct);
         if (!this.validateVariants()) return;
 
         const productToAdd = {
