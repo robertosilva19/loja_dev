@@ -1,16 +1,16 @@
 # UseDev - Loja Geek Full-Stack
 **Status do Projeto: ✅ Aplicação Full-Stack Completa e Funcional**
 
-![Screenshot da Homepage](assets/homepage-light.png)
+![Screenshot da Homepage](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/light_mode.jpeg)
 *Interface em Modo Claro*
 
-![Screenshot do Dark Mode](assets/homepage-dark.png)
+![Screenshot do Dark Mode](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/dark-mode.jpeg)
 *Interface em Modo Escuro*
 
-![Screenshot da Página de Perfil](assets/perfil-page.png)
+![Screenshot da Página de Perfil](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/perfil_cliente.jpeg)
 *Página de Perfil do Cliente*
 
-![Screenshot do Carrinho de Compras](assets/carrinho-page.png)
+![Screenshot do Carrinho de Compras](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/carinho_compras.jpeg)
 *Página do Carrinho de Compras*
 
 ## 📄 Descrição do Projeto
