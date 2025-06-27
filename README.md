@@ -1,135 +1,236 @@
-# UseDev - Front-end de uma Loja Geek
+# UseDev - Loja Geek Full-Stack
+**Status do Projeto: ✅ Aplicação Full-Stack Completa e Funcional**
 
-<p align="center">
-  <strong>Status do Projeto:</strong> Front-end Concluído, em preparação para desenvolvimento do Back-end.
-</p>
+![Screenshot da Homepage](assets/homepage-light.png)
+*Interface em Modo Claro*
 
-<!-- Tabela de Screenshots Corrigida -->
-<table>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/de679a192371913b7d257513c36f81a0dc7a4b80/assets/light_mode.jpeg" alt="Screenshot da Homepage" width="400"/>
-      <br />
-      <sub><b>Interface em Modo Claro</b></sub>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/de679a192371913b7d257513c36f81a0dc7a4b80/assets/dark-mode.jpeg" alt="Screenshot do Dark Mode" width="400"/>
-      <br />
-      <sub><b>Interface em Modo Escuro</b></sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/de679a192371913b7d257513c36f81a0dc7a4b80/assets/perfil_cliente.jpeg" alt="Screenshot da Página de Perfil" width="400"/>
-      <br />
-      <sub><b>Página de Perfil do Cliente</b></sub>
-    </td>
-    <td align="center">
-      <img src="https://raw.githubusercontent.com/robertosilva19/loja_dev/bb62f08cbb21464da2eabe79dcd76dbbfc7dc30a/assets/carinho_compras.jpeg" alt="Screenshot do Carrinho de Compras" width="400"/>
-      <br />
-      <sub><b>Página do Carrinho de Compras</b></sub>
-    </td>
-  </tr>
-</table>
+![Screenshot do Dark Mode](assets/homepage-dark.png)
+*Interface em Modo Escuro*
+
+![Screenshot da Página de Perfil](assets/perfil-page.png)
+*Página de Perfil do Cliente*
+
+![Screenshot do Carrinho de Compras](assets/carrinho-page.png)
+*Página do Carrinho de Compras*
 
 ## 📄 Descrição do Projeto
 
-Este projeto é a implementação completa do front-end para a **UseDev**, uma loja virtual moderna e responsiva focada no público geek e de desenvolvedores. A aplicação foi construída do zero, evoluindo de um simples exercício de layout para uma interface rica, interativa e totalmente funcional, servindo como uma base sólida para a futura integração com um back-end e um banco de dados.
+A **UseDev** é uma loja virtual moderna e responsiva focada no público geek e de desenvolvedores. O projeto evoluiu de um simples exercício de layout para uma **aplicação web full-stack completamente funcional**, com back-end robusto, base de dados relacional e sistema de autenticação seguro.
 
-## ✨ Funcionalidades
+A aplicação oferece uma experiência de e-commerce completa, desde a navegação de produtos até a finalização de compras, com dados persistentes e sincronizados entre diferentes dispositivos e sessões.
 
-O front-end da aplicação inclui uma vasta gama de funcionalidades prontas para uso:
+## 🎯 Evolução do Projeto
 
--   **Páginas Essenciais de E-commerce:**
-    -   Homepage com banner, categorias e lista de produtos.
-    -   Página de Detalhes do Produto.
-    -   Página de Carrinho de Compras com cálculo de subtotal, frete e cupons.
-    -   Página de Login e Cadastro de Usuário.
--   **Painel do Usuário Completo:**
-    -   Dashboard de Perfil com múltiplas abas: Dados Pessoais, Endereços, Histórico de Pedidos, Favoritos e Cupons.
-    -   Formulários para edição de dados e cadastro de endereço com consulta de CEP.
--   **Sistemas Dinâmicos e Interativos:**
-    -   **Tema Light/Dark Mode:** Sistema completo de temas com persistência da escolha do usuário.
-    -   **Sistema de Favoritos:** Permite ao usuário salvar e remover produtos de uma lista de favoritos.
-    -   **Sistema de Carrinho:** Adição, remoção e atualização de quantidade de produtos, com dados salvos no `localStorage`.
-    -   **Sistema de Notificações (Toast):** Feedback visual para ações do usuário (ex: "Produto adicionado!").
-    -   **Modal de Checkout:** Janela modal para finalização de compra.
--   **UI/UX Moderno:**
-    -   **Design Totalmente Responsivo:** Layout adaptado para desktop, tablets e celulares.
-    -   **Cabeçalho com Menu Hambúrguer:** Menu de navegação funcional em dispositivos móveis, implementado com JavaScript.
-    -   **Ícones Profissionais:** Uso da biblioteca Font Awesome para uma identidade visual consistente e leve.
+### **Fase 1: Front-end (Concluída)**
+- Interface de utilizador completa e responsiva
+- Funcionalidades simuladas com localStorage
+- Design moderno com tema claro/escuro
+
+### **Fase 2: Full-Stack (Atual)**
+- API RESTful desenvolvida com Node.js e Express
+- Base de dados PostgreSQL com esquema relacional
+- Sistema de autenticação com JWT
+- Integração completa front-end + back-end
+
+## ✨ Funcionalidades Completas
+
+### **E-commerce Essencial**
+- 🏠 **Homepage** com banner, categorias e lista de produtos
+- 🛍️ **Página de Detalhes** do produto com informações completas
+- 🛒 **Carrinho de Compras** persistente com cálculo automático
+- 👤 **Sistema de Login/Registo** com autenticação segura
+- 💳 **Modal de Checkout** para finalização de compras
+
+### **Painel do Utilizador**
+- 📊 **Dashboard Completo** com múltiplas abas:
+  - Dados Pessoais (editáveis)
+  - Endereços (com consulta de CEP via API)
+  - Histórico de Pedidos
+  - Lista de Favoritos
+  - Cupons de Desconto
+
+### **Sistemas Dinâmicos**
+- 🌙 **Tema Light/Dark Mode** com persistência
+- ❤️ **Sistema de Favoritos** sincronizado com a base de dados
+- 🛒 **Carrinho Persistente** associado ao utilizador
+- 🔔 **Sistema de Notificações** (Toast) para feedback
+- 📱 **Design Totalmente Responsivo**
+
+### **Segurança e Autenticação**
+- 🔐 **Senhas Encriptadas** com bcryptjs
+- 🎫 **Autenticação JWT** para sessões seguras
+- 🛡️ **Middleware de Proteção** para rotas sensíveis
+- 🔒 **Validação de Tokens** em todas as operações
 
 ## 🚀 Tecnologias Utilizadas
 
-Este projeto foi construído utilizando as seguintes tecnologias e conceitos:
+### **Front-end**
+- **HTML5** - Estrutura semântica e acessível
+- **CSS3** - Flexbox, Grid, Variáveis CSS, Animações
+- **JavaScript ES6+** - Classes, Async/Await, Manipulação DOM
+- **Font Awesome** - Biblioteca de ícones
 
--   **`HTML5`**:
-    -   Estrutura semântica para melhor acessibilidade e SEO (`<header>`, `<main>`, `<nav>`, `<aside>`, `<section>`).
+### **Back-end**
+- **Node.js** - Ambiente de execução JavaScript
+- **Express.js** - Framework web para API RESTful
+- **bcryptjs** - Encriptação de senhas
+- **jsonwebtoken** - Autenticação JWT
+- **cors** - Comunicação cross-origin
+- **dotenv** - Gestão de variáveis de ambiente
 
--   **`CSS3`**:
-    -   **Flexbox** e **Grid Layout** para criação de layouts complexos e responsivos.
-    -   **Responsividade com Media Queries** para garantir a adaptação a diferentes tamanhos de tela.
-    -   **Variáveis CSS (Custom Properties)** para um sistema de temas (Light/Dark Mode) eficiente e de fácil manutenção.
-    -   **Animações e Transições (`@keyframes`, `transition`)** para uma experiência de usuário mais fluida.
+### **Base de Dados**
+- **PostgreSQL** - Base de dados relacional
+- **Esquema Normalizado** - Tabelas relacionais otimizadas
 
--   **`JavaScript (ES6+)`**:
-    -   **Programação Orientada a Objetos (OOP)** com `Classes` para organizar a lógica (`PerfilManager`, `CarrinhoManager`, etc.).
-    -   **Manipulação do DOM** para criar e atualizar conteúdo dinamicamente sem recarregar a página.
-    -   **Async/Await com `fetch` API** para carregar dados de arquivos JSON locais e consultar APIs externas (ViaCEP).
-    -   **`localStorage`** para persistência de dados no navegador (carrinho, favoritos, tema, usuário simulado).
-    -   **Manipulação de Eventos** para interatividade completa com o usuário.
+### **Ferramentas de Desenvolvimento**
+- **Git & GitHub** - Controlo de versão
+- **DBeaver** - Gestão da base de dados
+- **Visual Studio Code** - Editor de código
+- **Live Server** - Servidor de desenvolvimento
 
--   **Bibliotecas e Ferramentas:**
-    -   **Font Awesome:** Para a biblioteca de ícones.
-    -   **Git & GitHub Desktop:** Para versionamento de código.
-    -   **DBeaver & PostgreSQL:** Ferramentas escolhidas para o planejamento e futuro desenvolvimento do banco de dados.
+## 📁 Estrutura do Projeto
 
-## 📁 Estrutura de Pastas
+```
+UseDev/
+├── frontend/
+│   ├── assets/
+│   │   ├── icons/
+│   │   └── produtos/
+│   ├── css/
+│   │   ├── components/
+│   │   └── pages/
+│   ├── js/
+│   │   ├── auth.js
+│   │   ├── carrinho.js
+│   │   ├── perfil.js
+│   │   └── main.js
+│   ├── pages/
+│   │   ├── carrinho.html
+│   │   ├── login.html
+│   │   ├── perfil.html
+│   │   └── produto.html
+│   └── index.html
+├── backend/
+│   ├── controllers/
+│   ├── middleware/
+│   ├── routes/
+│   ├── config/
+│   ├── .env
+│   ├── server.js
+│   └── package.json
+└── database/
+    └── schema.sql
+```
 
-O projeto está organizado da seguinte forma para facilitar a manutenção:
+## 🛠️ Como Executar o Projeto
 
+### **Pré-requisitos**
+- Node.js (versão 14 ou superior)
+- PostgreSQL
+- Git
 
-/
-├── assets/
-│   ├── icons/
-│   └── produtos/
-├── css/
-│   ├── components/
-│   ├── pages/
-│   └── ...
-├── data/
-│   ├── products.json
-│   └── ...
-├── js/
-│   ├── auth.js
-│   ├── carrinho.js
-│   ├── perfil.js
-│   └── ...
-├── pages/
-│   ├── carrinho.html
-│   ├── login.html
-│   ├── perfil.html
-│   └── ...
-└── index.html
+### **Configuração da Base de Dados**
+1. Instale e configure o PostgreSQL
+2. Crie uma base de dados chamada `usedev`
+3. Execute o script `database/schema.sql` para criar as tabelas
 
+### **Configuração do Back-end**
+1. Navegue para a pasta `backend/`
+2. Instale as dependências:
+   ```bash
+   npm install
+   ```
+3. Configure as variáveis de ambiente no arquivo `.env`:
+   ```env
+   DB_HOST=localhost
+   DB_PORT=5432
+   DB_NAME=usedev
+   DB_USER=seu_usuario
+   DB_PASSWORD=sua_senha
+   JWT_SECRET=seu_jwt_secret_aqui
+   PORT=3000
+   ```
+4. Inicie o servidor:
+   ```bash
+   npm start
+   ```
 
-## 🛠️ Como Rodar o Projeto
+### **Configuração do Front-end**
+1. Navegue para a pasta `frontend/`
+2. Abra o `index.html` com Live Server ou servidor similar
+3. Acesse `http://localhost:5500` (ou porta configurada)
 
-1.  Clone ou baixe este repositório.
-2.  Abra a pasta do projeto no **Visual Studio Code**.
-3.  Com a extensão **Live Server** instalada, clique com o botão direito no arquivo `index.html`.
-4.  Selecione a opção "Open with Live Server".
+## 🔄 API Endpoints
 
-## 🔮 Próximos Passos (Back-end)
+### **Autenticação**
+- `POST /api/auth/register` - Registo de utilizador
+- `POST /api/auth/login` - Login de utilizador
 
-O trabalho de front-end foi concluído com sucesso. O próximo grande passo é o desenvolvimento do back-end para transformar a aplicação em uma plataforma de e-commerce completa. O plano inclui:
+### **Produtos**
+- `GET /api/produtos` - Lista todos os produtos
+- `GET /api/produtos/:id` - Detalhes de um produto
 
--   [ ] **Desenvolvimento da API REST** com Node.js e Express.
--   [ ] **Integração com o banco de dados PostgreSQL** para persistência de dados.
--   [ ] Implementação do sistema de **autenticação de usuários** com senhas criptografadas e tokens (JWT).
--   [ ] Criação de rotas para **gerenciamento em tempo real** de produtos e estoque.
--   [ ] Desenvolvimento da lógica para **processamento de pedidos e pagamentos**.
--   [ ] **Migração completa** da lógica de `localStorage` (carrinho, favoritos) para o banco de dados, associando os dados ao usuário logado.
+### **Carrinho**
+- `GET /api/carrinho` - Obter carrinho do utilizador
+- `POST /api/carrinho` - Adicionar item ao carrinho
+- `PUT /api/carrinho/:id` - Atualizar quantidade
+- `DELETE /api/carrinho/:id` - Remover item
 
+### **Favoritos**
+- `GET /api/favoritos` - Lista de favoritos do utilizador
+- `POST /api/favoritos` - Adicionar aos favoritos
+- `DELETE /api/favoritos/:id` - Remover dos favoritos
+
+### **Utilizador**
+- `GET /api/user/perfil` - Dados do perfil
+- `PUT /api/user/perfil` - Atualizar perfil
+
+## 🎯 Funcionalidades em Destaque
+
+### **Autenticação Segura**
+- Registo e login com validação completa
+- Senhas encriptadas com salt
+- Tokens JWT com expiração configurável
+- Middleware de proteção automática
+
+### **Carrinho Inteligente**
+- Sincronização automática com a base de dados
+- Cálculo dinâmico de totais e fretes
+- Persistência entre sessões e dispositivos
+- Validação de stock em tempo real
+
+### **Sistema de Favoritos**
+- Lista personalizada por utilizador
+- Sincronização instantânea
+- Interface intuitiva para gerir favoritos
+- Indicadores visuais de estado
+
+## 🔜 Próximas Funcionalidades
+
+- [ ] Sistema de pagamento integrado
+- [ ] Gestão de stock em tempo real
+- [ ] Painel administrativo
+- [ ] Sistema de reviews e avaliações
+- [ ] Notificações push
+- [ ] Análise de dados e relatórios
+
+## 🤝 Contribuições
+
+Contribuições são bem-vindas! Sinta-se à vontade para:
+- Reportar bugs
+- Sugerir novas funcionalidades
+- Enviar pull requests
+- Melhorar a documentação
+
+## 📝 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## 👨‍💻 Autor
+
+**Roberto Silva**
 ---
-Feito com ❤️ por **Roberto Silva**.
+
+Feito com ❤️ e muito ☕ por Roberto Silva
+
+*"Do conceito à realidade: uma jornada de aprendizado em desenvolvimento full-stack"*
