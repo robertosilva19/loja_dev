@@ -1,18 +1,25 @@
 # UseDev - Loja Geek Full-Stack
 **Status do Projeto: ✅ Aplicação Full-Stack Completa e Funcional**
 
+<table>
+  <tr>
+    
 ![Screenshot da Homepage](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/light_mode.jpeg)
 *Interface em Modo Claro*
 
 ![Screenshot do Dark Mode](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/dark-mode.jpeg)
 *Interface em Modo Escuro*
-
+</tr>
+<tr>
+  
 ![Screenshot da Página de Perfil](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/perfil_cliente.jpeg)
 *Página de Perfil do Cliente*
 
 ![Screenshot do Carrinho de Compras](https://github.com/robertosilva19/loja_dev/blob/68de84748ea68a938fb9b28cd216c94f6645d594/assets/carinho_compras.jpeg)
 *Página do Carrinho de Compras*
+</tr>
 
+</table>
 ## 📄 Descrição do Projeto
 
 A **UseDev** é uma loja virtual moderna e responsiva focada no público geek e de desenvolvedores. O projeto evoluiu de um simples exercício de layout para uma **aplicação web full-stack completamente funcional**, com back-end robusto, base de dados relacional e sistema de autenticação seguro.
